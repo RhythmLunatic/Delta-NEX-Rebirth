@@ -1,0 +1,1 @@
+local t = Def.ActorFrame {  InitCommand=cmd(Center);	Def.Sprite {	--InitCommand=cmd(LoadFromSongBackground,GAMESTATE:GetCurrentSong();zoomto,SCREEN_WIDTH,SCREEN_HEIGHT-40;croptop,0.2;cropbottom,0.2;diffusealpha,0.225);	InitCommand=cmd(LoadFromSongBackground,GAMESTATE:GetCurrentSong();zoomto,SCREEN_WIDTH,SCREEN_HEIGHT;);	};};return t
