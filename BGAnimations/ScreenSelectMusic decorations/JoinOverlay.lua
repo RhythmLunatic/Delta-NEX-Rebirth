@@ -12,7 +12,7 @@ t[#t+1] = LoadFont("venacti/_venacti 26px bold diffuse")..{
 	InitCommand=cmd(uppercase,true;horizalign,center;y,38;shadowlength,1;zoom,0.6;diffuseshift;effectcolor1,color("#FFFFFFFF");effectcolor2,color("#FFFFFF99");effectperiod,1;);
 };
 
-t[#t+1] = LoadActor(THEME:GetPathG("","_press dance 5x2.png"))..{
+t[#t+1] = LoadActor(THEME:GetPathG("", "_press "..GAMESTATE:GetCurrentGame():GetName().. " 5x2"))..{
 	Frames = Sprite.LinearFrames(10,.3);
 	InitCommand=cmd(horizalign,center;x,-55;y,25;zoom,0.3;);
 };

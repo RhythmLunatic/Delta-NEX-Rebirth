@@ -1,7 +1,7 @@
 local t = Def.ActorFrame{}
 
 
-t[#t+1] = LoadActor(THEME:GetPathG("","nonscrollbarfooter"))..{
+t[#t+1] = LoadActor(THEME:GetPathG("","footer"), true)..{
 	InitCommand=cmd(draworder,100);
 };
 

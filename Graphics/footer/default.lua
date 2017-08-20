@@ -1,8 +1,19 @@
+local noScroller = ...;
+
+
 local t = Def.ActorFrame {}
 
-t[#t+1] = LoadActor("_footer")..{
-	InitCommand=cmd(draworder,100;Center;zoom,0.675);
-}
+if noScroller == true then
+	--For the footer without an area for the scroller to go.
+	t[#t+1] = LoadActor("_noscroll")..{
+		InitCommand=cmd(draworder,100;Center;zoom,0.675);
+	}
+else
+	t[#t+1] = LoadActor("_footer")..{
+		InitCommand=cmd(draworder,100;Center;zoom,0.675);
+	}
+end;
+
 
 --P1 NAME
 t[#t+1] = LoadFont("venacti/_venacti 26px bold diffuse") .. {

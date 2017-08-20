@@ -1165,14 +1165,14 @@ t[#t+1] = Def.ActorFrame{
 
 
 
-t[#t+1] = LoadActor(THEME:GetPathG("","_press dance 5x2.png"))..{
+t[#t+1] = LoadActor(THEME:GetPathG("", "_press "..GAMESTATE:GetCurrentGame():GetName().. " 5x2"))..{
 	Frames = Sprite.LinearFrames(10,.3);
 	InitCommand=cmd(x,SCREEN_CENTER_X-110;y,SCREEN_CENTER_Y-64;zoom,0.45;visible,false;draworder,100);
 	SongChosenMessageCommand=cmd(setstate,0;visible,true);
 	TwoPartConfirmCanceledMessageCommand=cmd(visible,false);
 	SongUnchosenMessageCommand=cmd(visible,false);
 };
-t[#t+1] = LoadActor(THEME:GetPathG("","_press dance 5x2.png"))..{
+t[#t+1] = LoadActor(THEME:GetPathG("", "_press "..GAMESTATE:GetCurrentGame():GetName().. " 5x2"))..{
 	Frames = Sprite.LinearFrames(10,.3);
 	InitCommand=cmd(x,SCREEN_CENTER_X+110;y,SCREEN_CENTER_Y-64;zoom,0.45;visible,false;draworder,100);
 	SongChosenMessageCommand=cmd(setstate,0;visible,true);
