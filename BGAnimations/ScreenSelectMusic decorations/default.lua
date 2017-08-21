@@ -26,21 +26,24 @@ InitCommand=cmd(diffuse,0,0,0,0.5;vertalign,bottom;x,SCREEN_CENTER_X;y,SCREEN_BO
 	};
 end]]
 
-for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-	t[#t+1] = Def.ActorFrame{
-		LoadActor("stepsDisplay", pn)..{
-			--InitCommand=cmd(xy,160,180);
-			InitCommand=function(self)
-				if pn == "PlayerNumber_P2" then
-					self:x(SCREEN_WIDTH-160)
-                else
-                    self:x(160);
-                end;
-				self:y(180);
-			end;
+
+if GAMESTATE:GetCurrentGame():GetName() == "dance" then
+	for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+		t[#t+1] = Def.ActorFrame{
+			LoadActor("stepsDisplay", pn)..{
+				--InitCommand=cmd(xy,160,180);
+				InitCommand=function(self)
+					if pn == "PlayerNumber_P2" then
+						self:x(SCREEN_WIDTH-160)
+					else
+						self:x(160);
+					end;
+					self:y(180);
+				end;
+			};
 		};
-	};
-end
+	end;
+end;
 
 
 
@@ -643,50 +646,8 @@ end;
 };]]
 
 
---Why is there two of them?
---[[
 t[#t+1] = LoadActor("jacket_light") .. {
-	InitCommand=cmd(draworder,100;x,SCREEN_CENTER_X-1.5;y,SCREEN_CENTER_Y+3;effectclock,"bgm";zoom,0.675;blend,Blend.Add);
-
-	SongChangedMessageCommand=cmd(playcommand,"CheckSteps");
-	CurrentStepsP1ChangedMessageCommand=cmd(playcommand,"CheckSteps");
-	CurrentStepsP2ChangedMessageCommand=cmd(playcommand,"CheckSteps");
-
-	CheckStepsCommand=function(self,params)
-
-		local stepsP1 = GAMESTATE:GetCurrentSteps(PLAYER_1);
-		local stepsP2 = GAMESTATE:GetCurrentSteps(PLAYER_2);
-		local threshold = THEME:GetMetric("SongManager","ExtraColorMeter");
-
-			if not stepsP1 then
-				meterP1 = 0
-			else
-				meterP1 = stepsP1:GetMeter()
-			end
-
-			if not stepsP2 then
-				meterP2 = 0
-			else
-				meterP2 = stepsP2:GetMeter()
-			end
-
-
-			if meterP1>=threshold or meterP2>=threshold then
-				self:playcommand("Extra");
-			else
-				self:playcommand("Normal");
-			end;
-
-	end;
-
-	NormalCommand=cmd(blend,Blend.Add;diffuseshift;effectcolor1,color("#66BBFFFF");effectcolor2,color("#66BBFF33"));
-	ExtraCommand=cmd(blend,Blend.Add;diffuseshift;effectcolor1,color("#FFCC00FF");effectcolor2,color("#FFCC0033"));
-
-}
-]]
-
-t[#t+1] = LoadActor("jacket_light") .. {
-	InitCommand=cmd(draworder,100;xy,SCREEN_CENTER_X,SCREEN_CENTER_Y+126;zoomx,.86;zoomy,.78;effectclock,"bgm";blend,Blend.Add);
+	InitCommand=cmd(draworder,100;xy,SCREEN_CENTER_X,SCREEN_CENTER_Y+126;zoomx,.80;zoomy,.80;effectclock,"bgm";blend,Blend.Add);
 
 	CurrentSongChangedMessageCommand=function(self)
 		--local JacketOrBanner;
@@ -695,7 +656,7 @@ t[#t+1] = LoadActor("jacket_light") .. {
 		self:linear(.5);
 		if song then
 			if song:HasJacket() then
-				self:zoomx(.86);
+				self:zoomx(.80);
 				self:diffusealpha(1);
 			elseif song:HasBanner() then
 				self:zoomx(1.14);

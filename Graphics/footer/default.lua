@@ -1,6 +1,5 @@
 local noScroller = ...;
 
-
 local t = Def.ActorFrame {}
 
 if noScroller == true then

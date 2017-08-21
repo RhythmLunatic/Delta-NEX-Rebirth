@@ -13,7 +13,7 @@ return Def.ActorFrame {
 			local path;
 			if song then
 				path = song:GetJacketPath();
-				self:scaletoclipped(200,200);
+				self:scaletoclipped(180,180);
 				if not path then
 					path = song:GetBannerPath();
 					self:scaletoclipped(267,200);
