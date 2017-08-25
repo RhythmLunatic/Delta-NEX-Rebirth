@@ -42,9 +42,10 @@ local TNSFrames = {
 	TapNoteScore_Miss = 5;
 	TapNoteScore_CheckpointHit = 1;
 	TapNoteScore_CheckpointMiss = 5;
+	TapNoteScore_AvoidMine = 0;
 };
 
-
+--WTF is this shit? Is it just arbitrary scoring?
 local TapScoring = {
 	TapNoteScore_W1 = 1000;
 	TapNoteScore_W2 = 1000;
@@ -54,6 +55,7 @@ local TapScoring = {
 	TapNoteScore_Miss = -800;
 	TapNoteScore_CheckpointHit = 900;
 	TapNoteScore_CheckpointMiss = -700;
+	TapNoteScore_AvoidMine = 0;
 };
 
 local HoldScoring = {

@@ -224,7 +224,7 @@ t[#t+1] = LoadFont("venacti/_venacti 26px bold diffuse")..{
 
 
 
-t[#t+1] = LoadActor(THEME:GetPathG("","footer",), true)..{
+t[#t+1] = LoadActor(THEME:GetPathG("","footer"), true)..{
 	InitCommand=cmd(draworder,100);
 }
 
