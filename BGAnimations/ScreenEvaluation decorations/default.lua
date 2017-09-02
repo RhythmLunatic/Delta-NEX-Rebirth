@@ -3,10 +3,9 @@ local t = Def.ActorFrame{
 }
 local song = GAMESTATE:GetCurrentSong();
 
-
 t[#t+1] = Def.ActorFrame {
   FOV=90;
-  InitCommand=cmd(Center);
+  --InitCommand=cmd(Center);
 --[[	Def.Quad {
 		InitCommand=cmd(scaletoclipped,SCREEN_WIDTH/2,SCREEN_HEIGHT;x,-SCREEN_WIDTH/4);
 		OnCommand=cmd(diffuse,color("#000000");diffuserightedge,color("#c71585"));
@@ -15,8 +14,28 @@ t[#t+1] = Def.ActorFrame {
 		InitCommand=cmd(scaletoclipped,SCREEN_WIDTH/2,SCREEN_HEIGHT;x,SCREEN_CENTER_X-(SCREEN_WIDTH/4));
 		OnCommand=cmd(diffuse,color("#000000");diffuseleftedge,color("#c71585"));
 	};]]
-	LoadActor("../ScreenSelectMusic background/back_nex") .. {
-		InitCommand=cmd(scaletoclipped,SCREEN_WIDTH,SCREEN_HEIGHT);
+	
+	--[[LoadActor("../ScreenSelectMusic background/back_nex") .. {
+		InitCommand=cmd(scaletoclipped,SCREEN_WIDTH,SCREEN_HEIGHT;Center);
+	};]]
+	
+	--Jacket BG
+	--[[Def.Sprite{
+		InitCommand=function(self)
+			self:addy(-20);
+			self:scaletoclipped(180,180);
+			self:diffuse(color(".5,.5,.5,.7"));
+			local path = GAMESTATE:GetCurrentSong():GetJacketPath();
+			if path then self:Load(path);
+			else
+				self:diffusealpha(0);
+			end;
+		end;
+		OnCommand=cmd(x,SCREEN_RIGHT-200;y,SCREEN_CENTER_Y;rotationx,-20;rotationy,15;rotationz,30;);
+	};]]
+	
+	Def.Sprite{
+		InitCommand=cmd(Load,GetSongBackground();scaletocover,0,0,SCREEN_WIDTH,SCREEN_HEIGHT;diffuse,color(".2,.2,.2,1"));
 	};
 };
 
@@ -24,7 +43,7 @@ t[#t+1] = Def.ActorFrame {
 --Seriously, why does this themer hate ActorFrames so much
 --Rewriting this stuff to be easier to position drives me up the wall
 t[#t+1] = Def.ActorFrame{
-	InitCommand=cmd(xy,SCREEN_CENTER_X,100);
+	InitCommand=cmd(xy,SCREEN_CENTER_X,80);
 	
 
 	--Top bg
@@ -42,17 +61,53 @@ t[#t+1] = Def.ActorFrame{
 
 	};
 	
-	LoadActor(THEME:GetPathG("","SongBanner"))..{
+	--[[LoadActor(THEME:GetPathG("","SongBanner"))..{
 		InitCommand=cmd(draworder,100;zoom,0.475;);
+	};]]
+	
+	LoadActor(THEME:GetPathG("","PlayerSteps"), PLAYER_1)..{
+		InitCommand=cmd(draworder,100;zoom,0.925;x,-160;y,-10);
+	};
+	
+	LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
+		InitCommand=cmd(addy,-8;maxwidth,300;zoomy,0.55;zoomx,0.58;diffuse,color("#FFFF66FF");diffusebottomedge,color("#DDAA44FF");shadowlength,0.8);
+		Text=string.upper(song:GetDisplayMainTitle().." "..song:GetDisplaySubTitle())
+	};
+
+
+	LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
+		InitCommand=cmd(addy,8;zoom,0.4;diffuse,color("#fffFFF");diffusebottomedge,color("#CCCCCC");shadowlength,0.8);
+		Text=""..string.upper(song:GetGroupName());
 	};
 
 };
 
-if GAMESTATE:IsSideJoined(PLAYER_1) then
-	t[#t+1] = LoadActor(THEME:GetPathG("","PlayerSteps"), PLAYER_1)..{
-		InitCommand=cmd(draworder,100;x,SCREEN_CENTER_X-165;y,90;zoom,0.925);
-	}
-end;
+--[[t[#t+1] = Def.ActorFrame{
+	InitCommand=cmd(Center;addy,10);
+	Def.Sprite{
+		InitCommand=function(self)
+			self:addy(-20);
+			self:scaletoclipped(180,180);
+			local path = GAMESTATE:GetCurrentSong():GetJacketPath();
+			if path then self:Load(path);
+			else
+				self:diffusealpha(0);
+			end;
+		end;
+	};
+	
+	LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
+		InitCommand=cmd(addy,80;maxwidth,1020;zoomy,0.55;zoomx,0.58;diffuse,color("#FFFF66FF");diffusebottomedge,color("#DDAA44FF");shadowlength,0.8);
+		Text=string.upper(song:GetDisplayMainTitle().." "..song:GetDisplaySubTitle())
+	};
+
+
+	LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
+		InitCommand=cmd(addy,95;zoom,0.4;diffuse,color("#fffFFF");diffusebottomedge,color("#CCCCCC");shadowlength,0.8);
+		Text=""..string.upper(song:GetGroupName());
+	};
+
+};]]
 
 if GAMESTATE:IsSideJoined(PLAYER_2) then
 	t[#t+1] = LoadActor(THEME:GetPathG("","PlayerSteps"), PLAYER_2)..{
@@ -60,9 +115,10 @@ if GAMESTATE:IsSideJoined(PLAYER_2) then
 	}
 end;
 
+--Player mods position are defined in metrics
 t[#t+1] = Def.ActorFrame{
 	--Bottom bg
-	InitCommand=cmd(xy,SCREEN_CENTER_X,SCREEN_BOTTOM-91);
+	InitCommand=cmd(xy,SCREEN_CENTER_X,SCREEN_BOTTOM-70);
 	
 	Def.Quad {
 		InitCommand=cmd(diffuse,0,0,0,0.4;setsize,SCREEN_WIDTH,30;);
@@ -91,33 +147,22 @@ t[#t+1] = LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
 }
 
 
-t[#t+1] = LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
-	InitCommand=cmd(maxwidth,1020;zoomy,0.55;zoomx,0.58;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-76;diffuse,color("#FFFF66FF");diffusebottomedge,color("#DDAA44FF");shadowlength,0.8);
-	Text=string.upper(song:GetDisplayMainTitle().." "..song:GetDisplaySubTitle())
-}
-
-
-t[#t+1] = LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
-	InitCommand=cmd(zoom,0.4;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-61;diffuse,color("#fffFFF");diffusebottomedge,color("#CCCCCC");shadowlength,0.8);
-	Text=""..string.upper(song:GetGroupName());
-}
 
 
 
+t[#t+1] = Def.ActorFrame{
 
-t[#t+1] = LoadActor("P1Stats")..{
-	InitCommand=cmd(draworder,100;y,SCREEN_CENTER_Y-40;);
+	InitCommand=cmd(draworder,100;y,SCREEN_CENTER_Y-70;);
 	OnCommand=function(self)
-
-	if GAMESTATE:IsHumanPlayer(PLAYER_1) then
-		if STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):IsDisqualified()==true then
-			self:visible(false);
+		if GAMESTATE:IsHumanPlayer(PLAYER_1) then
+			if STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):IsDisqualified()==true then
+				self:visible(false);
+			else
+				self:visible(true);
+			end
 		else
-			self:visible(true);
+			self:visible(false);
 		end
-	else
-		self:visible(false);
-	end
 
 		if GAMESTATE:GetNumSidesJoined() == 2 then
 			self:x(SCREEN_CENTER_X-140);
@@ -131,13 +176,116 @@ t[#t+1] = LoadActor("P1Stats")..{
 			end
 
 		else
-			self:x(SCREEN_CENTER_X);
+			self:x(SCREEN_CENTER_X-200);
 		end
-	end
-}
+	end;
+
+	--LoadActor("P1Stats")..{};
+};
 
 
-t[#t+1] = LoadActor("P2Stats")..{
+local spacing = 40;
+t[#t+1] = Def.ActorFrame{
+
+	--Marvelous/Superb
+	InitCommand=cmd(xy,SCREEN_CENTER_X,125);
+	LoadFont("venacti/_venacti 26px bold diffuse")..{
+		OnCommand=function(self)
+			if	GetUserPref("UserPrefJudgmentType") == "Pro" then
+				self:settext("SUPERB");
+			else
+				self:settext("PERFECT");
+			end
+		end
+	};
+
+	Def.Quad{
+		InitCommand=cmd(setsize,500,30;faderight,1;fadeleft,1;diffuse,color("#2264b7");blend,Blend.Add);
+		--OnCommand=cmd(x,itembaseX;y,itembaseY);
+	};
+	
+	--Perfect/Great
+	LoadFont("venacti/_venacti 26px bold diffuse")..{
+		InitCommand=cmd(y,spacing);
+		OnCommand=function(self)
+			if	GetUserPref("UserPrefJudgmentType") == "Pro" then
+				self:settext("PERFECT");
+			else
+				self:settext("GREAT");
+			end
+		end
+	};
+	Def.Quad{
+		InitCommand=cmd(setsize,500,30;faderight,1;fadeleft,1;diffuse,color("#34851f");blend,Blend.Add);
+		OnCommand=cmd(y,spacing);
+	};
+	
+	--GOODS
+	LoadFont("venacti/_venacti 26px bold diffuse")..{
+		InitCommand=cmd(y,80);
+		OnCommand=function(self)
+			if	GetUserPref("UserPrefJudgmentType") == "Pro" then
+				self:settext("GREAT");
+			else
+				self:settext("GOOD");
+			end
+		end
+	};
+	Def.Quad{
+		InitCommand=cmd(setsize,500,30;faderight,1;fadeleft,1;diffuse,color("#85781f");blend,Blend.Add);
+		OnCommand=cmd(y,spacing*2);
+	};
+	--BADS
+	LoadFont("venacti/_venacti 26px bold diffuse")..{
+		InitCommand=cmd(y,spacing*3);
+		OnCommand=function(self)
+			if	GetUserPref("UserPrefJudgmentType") == "Pro" then
+				self:settext("GOOD");
+			else
+				self:settext("BAD");
+			end
+		end
+	};
+	Def.Quad{
+		InitCommand=cmd(setsize,500,30;faderight,1;fadeleft,1;diffuse,color("#932192");blend,Blend.Add);
+		OnCommand=cmd(y,spacing*3);
+	};
+	
+	--Miss
+	LoadFont("venacti/_venacti 26px bold diffuse")..{
+		InitCommand=cmd(y,spacing*4);
+		Text="MISS";
+	};
+	Def.Quad{
+		InitCommand=cmd(setsize,500,30;faderight,1;fadeleft,1;diffuse,color("#ac1e1e");blend,Blend.Add);
+		OnCommand=cmd(y,spacing*4;);
+	};
+	--Combo
+	LoadFont("venacti/_venacti 26px bold diffuse")..{
+		InitCommand=cmd(y,spacing*5);
+		Text="MAX COMBO";
+	};
+	Def.Quad{
+		InitCommand=cmd(setsize,500,30;faderight,1;fadeleft,1;diffuse,color("#666666");blend,Blend.Add);
+		OnCommand=cmd(y,spacing*5);
+	};
+	--SCORE
+	LoadFont("venacti/_venacti 26px bold diffuse")..{
+		InitCommand=cmd(y,spacing*6);
+		Text="SCORE";
+	};
+	Def.Quad{
+		InitCommand=cmd(setsize,500,30;faderight,1;fadeleft,1;diffuse,color("#c1800e");blend,Blend.Add);
+		OnCommand=cmd(y,spacing*6);
+	};
+
+};
+
+t[#t+1] = LoadActor("PlayerNumbers", PLAYER_1)..{
+	InitCommand=cmd(xy,SCREEN_CENTER_X-235,123);
+};
+
+--[[t[#t+1] = LoadActor("P2Stats")..{
 	InitCommand=cmd(draworder,100;y,SCREEN_CENTER_Y-40;);
 	OnCommand=function(self)
 
@@ -168,7 +316,7 @@ t[#t+1] = LoadActor("P2Stats")..{
 			self:x(SCREEN_CENTER_X);
 		end
 	end
-}
+}]]
 
 
 t[#t+1] = LoadFont("venacti/_venacti 26px bold diffuse")..{
@@ -236,10 +384,11 @@ t[#t+1] = LoadActor(THEME:GetPathG("","footer"), true)..{
 --}
 
 
-
-t[#t+1] = LoadActor(THEME:GetPathG("","header"))..{
+--These lights are headache inducing. I don't know why anyone likes them.
+--If you want your lights so badly, please just use the lights on the arcade...
+t[#t+1] = LoadActor(THEME:GetPathG("","header"), true)..{
 	InitCommand=cmd(draworder,100);
-}
+};
 
 
 

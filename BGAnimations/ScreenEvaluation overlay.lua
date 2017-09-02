@@ -1,4 +1,5 @@
-local t = Def.ActorFrame{}
+local t = Def.ActorFrame{
+};
 
 local dP1 = (math.floor((STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetPercentDancePoints())*1000000))/10000
 local dP2 = (math.floor((STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2):GetPercentDancePoints())*1000000))/10000
