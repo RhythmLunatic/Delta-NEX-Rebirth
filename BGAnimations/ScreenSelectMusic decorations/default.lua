@@ -5,10 +5,12 @@ local t = Def.ActorFrame{}
 
 --bot quad
 t[#t+1] = Def.Quad {
-	--InitCommand=cmd(diffuse,color("0,0,0,0.6");vertalign,bottom;x,SCREEN_CENTER_X;y,SCREEN_BOTTOM;zoomto,SCREEN_WIDTH,188;fadetop,0.2);
-InitCommand=cmd(diffuse,0,0,0,0.5;vertalign,bottom;x,SCREEN_CENTER_X;y,SCREEN_BOTTOM;zoomto,SCREEN_WIDTH,188;);
+	InitCommand=cmd(diffuse,0,0,0,0.5;vertalign,bottom;x,SCREEN_CENTER_X;y,SCREEN_BOTTOM;setsize,SCREEN_WIDTH,188;);
 }
 
+t[#t+1] = LoadActor(THEME:GetPathG("","footer"))..{
+	InitCommand=cmd(draworder,130);
+};
 
 --[[t[#t+1] = LoadActor("listbg") .. {
 	InitCommand=cmd(x,SCREEN_CENTER_X-1;y,SCREEN_CENTER_Y;zoomy,0.675;zoomx,0.65);
@@ -123,7 +125,7 @@ t[#t+1] = Def.ActorFrame {
 				if GAMESTATE:GetCurrentSong():HasPreviewVid() then
 					--self:sleep(1);
 					self:LoadBackground( GAMESTATE:GetCurrentSong():GetPreviewVidPath() );
-					self:scaletofit(-145,-82,145,82);
+					self:scaletoclipped(290,160);
 					(cmd(visible,true;diffusealpha,0;bouncebegin,1;diffusealpha,1))(self);
 				else
 					self:visible(false);
@@ -884,13 +886,15 @@ t[#t+1] = LoadFont("venacti/_venacti 26px bold diffuse")..{
 	end;
 }]]
 
---Use an ActorFrame, there should be no reason to copy and paste
---the same code twice and have all this extra logic. And there should be no need
---to position the graphic inside the Actor!!
---In fact, why was the join checking code inside the actor in the first place?
---You could have just put it outside the actor and added it here!!
---Even if you didn't know how to use args in LoadActor, you still
---would know how to do this!!
+--[[
+Use an ActorFrame, there should be no reason to copy and paste
+the same code twice and have all this extra logic. And there should be no need
+to position the graphic inside the Actor!!
+In fact, why was the join checking code inside the actor in the first place?
+You could have just put it outside the actor and added it here!!
+Even if you didn't know how to use args in LoadActor, you still
+would know how to do this!!
+]]
 --[[t[#t+1] = LoadActor("JoinOverlay")..{
 	InitCommand=cmd(draworder,110;visible,THEME:GetMetric("GameState", "AllowLateJoin"));
 }]]
@@ -1693,10 +1697,6 @@ end
 
 
 
-
-t[#t+1] = LoadActor(THEME:GetPathG("","footer"))..{
-	InitCommand=cmd(draworder,130);
-};
 
 --next/prev indicator
 --[[
