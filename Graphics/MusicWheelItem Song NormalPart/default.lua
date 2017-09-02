@@ -16,7 +16,9 @@ return Def.ActorFrame {
 				self:scaletoclipped(180,180);
 				if not path then
 					path = song:GetBannerPath();
-					self:scaletoclipped(267,200);
+					--I don't know what's up with the size, so this is the best guess
+					--To make it fit in the banner frame..
+					self:scaletoclipped(250,177);
 				end;
 			end;
 			if not path then path = THEME:GetPathG("Common","fallback banner") end

@@ -123,7 +123,7 @@ t[#t+1] = Def.ActorFrame {
 				if GAMESTATE:GetCurrentSong():HasPreviewVid() then
 					--self:sleep(1);
 					self:LoadBackground( GAMESTATE:GetCurrentSong():GetPreviewVidPath() );
-					self:scaletofit(-145,-80,145,80);
+					self:scaletofit(-145,-82,145,82);
 					(cmd(visible,true;diffusealpha,0;bouncebegin,1;diffusealpha,1))(self);
 				else
 					self:visible(false);
@@ -150,23 +150,46 @@ t[#t+1] = Def.ActorFrame {
 	};
 };
 
--- BANNER MASK
+-- BANNER MASK DANCE
 
-t[#t+1] = LoadActor("bannermask") .. {
-	InitCommand=cmd(draworder,5;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-101;zoomy,0.58;zoomx,0.58);
+if GAMESTATE:GetCurrentGame():GetName() == "dance" then 														
+	t[#t+1] = LoadActor("bannermask") .. {
+		InitCommand=cmd(draworder,5;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-101;zoomy,0.58;zoomx,0.58);
 
-};
+	};
 
-t[#t+1] = LoadActor("A1") .. {
-	InitCommand=cmd(draworder,4;x,SCREEN_CENTER_X-133;y,SCREEN_CENTER_Y-100;draworder,2;diffusealpha,0);
-	SongChosenMessageCommand=cmd(diffusealpha,0);
-	PreviousSongMessageCommand=cmd(horizalign,right;diffusealpha,0.9;stoptweening;zoomy,0.5;zoomx,0.5;linear,0.2;zoomx,0.3;diffusealpha,0);
-	TwoPartConfirmCanceledMessageCommand=cmd(diffusealpha,0);
-	SongUnchosenMessageCommand=cmd(diffusealpha,0);
-	ChangeStepsMessageCommand=function(self, params)
-		if  params.Direction == 1 then
-			--Nothing here???
-		elseif params.Direction == -1 then
+	t[#t+1] = LoadActor("A1") .. {
+		InitCommand=cmd(draworder,4;x,SCREEN_CENTER_X-147;y,SCREEN_CENTER_Y-100;draworder,2;diffusealpha,0);
+		SongChosenMessageCommand=cmd(diffusealpha,0);
+		PreviousSongMessageCommand=cmd(horizalign,right;diffusealpha,0.9;stoptweening;zoomy,0.5;zoomx,0.5;linear,0.2;zoomx,0.3;diffusealpha,0);
+		TwoPartConfirmCanceledMessageCommand=cmd(diffusealpha,0);
+		SongUnchosenMessageCommand=cmd(diffusealpha,0);
+		ChangeStepsMessageCommand=function(self, params)
+			if  params.Direction == 1 then
+				--Nothing here???
+			elseif params.Direction == -1 then
+				self:stoptweening();
+				self:horizalign(right);
+				self:diffusealpha(0.7);
+				self:zoomy(0.5);
+				self:zoomx(0.5);
+				self:linear(0.2);
+				self:zoomx(0.2);
+				self:diffusealpha(0);
+			end;
+		end;
+
+	}
+
+	t[#t+1] = LoadActor("A2") .. {
+		InitCommand=cmd(draworder,4;x,SCREEN_CENTER_X-147;y,SCREEN_CENTER_Y-100;draworder,2;diffusealpha,0);
+		SongChosenMessageCommand=cmd(diffusealpha,0);
+		PreviousSongMessageCommand=cmd(horizalign,right;diffusealpha,0.9;stoptweening;zoomy,0.5;zoomx,0.5;linear,0.2;zoomx,0.3;diffusealpha,0);
+		TwoPartConfirmCanceledMessageCommand=cmd(diffusealpha,0);
+		SongUnchosenMessageCommand=cmd(diffusealpha,0);
+		ChangeStepsMessageCommand=function(self, params)
+			if  params.Direction == 1 then
+			elseif params.Direction == -1 then
 			self:stoptweening();
 			self:horizalign(right);
 			self:diffusealpha(0.7);
@@ -175,115 +198,234 @@ t[#t+1] = LoadActor("A1") .. {
 			self:linear(0.2);
 			self:zoomx(0.2);
 			self:diffusealpha(0);
-		end;
-	end;
+			end;
+			end;
 
-}
-
-t[#t+1] = LoadActor("A2") .. {
-	InitCommand=cmd(draworder,4;x,SCREEN_CENTER_X-133;y,SCREEN_CENTER_Y-100;draworder,2;diffusealpha,0);
-	SongChosenMessageCommand=cmd(diffusealpha,0);
-	PreviousSongMessageCommand=cmd(horizalign,right;diffusealpha,0.9;stoptweening;zoomy,0.5;zoomx,0.5;linear,0.2;zoomx,0.3;diffusealpha,0);
-	TwoPartConfirmCanceledMessageCommand=cmd(diffusealpha,0);
-	SongUnchosenMessageCommand=cmd(diffusealpha,0);
-	ChangeStepsMessageCommand=function(self, params)
-		if  params.Direction == 1 then
-		elseif params.Direction == -1 then
-		self:stoptweening();
-		self:horizalign(right);
-		self:diffusealpha(0.7);
-		self:zoomy(0.5);
-		self:zoomx(0.5);
-		self:linear(0.2);
-		self:zoomx(0.2);
-		self:diffusealpha(0);
-		end;
-		end;
-
-}
+	}
 
 
-t[#t+1] = LoadActor("A1") .. {
-	InitCommand=cmd(draworder,4;x,SCREEN_CENTER_X+133;y,SCREEN_CENTER_Y-100;draworder,2;diffusealpha,0;rotationy,180);
-	SongChosenMessageCommand=cmd(diffusealpha,0);
-	NextSongMessageCommand=cmd(horizalign,right;diffusealpha,0.9;stoptweening;zoomy,0.5;zoomx,0.5;linear,0.2;zoomx,0.3;diffusealpha,0);
-	TwoPartConfirmCanceledMessageCommand=cmd(diffusealpha,0);
-	SongUnchosenMessageCommand=cmd(diffusealpha,0);
-		ChangeStepsMessageCommand=function(self, params)
-		if  params.Direction == 1 then
-		self:stoptweening();
-		self:horizalign(right);
-		self:diffusealpha(0.7);
-		self:zoomy(0.5);
-		self:zoomx(0.5);
-		self:linear(0.2);
-		self:zoomx(0.2);
-		self:diffusealpha(0);
-		elseif params.Direction == -1 then
-		end;
-		end;
-}
+	t[#t+1] = LoadActor("A1") .. {
+		InitCommand=cmd(draworder,4;x,SCREEN_CENTER_X+147;y,SCREEN_CENTER_Y-100;draworder,2;diffusealpha,0;rotationy,180);
+		SongChosenMessageCommand=cmd(diffusealpha,0);
+		NextSongMessageCommand=cmd(horizalign,right;diffusealpha,0.9;stoptweening;zoomy,0.5;zoomx,0.5;linear,0.2;zoomx,0.3;diffusealpha,0);
+		TwoPartConfirmCanceledMessageCommand=cmd(diffusealpha,0);
+		SongUnchosenMessageCommand=cmd(diffusealpha,0);
+			ChangeStepsMessageCommand=function(self, params)
+			if  params.Direction == 1 then
+			self:stoptweening();
+			self:horizalign(right);
+			self:diffusealpha(0.7);
+			self:zoomy(0.5);
+			self:zoomx(0.5);
+			self:linear(0.2);
+			self:zoomx(0.2);
+			self:diffusealpha(0);
+			elseif params.Direction == -1 then
+			end;
+			end;
+	}
 
-t[#t+1] = LoadActor("A2") .. {
-	InitCommand=cmd(draworder,4;x,SCREEN_CENTER_X+133;y,SCREEN_CENTER_Y-100;draworder,2;diffusealpha,0;rotationy,180);
-	SongChosenMessageCommand=cmd(diffusealpha,0);
-	NextSongMessageCommand=cmd(horizalign,right;diffusealpha,0.9;stoptweening;zoomy,0.5;zoomx,0.5;linear,0.2;zoomx,0.3;diffusealpha,0);
-	TwoPartConfirmCanceledMessageCommand=cmd(diffusealpha,0);
-	SongUnchosenMessageCommand=cmd(diffusealpha,0);
-		ChangeStepsMessageCommand=function(self, params)
-		if  params.Direction == 1 then
-		self:stoptweening();
-		self:horizalign(right);
-		self:diffusealpha(0.7);
-		self:zoomy(0.5);
-		self:zoomx(0.5);
-		self:linear(0.2);
-		self:zoomx(0.2);
-		self:diffusealpha(0);
-		elseif params.Direction == -1 then
-		end;
-		end;
-}
+	t[#t+1] = LoadActor("A2") .. {
+		InitCommand=cmd(draworder,4;x,SCREEN_CENTER_X+147;y,SCREEN_CENTER_Y-100;draworder,2;diffusealpha,0;rotationy,180);
+		SongChosenMessageCommand=cmd(diffusealpha,0);
+		NextSongMessageCommand=cmd(horizalign,right;diffusealpha,0.9;stoptweening;zoomy,0.5;zoomx,0.5;linear,0.2;zoomx,0.3;diffusealpha,0);
+		TwoPartConfirmCanceledMessageCommand=cmd(diffusealpha,0);
+		SongUnchosenMessageCommand=cmd(diffusealpha,0);
+			ChangeStepsMessageCommand=function(self, params)
+			if  params.Direction == 1 then
+			self:stoptweening();
+			self:horizalign(right);
+			self:diffusealpha(0.7);
+			self:zoomy(0.5);
+			self:zoomx(0.5);
+			self:linear(0.2);
+			self:zoomx(0.2);
+			self:diffusealpha(0);
+			elseif params.Direction == -1 then
+			end;
+			end;
+	}
 
---[[t[#t+1] = LoadActor("bannermaskleftlight") .. {
-	InitCommand=cmd(diffusealpha,0;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-14;zoomy,0.52;zoomx,0.64;blend,Blend.Add);
-	PreviousSongMessageCommand=cmd(stoptweening;diffusealpha,1;sleep,0.15;linear,0.3;diffusealpha,0);
-}
+	--[[t[#t+1] = LoadActor("bannermaskleftlight") .. {
+		InitCommand=cmd(diffusealpha,0;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-14;zoomy,0.52;zoomx,0.64;blend,Blend.Add);
+		PreviousSongMessageCommand=cmd(stoptweening;diffusealpha,1;sleep,0.15;linear,0.3;diffusealpha,0);
+	}
 
-t[#t+1] = LoadActor("bannermaskrightlight") .. {
-	InitCommand=cmd(diffusealpha,0;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-14;zoomy,0.52;zoomx,0.64;blend,Blend.Add);
-	NextSongMessageCommand=cmd(stoptweening;diffusealpha,1;sleep,0.15;linear,0.3;diffusealpha,0);
-}]]--
+	t[#t+1] = LoadActor("bannermaskrightlight") .. {
+		InitCommand=cmd(diffusealpha,0;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-14;zoomy,0.52;zoomx,0.64;blend,Blend.Add);
+		NextSongMessageCommand=cmd(stoptweening;diffusealpha,1;sleep,0.15;linear,0.3;diffusealpha,0);
+	}]]--
 
 
 
 
 
--- aparte
---[[
-t[#t+1] = LoadActor("wheel_mask") .. {
-	InitCommand=cmd(draworder,80;x,SCREEN_CENTER_X-1;y,SCREEN_CENTER_Y;zoomy,0.675;zoomx,0.65;diffusealpha,0.75;cropbottom,0.0575);
+	-- aparte
+	--[[
+	t[#t+1] = LoadActor("wheel_mask") .. {
+		InitCommand=cmd(draworder,80;x,SCREEN_CENTER_X-1;y,SCREEN_CENTER_Y;zoomy,0.675;zoomx,0.65;diffusealpha,0.75;cropbottom,0.0575);
 
-};
-t[#t+1] = LoadActor("wheel_selection") .. {
-	InitCommand=cmd(draworder,80;x,SCREEN_CENTER_X-1;y,SCREEN_CENTER_Y;zoomy,0.675;zoomx,0.65;diffusealpha,0;cropbottom,0.0575);
-SongChosenMessageCommand=cmd(stoptweening;linear,0.3;diffusealpha,1);
-TwoPartConfirmCanceledMessageCommand=cmd(stoptweening;linear,0.3;diffusealpha,0);
-SongUnchosenMessageCommand=cmd(stoptweening;linear,0.3;diffusealpha,0);
-};
-]]
-
-
-
-if GAMESTATE:IsSideJoined(PLAYER_1) then
-	t[#t+1] = LoadActor("RadarsUnified", PLAYER_1) .. {
-		InitCommand=cmd(draworder,100;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;);
 	};
+	t[#t+1] = LoadActor("wheel_selection") .. {
+		InitCommand=cmd(draworder,80;x,SCREEN_CENTER_X-1;y,SCREEN_CENTER_Y;zoomy,0.675;zoomx,0.65;diffusealpha,0;cropbottom,0.0575);
+	SongChosenMessageCommand=cmd(stoptweening;linear,0.3;diffusealpha,1);
+	TwoPartConfirmCanceledMessageCommand=cmd(stoptweening;linear,0.3;diffusealpha,0);
+	SongUnchosenMessageCommand=cmd(stoptweening;linear,0.3;diffusealpha,0);
+	};
+	]]
+
+end   
+
+-- BANNER MASK PUMP
+
+if GAMESTATE:GetCurrentGame():GetName() == "pump" then 
+	t[#t+1] = LoadActor("pump/bannermask") .. {
+		InitCommand=cmd(draworder,5;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+123;zoomy,0.58;zoomx,0.58);
+
+	};
+
+	t[#t+1] = LoadActor("pump/A1") .. {
+		InitCommand=cmd(draworder,4;x,SCREEN_CENTER_X-115;y,SCREEN_CENTER_Y+125;draworder,2;diffusealpha,0);
+		SongChosenMessageCommand=cmd(diffusealpha,0);
+		PreviousSongMessageCommand=cmd(horizalign,right;diffusealpha,0.9;stoptweening;zoomy,0.5;zoomx,0.5;linear,0.2;zoomx,0.3;diffusealpha,0);
+		TwoPartConfirmCanceledMessageCommand=cmd(diffusealpha,0);
+		SongUnchosenMessageCommand=cmd(diffusealpha,0);
+		ChangeStepsMessageCommand=function(self, params)
+			if  params.Direction == 1 then
+				--Nothing here???
+			elseif params.Direction == -1 then
+				self:stoptweening();
+				self:horizalign(right);
+				self:diffusealpha(0.7);
+				self:zoomy(0.5);
+				self:zoomx(0.5);
+				self:linear(0.2);
+				self:zoomx(0.2);
+				self:diffusealpha(0);
+			end;
+		end;
+
+	}
+
+	t[#t+1] = LoadActor("pump/A2") .. {
+		InitCommand=cmd(draworder,4;x,SCREEN_CENTER_X-115;y,SCREEN_CENTER_Y+125;draworder,2;diffusealpha,0);
+		SongChosenMessageCommand=cmd(diffusealpha,0);
+		PreviousSongMessageCommand=cmd(horizalign,right;diffusealpha,0.9;stoptweening;zoomy,0.5;zoomx,0.5;linear,0.2;zoomx,0.3;diffusealpha,0);
+		TwoPartConfirmCanceledMessageCommand=cmd(diffusealpha,0);
+		SongUnchosenMessageCommand=cmd(diffusealpha,0);
+		ChangeStepsMessageCommand=function(self, params)
+			if  params.Direction == 1 then
+			elseif params.Direction == -1 then
+			self:stoptweening();
+			self:horizalign(right);
+			self:diffusealpha(0.7);
+			self:zoomy(0.5);
+			self:zoomx(0.5);
+			self:linear(0.2);
+			self:zoomx(0.2);
+			self:diffusealpha(0);
+			end;
+			end;
+
+	}
+
+
+	t[#t+1] = LoadActor("pump/A1") .. {
+		InitCommand=cmd(draworder,4;x,SCREEN_CENTER_X+115;y,SCREEN_CENTER_Y+125;draworder,2;diffusealpha,0;rotationy,180);
+		SongChosenMessageCommand=cmd(diffusealpha,0);
+		NextSongMessageCommand=cmd(horizalign,right;diffusealpha,0.9;stoptweening;zoomy,0.5;zoomx,0.5;linear,0.2;zoomx,0.3;diffusealpha,0);
+		TwoPartConfirmCanceledMessageCommand=cmd(diffusealpha,0);
+		SongUnchosenMessageCommand=cmd(diffusealpha,0);
+			ChangeStepsMessageCommand=function(self, params)
+			if  params.Direction == 1 then
+			self:stoptweening();
+			self:horizalign(right);
+			self:diffusealpha(0.7);
+			self:zoomy(0.5);
+			self:zoomx(0.5);
+			self:linear(0.2);
+			self:zoomx(0.2);
+			self:diffusealpha(0);
+			elseif params.Direction == -1 then
+			end;
+			end;
+	}
+
+	t[#t+1] = LoadActor("pump/A2") .. {
+		InitCommand=cmd(draworder,4;x,SCREEN_CENTER_X+115;y,SCREEN_CENTER_Y+125;draworder,2;diffusealpha,0;rotationy,180);
+		SongChosenMessageCommand=cmd(diffusealpha,0);
+		NextSongMessageCommand=cmd(horizalign,right;diffusealpha,0.9;stoptweening;zoomy,0.5;zoomx,0.5;linear,0.2;zoomx,0.3;diffusealpha,0);
+		TwoPartConfirmCanceledMessageCommand=cmd(diffusealpha,0);
+		SongUnchosenMessageCommand=cmd(diffusealpha,0);
+			ChangeStepsMessageCommand=function(self, params)
+			if  params.Direction == 1 then
+			self:stoptweening();
+			self:horizalign(right);
+			self:diffusealpha(0.7);
+			self:zoomy(0.5);
+			self:zoomx(0.5);
+			self:linear(0.2);
+			self:zoomx(0.2);
+			self:diffusealpha(0);
+			elseif params.Direction == -1 then
+			end;
+			end;
+	}
+
+	--[[t[#t+1] = LoadActor("bannermaskleftlight") .. {
+		InitCommand=cmd(diffusealpha,0;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-14;zoomy,0.52;zoomx,0.64;blend,Blend.Add);
+		PreviousSongMessageCommand=cmd(stoptweening;diffusealpha,1;sleep,0.15;linear,0.3;diffusealpha,0);
+	}
+
+	t[#t+1] = LoadActor("bannermaskrightlight") .. {
+		InitCommand=cmd(diffusealpha,0;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-14;zoomy,0.52;zoomx,0.64;blend,Blend.Add);
+		NextSongMessageCommand=cmd(stoptweening;diffusealpha,1;sleep,0.15;linear,0.3;diffusealpha,0);
+	}]]--
+
+
+
+
+
+	-- aparte
+	--[[
+	t[#t+1] = LoadActor("wheel_mask") .. {
+		InitCommand=cmd(draworder,80;x,SCREEN_CENTER_X-1;y,SCREEN_CENTER_Y;zoomy,0.675;zoomx,0.65;diffusealpha,0.75;cropbottom,0.0575);
+
+	};
+	t[#t+1] = LoadActor("wheel_selection") .. {
+		InitCommand=cmd(draworder,80;x,SCREEN_CENTER_X-1;y,SCREEN_CENTER_Y;zoomy,0.675;zoomx,0.65;diffusealpha,0;cropbottom,0.0575);
+	SongChosenMessageCommand=cmd(stoptweening;linear,0.3;diffusealpha,1);
+	TwoPartConfirmCanceledMessageCommand=cmd(stoptweening;linear,0.3;diffusealpha,0);
+	SongUnchosenMessageCommand=cmd(stoptweening;linear,0.3;diffusealpha,0);
+	};
+	]]
+
 end
-if GAMESTATE:IsSideJoined(PLAYER_2) then
-	t[#t+1] = LoadActor("RadarsUnified", PLAYER_2) .. {
-		InitCommand=cmd(draworder,100;x,SCREEN_CENTER_X+50;y,SCREEN_CENTER_Y+97;);
-	};
+
+if GAMESTATE:GetCurrentGame():GetName() == "pump" then 
+	if GAMESTATE:IsSideJoined(PLAYER_1) then
+		t[#t+1] = LoadActor("pump/RadarsUnified", PLAYER_1) .. {
+			InitCommand=cmd(draworder,100;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;);
+		};
+	end
+	if GAMESTATE:IsSideJoined(PLAYER_2) then
+		t[#t+1] = LoadActor("pump/RadarsUnified", PLAYER_2) .. {
+			InitCommand=cmd(draworder,100;x,SCREEN_CENTER_X+50;y,SCREEN_CENTER_Y+97;);
+		};
+	end
+end;
+
+if GAMESTATE:GetCurrentGame():GetName() == "dance" then 
+	if GAMESTATE:IsSideJoined(PLAYER_1) then
+		t[#t+1] = LoadActor("RadarsUnified", PLAYER_1) .. {
+			InitCommand=cmd(draworder,100;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;);
+		};
+	end
+	if GAMESTATE:IsSideJoined(PLAYER_2) then
+		t[#t+1] = LoadActor("RadarsUnified", PLAYER_2) .. {
+			InitCommand=cmd(draworder,100;x,SCREEN_CENTER_X+50;y,SCREEN_CENTER_Y+97;);
+		};
+	end
 end;
 
 
@@ -297,7 +439,7 @@ end;
 
 
 t[#t+1] = LoadActor("jacket_light") .. {
-	InitCommand=cmd(draworder,100;xy,SCREEN_CENTER_X,SCREEN_CENTER_Y+126;zoomx,.80;zoomy,.80;effectclock,"bgm";blend,Blend.Add);
+	InitCommand=cmd(draworder,100;xy,SCREEN_CENTER_X,SCREEN_CENTER_Y+126;zoomx,.80;zoomy,.81;effectclock,"bgm";blend,Blend.Add);
 
 	CurrentSongChangedMessageCommand=function(self)
 		--local JacketOrBanner;
@@ -306,7 +448,7 @@ t[#t+1] = LoadActor("jacket_light") .. {
 		self:linear(.5);
 		if song then
 			if song:HasJacket() then
-				self:zoomx(.80);
+				self:zoomx(.81);
 				self:diffusealpha(1);
 			elseif song:HasBanner() then
 				self:zoomx(1.14);
@@ -1211,7 +1353,7 @@ end;
 
 --I love having seizures! /s
 --Change it to true if you want the flashing lights back.
-t[#t+1] = LoadActor(THEME:GetPathG("","header"), false)..{
+t[#t+1] = LoadActor(THEME:GetPathG("","header"), GAMESTATE:GetCurrentGame():GetName() == "pump")..{
 	InitCommand=cmd(draworder,100);
 }
 
@@ -1619,11 +1761,15 @@ t[#t+1] = Def.Quad {
 };
 
 
+--[[t[#t+1] = LoadActor("songback") .. {
+	InitCommand=cmd(x,SCREEN_CENTER_X-1;y,SCREEN_CENTER_Y;zoomy,0.675;zoomx,0.65);
 
+};]]
+if GAMESTATE:GetCurrentGame():GetName() == "pump" then 
+	t[#t+1] = LoadActor("songback") .. {
+		InitCommand=cmd(draworder,6;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-90;zoomy,0.675;zoomx,0.65);
 
-
-
-
-
+	};
+end
 
 return t;

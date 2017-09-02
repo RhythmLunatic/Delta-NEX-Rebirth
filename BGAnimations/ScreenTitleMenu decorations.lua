@@ -49,7 +49,7 @@ t[#t+1] = LoadActor(THEME:GetPathG("","_press "..GAMESTATE:GetCurrentGame():GetN
 	InitCommand=cmd(Center;x,SCREEN_LEFT+95;y,SCREEN_BOTTOM-102;zoom,0.5);
 };
 
-t[#t+1] = LoadActor(THEME:GetPathG("","_press dance 5x2.png"))..{
+t[#t+1] = LoadActor(THEME:GetPathG("","_press "..GAMESTATE:GetCurrentGame():GetName().." 5x2.png"))..{
 	Frames = Sprite.LinearFrames(10,.6);
 	InitCommand=cmd(Center;x,SCREEN_RIGHT-95;y,SCREEN_BOTTOM-102;zoom,0.5);
 };

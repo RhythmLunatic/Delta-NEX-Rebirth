@@ -13,7 +13,7 @@ t[#t+1] = LoadFont("venacti/_venacti 26px bold diffuse")..{
 };
 
 t[#t+1] = LoadActor(THEME:GetPathG("", "_press "..GAMESTATE:GetCurrentGame():GetName().. " 5x2"))..{
-	Frames = Sprite.LinearFrames(10,.3);
+	Frames = Sprite.LinearFrames(10,.6);
 	InitCommand=cmd(horizalign,center;x,-55;y,25;zoom,0.3;);
 };
 

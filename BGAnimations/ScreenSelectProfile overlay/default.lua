@@ -47,7 +47,7 @@ function LoadPlayerStuff(Player)
 	tmp[#tmp+1] = Def.ActorFrame {
 		Name = 'press';
 		LoadActor(THEME:GetPathG("", "_press "..GAMESTATE:GetCurrentGame():GetName().. " 5x2"))..{
-			Frames = Sprite.LinearFrames(10,.3);
+			Frames = Sprite.LinearFrames(10,.6);
 			InitCommand=cmd(shadowlength,1);
 			OnCommand=cmd(zoom,0.5);
 		};
