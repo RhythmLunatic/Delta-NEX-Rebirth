@@ -109,7 +109,7 @@ t[#t+1] = Def.ActorFrame {
 					self:cropbottom(0);
 				end;
 				--SCREENMAN:SystemMessage(tostring(tex:GetImageWidth()).." / "..tostring(tex:GetImageHeight()).." = "..tostring(tex:GetImageWidth()/tex:GetImageHeight()));
-				
+
 				self:diffusealpha(0);
 				self:linear(0.5);
 				self:diffusealpha(1);
@@ -138,7 +138,7 @@ t[#t+1] = Def.ActorFrame {
 	Def.Quad{
 		InitCommand=cmd(setsize,284,30;diffuse,color("0,0,0,.8");addy,65;fadetop,.2);
 	};
-	
+
 	LoadFont("venacti/_venacti 26px bold diffuse")..{
 		InitCommand=cmd(addy,67;zoom,.5;maxwidth,530);
 		CurrentSongChangedMessageCommand=function(self)
@@ -154,7 +154,7 @@ t[#t+1] = Def.ActorFrame {
 
 -- BANNER MASK DANCE
 
-if GAMESTATE:GetCurrentGame():GetName() == "dance" then 														
+if GAMESTATE:GetCurrentGame():GetName() == "dance" then
 	t[#t+1] = LoadActor("bannermask") .. {
 		InitCommand=cmd(draworder,5;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-101;zoomy,0.58;zoomx,0.58);
 
@@ -276,11 +276,11 @@ if GAMESTATE:GetCurrentGame():GetName() == "dance" then
 	};
 	]]
 
-end   
+end
 
 -- BANNER MASK PUMP
 
-if GAMESTATE:GetCurrentGame():GetName() == "pump" then 
+if GAMESTATE:GetCurrentGame():GetName() == "pump" then
 	t[#t+1] = LoadActor("pump/bannermask") .. {
 		InitCommand=cmd(draworder,5;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+123;zoomy,0.58;zoomx,0.58);
 
@@ -404,7 +404,7 @@ if GAMESTATE:GetCurrentGame():GetName() == "pump" then
 
 end
 
-if GAMESTATE:GetCurrentGame():GetName() == "pump" then 
+if GAMESTATE:GetCurrentGame():GetName() == "pump" then
 	if GAMESTATE:IsSideJoined(PLAYER_1) then
 		t[#t+1] = LoadActor("pump/RadarsUnified", PLAYER_1) .. {
 			InitCommand=cmd(draworder,100;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;);
@@ -417,7 +417,7 @@ if GAMESTATE:GetCurrentGame():GetName() == "pump" then
 	end
 end;
 
-if GAMESTATE:GetCurrentGame():GetName() == "dance" then 
+if GAMESTATE:GetCurrentGame():GetName() == "dance" then
 	if GAMESTATE:IsSideJoined(PLAYER_1) then
 		t[#t+1] = LoadActor("RadarsUnified", PLAYER_1) .. {
 			InitCommand=cmd(draworder,100;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;);
@@ -743,9 +743,27 @@ t[#t+1] = Def.ActorFrame{
 	};
 };
 
-t[#t+1] = StandardDecorationFromFileOptional("BPMDisplay","BPMDisplay")..{
-	InitCommand=cmd(draworder,100);
-}
+
+t[#t+1] = Def.ActorFrame{
+	LoadFont("venacti/_venacti 26px bold diffuse")..{
+			InitCommand=cmd(diffuse,0.6,0.6,0.6,1;diffusetopedge,1,1,1,1;draworder,100;horizalign,center;x,SCREEN_CENTER_X-90;y,SCREEN_CENTER_Y-2;zoomx,0.35;zoomy,0.35;shadowlengthy,1;shadowlengthx,0.8);
+			Text="BPM"
+	};
+	StandardDecorationFromFileOptional("BPMDisplay","BPMDisplay")..{
+		InitCommand=cmd(draworder,100);
+	}
+
+	--[[LoadFont("BPMDisplay bpm")..{
+		CurrentSongChangedMessageCommand=function(self)
+			local song = GAMESTATE:GetCurrentSong();
+			if song then
+
+		InitCommand=cmd(xy,SCREEN_CENTER_X-105,SCREEN_CENTER_Y+22);
+		OnCommand=cmd(diffusealpha,0;maxwidth,100;shadowlength,1;zoom,0.6;draworder,100;finishtweening;horizalign,left;strokecolor,Color("Outline");sleep,0.3;linear,0.8;diffusealpha,1);
+		OffCommand=cmd(bouncebegin,0.15;zoomx,0;);
+	};]]
+
+};
 
 
 t[#t+1] = StandardDecorationFromFileOptional("SortOrder","SortOrderText") .. {
@@ -799,12 +817,6 @@ t[#t+1] = StandardDecorationFromFileOptional("SongTime","SongTime") .. {
 	CurrentCourseChangedMessageCommand=cmd(playcommand,"Set");
 	CurrentTrailP1ChangedMessageCommand=cmd(playcommand,"Set");
 	CurrentTrailP2ChangedMessageCommand=cmd(playcommand,"Set");
-}
-
-
-t[#t+1] = LoadFont("venacti/_venacti 26px bold diffuse")..{
-		InitCommand=cmd(diffuse,0.6,0.6,0.6,1;diffusetopedge,1,1,1,1;draworder,100;horizalign,left;x,SCREEN_CENTER_X-98;y,SCREEN_CENTER_Y-2;zoomx,0.35;zoomy,0.35;shadowlengthy,1;shadowlengthx,0.8);
-		Text="BPM"
 }
 
 
@@ -1765,7 +1777,7 @@ t[#t+1] = Def.Quad {
 	InitCommand=cmd(x,SCREEN_CENTER_X-1;y,SCREEN_CENTER_Y;zoomy,0.675;zoomx,0.65);
 
 };]]
-if GAMESTATE:GetCurrentGame():GetName() == "pump" then 
+if GAMESTATE:GetCurrentGame():GetName() == "pump" then
 	t[#t+1] = LoadActor("songback") .. {
 		InitCommand=cmd(draworder,6;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-90;zoomy,0.675;zoomx,0.65);
 

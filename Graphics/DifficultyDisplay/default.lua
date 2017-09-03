@@ -208,8 +208,10 @@ if GAMESTATE:IsSideJoined(PLAYER_2) then
 
 	SetCommand=function(self)
 		steps = GAMESTATE:GetCurrentSteps(PLAYER_2);
-		steptype = steps:GetStepsType();
-		stepdiff = steps:GetDifficulty();
+		if steps then
+			steptype = steps:GetStepsType();
+			stepdiff = steps:GetDifficulty();
+		end;
 
 		local song = GAMESTATE:GetCurrentSong();
 		if song then
@@ -396,9 +398,10 @@ if GAMESTATE:IsHumanPlayer(PLAYER_2) then
 		self:stoptweening();
 		--self:visible(GAMESTATE:IsHumanPlayer(PLAYER_2));
 		steps = GAMESTATE:GetCurrentSteps(PLAYER_2);
-		steptype = steps:GetStepsType();
-		stepdiff = steps:GetDifficulty();
-
+		if steps then
+			steptype = steps:GetStepsType();
+			stepdiff = steps:GetDifficulty();
+		end;
 		local song = GAMESTATE:GetCurrentSong();
 		if song then
 			self:visible(true);

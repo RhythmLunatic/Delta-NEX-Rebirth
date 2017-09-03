@@ -14,11 +14,16 @@ t[#t+1] = Def.ActorFrame {
 		InitCommand=cmd(scaletoclipped,SCREEN_WIDTH/2,SCREEN_HEIGHT;x,SCREEN_CENTER_X-(SCREEN_WIDTH/4));
 		OnCommand=cmd(diffuse,color("#000000");diffuseleftedge,color("#c71585"));
 	};]]
-	
-	--[[LoadActor("../ScreenSelectMusic background/back_nex") .. {
-		InitCommand=cmd(scaletoclipped,SCREEN_WIDTH,SCREEN_HEIGHT;Center);
-	};]]
-	
+
+
+	LoadActor("../ScreenSelectMusic background/back_nex") .. {
+		InitCommand=function(self)
+			self:scaletoclipped(SCREEN_WIDTH,SCREEN_HEIGHT);
+			self:Center();
+			self:visible(not GAMESTATE:GetCurrentSong():HasBackground());
+		end;
+	};
+
 	--Jacket BG
 	--[[Def.Sprite{
 		InitCommand=function(self)
@@ -33,9 +38,9 @@ t[#t+1] = Def.ActorFrame {
 		end;
 		OnCommand=cmd(x,SCREEN_RIGHT-200;y,SCREEN_CENTER_Y;rotationx,-20;rotationy,15;rotationz,30;);
 	};]]
-	
+
 	Def.Sprite{
-		InitCommand=cmd(Load,GetSongBackground();scaletocover,0,0,SCREEN_WIDTH,SCREEN_HEIGHT;diffuse,color(".2,.2,.2,1"));
+		InitCommand=cmd(Load,GetSongBackground();visible,GAMESTATE:GetCurrentSong():HasBackground();scaletocover,0,0,SCREEN_WIDTH,SCREEN_HEIGHT;diffuse,color(".2,.2,.2,1"));
 	};
 };
 
@@ -44,7 +49,7 @@ t[#t+1] = Def.ActorFrame {
 --Rewriting this stuff to be easier to position drives me up the wall
 t[#t+1] = Def.ActorFrame{
 	InitCommand=cmd(xy,SCREEN_CENTER_X,80);
-	
+
 
 	--Top bg
 	Def.Quad {
@@ -55,20 +60,23 @@ t[#t+1] = Def.ActorFrame{
 		InitCommand=cmd(diffuse,color("#C2C2C2");setsize,SCREEN_WIDTH,1;y,19);
 
 	};
-	
+
 	Def.Quad {
 		InitCommand=cmd(diffuse,color("#C2C2C2");setsize,SCREEN_WIDTH,1;y,-19);
 
 	};
-	
+
 	--[[LoadActor(THEME:GetPathG("","SongBanner"))..{
 		InitCommand=cmd(draworder,100;zoom,0.475;);
 	};]]
-	
+
 	LoadActor(THEME:GetPathG("","PlayerSteps"), PLAYER_1)..{
-		InitCommand=cmd(draworder,100;zoom,0.925;x,-160;y,-10);
+		InitCommand=cmd(draworder,100;zoom,0.925;x,-215;y,-10;visible,GAMESTATE:IsSideJoined(PLAYER_1));
 	};
-	
+	LoadActor(THEME:GetPathG("","PlayerSteps"), PLAYER_2)..{
+		InitCommand=cmd(draworder,100;x,170;y,-10;zoom,0.925;visible,GAMESTATE:IsSideJoined(PLAYER_2));
+	};
+
 	LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
 		InitCommand=cmd(addy,-8;maxwidth,300;zoomy,0.55;zoomx,0.58;diffuse,color("#FFFF66FF");diffusebottomedge,color("#DDAA44FF");shadowlength,0.8);
 		Text=string.upper(song:GetDisplayMainTitle().." "..song:GetDisplaySubTitle())
@@ -95,7 +103,7 @@ t[#t+1] = Def.ActorFrame{
 			end;
 		end;
 	};
-	
+
 	LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
 		InitCommand=cmd(addy,80;maxwidth,1020;zoomy,0.55;zoomx,0.58;diffuse,color("#FFFF66FF");diffusebottomedge,color("#DDAA44FF");shadowlength,0.8);
 		Text=string.upper(song:GetDisplayMainTitle().." "..song:GetDisplaySubTitle())
@@ -109,32 +117,26 @@ t[#t+1] = Def.ActorFrame{
 
 };]]
 
-if GAMESTATE:IsSideJoined(PLAYER_2) then
-	t[#t+1] = LoadActor(THEME:GetPathG("","PlayerSteps"), PLAYER_2)..{
-		InitCommand=cmd(draworder,100;x,SCREEN_CENTER_X+125;y,90;zoom,0.925);
-	}
-end;
-
 --Player mods position are defined in metrics
 t[#t+1] = Def.ActorFrame{
 	--Bottom bg
 	InitCommand=cmd(xy,SCREEN_CENTER_X,SCREEN_BOTTOM-70);
-	
+
 	Def.Quad {
 		InitCommand=cmd(diffuse,0,0,0,0.4;setsize,SCREEN_WIDTH,30;);
 
 	};
-	
+
 	Def.Quad {
 		InitCommand=cmd(diffuse,color("#C2C2C2");setsize,SCREEN_WIDTH,1;y,15);
 
 	};
-	
+
 	Def.Quad {
 		InitCommand=cmd(diffuse,color("#C2C2C2");setsize,SCREEN_WIDTH,1;y,-15);
 
 	};
-	
+
 	LoadActor(THEME:GetPathG("","gl"))..{
 		InitCommand=cmd(visible,GetUserPref("UserPrefSetPreferences") == "Yes";zoom,0.675;y,-2);
 
@@ -203,7 +205,7 @@ t[#t+1] = Def.ActorFrame{
 		InitCommand=cmd(setsize,500,30;faderight,1;fadeleft,1;diffuse,color("#2264b7");blend,Blend.Add);
 		--OnCommand=cmd(x,itembaseX;y,itembaseY);
 	};
-	
+
 	--Perfect/Great
 	LoadFont("venacti/_venacti 26px bold diffuse")..{
 		InitCommand=cmd(y,spacing);
@@ -219,7 +221,7 @@ t[#t+1] = Def.ActorFrame{
 		InitCommand=cmd(setsize,500,30;faderight,1;fadeleft,1;diffuse,color("#34851f");blend,Blend.Add);
 		OnCommand=cmd(y,spacing);
 	};
-	
+
 	--GOODS
 	LoadFont("venacti/_venacti 26px bold diffuse")..{
 		InitCommand=cmd(y,80);
@@ -250,7 +252,7 @@ t[#t+1] = Def.ActorFrame{
 		InitCommand=cmd(setsize,500,30;faderight,1;fadeleft,1;diffuse,color("#932192");blend,Blend.Add);
 		OnCommand=cmd(y,spacing*3);
 	};
-	
+
 	--Miss
 	LoadFont("venacti/_venacti 26px bold diffuse")..{
 		InitCommand=cmd(y,spacing*4);
@@ -281,9 +283,14 @@ t[#t+1] = Def.ActorFrame{
 
 };
 
-t[#t+1] = LoadActor("PlayerNumbers", PLAYER_1)..{
-	InitCommand=cmd(xy,SCREEN_CENTER_X-235,123);
-};
+
+for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+	-- position = pn==PLAYER_2 ? 1 : -1;
+	local position = (pn == "PlayerNumber_P2") and 1 or -1;
+	t[#t+1] = LoadActor("PlayerNumbers", pn)..{
+		InitCommand=cmd(xy,SCREEN_CENTER_X+235*position,123)
+	};
+end
 
 --[[t[#t+1] = LoadActor("P2Stats")..{
 	InitCommand=cmd(draworder,100;y,SCREEN_CENTER_Y-40;);

@@ -29,7 +29,7 @@ return Def.ActorFrame{
 								local misses = topscore:GetTapNoteScore("TapNoteScore_Miss")+topscore:GetTapNoteScore("TapNoteScore_CheckpointMiss")
 								local grade;
 
-								
+
 						--TODO: Fix this garbage
 						if dancepoints == 100 then
 							grade = "Tier00";
@@ -82,9 +82,9 @@ return Def.ActorFrame{
 			PlayerJoinedMessageCommand=cmd(visible,GAMESTATE:IsHumanPlayer(player);queuecommand,"Set");
 			SetCommand=function(self)
 				local song = GAMESTATE:GetCurrentSong();
-				if song then
+				if song and GAMESTATE:GetCurrentSteps(player) then
 					profile = PROFILEMAN:GetMachineProfile();
-					scorelist = profile:GetHighScoreList(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(player));
+					scorelist = profile:GetHighScoreList(song,GAMESTATE:GetCurrentSteps(player));
 					assert(scorelist);
 					local scores = scorelist:GetHighScores();
 					local topscore = scores[1];
@@ -116,18 +116,18 @@ return Def.ActorFrame{
 		PlayerJoinedMessageCommand=cmd(visible,GAMESTATE:IsHumanPlayer(player);queuecommand,"Set");
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong();
-			if song then
+			if song and GAMESTATE:GetCurrentSteps(player) then
 				profile = PROFILEMAN:GetMachineProfile();
-				scorelist = profile:GetHighScoreList(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(player));
+				scorelist = profile:GetHighScoreList(song,GAMESTATE:GetCurrentSteps(player));
 				assert(scorelist);
 				local scores = scorelist:GetHighScores();
 				local topscore = scores[1];
 
 				if topscore then
-							text = scorecap(topscore:GetScore())
+					text = scorecap(topscore:GetScore())
 
 				else
-						text = "0";
+					text = "0";
 				end
 				self:diffusealpha(1);
 				self:settext(text);
@@ -148,9 +148,9 @@ return Def.ActorFrame{
 		PlayerJoinedMessageCommand=cmd(visible,GAMESTATE:IsHumanPlayer(player);queuecommand,"Set");
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong();
-			if song then
+			if song and GAMESTATE:GetCurrentSteps(player) then
 				profile = PROFILEMAN:GetMachineProfile();
-				scorelist = profile:GetHighScoreList(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(player));
+				scorelist = profile:GetHighScoreList(song,GAMESTATE:GetCurrentSteps(player));
 				assert(scorelist);
 				local scores = scorelist:GetHighScores();
 				local topscore = scores[1];
