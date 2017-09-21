@@ -41,156 +41,153 @@ local difficulties = {
 
 for i=1,12 do
 
+	t[#t+1] = LoadActor("_icon")..{
+		InitCommand=cmd(zoom,baseZoom-0.05;x,baseX+spacing*(i-1);y,baseY;animate,false);
+		CurrentStepsP1ChangedMessageCommand=cmd(playcommand,"Refresh");
+		CurrentStepsP2ChangedMessageCommand=cmd(playcommand,"Refresh");
+		CurrentSongChangedMessageCommand=cmd(playcommand,"Refresh");
+		NextSongMessageCommand=cmd(playcommand,"Refresh");
+		PreviousSongMessageCommand=cmd(playcommand,"Refresh");
+		RefreshCommand=function(self)
+				self:stoptweening();
+				local song = GAMESTATE:GetCurrentSong()
 
+				if song then
+					if i>6 then
 
-
-t[#t+1] = LoadActor("_icon")..{
-	InitCommand=cmd(zoom,baseZoom-0.05;x,baseX+spacing*(i-1);y,baseY;animate,false);
-	CurrentStepsP1ChangedMessageCommand=cmd(playcommand,"Refresh");
-	CurrentStepsP2ChangedMessageCommand=cmd(playcommand,"Refresh");
-	CurrentSongChangedMessageCommand=cmd(playcommand,"Refresh");
-	NextSongMessageCommand=cmd(playcommand,"Refresh");
-	PreviousSongMessageCommand=cmd(playcommand,"Refresh");
-	RefreshCommand=function(self)
-			self:stoptweening();
-			local song = GAMESTATE:GetCurrentSong()
-
-			if song then
-				if i>6 then
-
-					if GAMESTATE:GetNumSidesJoined() == 2 then
-						self:setstate(0);
-						if song:HasStepsTypeAndDifficulty("StepsType_Pump_Routine","Difficulty_"..difficulties["diff"..i-6]) then
+						if GAMESTATE:GetNumSidesJoined() == 2 then
+							self:setstate(0);
+							if song:HasStepsTypeAndDifficulty("StepsType_Pump_Routine","Difficulty_"..difficulties["diff"..i-6]) then
+									self:diffusealpha(1);
+								else
+									self:setstate(3);
+									self:diffusealpha(0.3);
+							end
+							if song:GetOneSteps("StepsType_Pump_Routine","Difficulty_"..difficulties["diff"..i-6]):IsAutogen()==true then
+								self:setstate(1);
+							end
+						else
+							self:setstate(4);
+							if song:HasStepsTypeAndDifficulty("StepsType_Pump_Double","Difficulty_"..difficulties["diff"..i-6]) then
 								self:diffusealpha(1);
 							else
 								self:setstate(3);
 								self:diffusealpha(0.3);
+							end
 						end
-						if song:GetOneSteps("StepsType_Pump_Routine","Difficulty_"..difficulties["diff"..i-6]):IsAutogen()==true then
-							self:setstate(1);
-						end
+
+
+						--[[if song:GetOneSteps("StepsType_Pump_Double","Difficulty_"..difficulties["diff"..i-6]):IsAutogen()==true then
+							self:setstate(6);
+						end]]
 					else
-						self:setstate(4);
-						if song:HasStepsTypeAndDifficulty("StepsType_Pump_Double","Difficulty_"..difficulties["diff"..i-6]) then
+
+
+						self:setstate(5);
+						if song:HasStepsTypeAndDifficulty("StepsType_Pump_Single","Difficulty_"..difficulties["diff"..i]) then
 							self:diffusealpha(1);
 						else
 							self:setstate(3);
 							self:diffusealpha(0.3);
 						end
-					end
+
+						--[[if song:GetOneSteps("StepsType_Pump_Single","Difficulty_"..difficulties["diff"..i]):IsAutogen()==true then
+							self:setstate(2);
+						end]]
+				end
 
 
-					--[[if song:GetOneSteps("StepsType_Pump_Double","Difficulty_"..difficulties["diff"..i-6]):IsAutogen()==true then
-						self:setstate(6);
-					end]]
+
+
+					--if i==6 then
+					--self:setstate(3);
+					--	if song:GetOneSteps("StepsType_Pump_Single","Difficulty_Edit"):IsAutogen()==true then
+					--		self:setstate(4);
+					--	end
+					--end
+
+
+
+					--if i==12  then
+					--self:setstate(3);
+					--	if song:GetOneSteps("StepsType_Pump_Double","Difficulty_Edit"):IsAutogen()==true then
+					--		self:setstate(4);
+					--	end
+
+					--end
+
+
+
+
 				else
-
-
-					self:setstate(5);
-					if song:HasStepsTypeAndDifficulty("StepsType_Pump_Single","Difficulty_"..difficulties["diff"..i]) then
-						self:diffusealpha(1);
-					else
-						self:setstate(3);
 						self:diffusealpha(0.3);
-					end
-
-					--[[if song:GetOneSteps("StepsType_Pump_Single","Difficulty_"..difficulties["diff"..i]):IsAutogen()==true then
-						self:setstate(2);
-					end]]
-			end
+				end
 
 
-
-
-				--if i==6 then
-				--self:setstate(3);
-				--	if song:GetOneSteps("StepsType_Pump_Single","Difficulty_Edit"):IsAutogen()==true then
-				--		self:setstate(4);
-				--	end
-				--end
+				--[[
+				self:sleep(delay);
+				self:linear(0.2);
+				self:diffusealpha(0);]]
+		end
+	}
 
 
 
-				--if i==12  then
-				--self:setstate(3);
-				--	if song:GetOneSteps("StepsType_Pump_Double","Difficulty_Edit"):IsAutogen()==true then
-				--		self:setstate(4);
-				--	end
+	t[#t+1] = LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
+		InitCommand=cmd(zoomx,baseZoom+0.1;zoomy,baseZoom+0.075;shadowlength,0.8;shadowcolor,color("0,0,0,1");x,baseX-0.33+spacing*(i-1);y,baseY-0.33;);
+		CurrentStepsP1ChangedMessageCommand=cmd(playcommand,"Refresh");
+		CurrentStepsP2ChangedMessageCommand=cmd(playcommand,"Refresh");
+		CurrentSongChangedMessageCommand=cmd(playcommand,"Refresh");
+		NextSongMessageCommand=cmd(playcommand,"Refresh");
+		PreviousSongMessageCommand=cmd(playcommand,"Refresh");
+		RefreshCommand=function(self)
+		self:stoptweening();
+		local song = GAMESTATE:GetCurrentSong()
 
-				--end
+		if song then
 
+		if i>6 then
+			if GAMESTATE:GetNumSidesJoined() == 2 then
 
-
-
-			else
+				if song:HasStepsTypeAndDifficulty("StepsType_Pump_Routine","Difficulty_"..difficulties["diff"..i-6]) then
+					self:settext(song:GetOneSteps("StepsType_Pump_Routine","Difficulty_"..difficulties["diff"..i-6]):GetMeter());
+					self:diffusealpha(1);
+				else
 					self:diffusealpha(0.3);
-			end
-
-
-			--[[
-			self:sleep(delay);
-			self:linear(0.2);
-			self:diffusealpha(0);]]
-	end
-}
-
-
-
-t[#t+1] = LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
-	InitCommand=cmd(zoomx,baseZoom+0.1;zoomy,baseZoom+0.075;shadowlength,0.8;shadowcolor,color("0,0,0,1");x,baseX-0.33+spacing*(i-1);y,baseY-0.33;);
-	CurrentStepsP1ChangedMessageCommand=cmd(playcommand,"Refresh");
-	CurrentStepsP2ChangedMessageCommand=cmd(playcommand,"Refresh");
-	CurrentSongChangedMessageCommand=cmd(playcommand,"Refresh");
-	NextSongMessageCommand=cmd(playcommand,"Refresh");
-	PreviousSongMessageCommand=cmd(playcommand,"Refresh");
-	RefreshCommand=function(self)
-	self:stoptweening();
-	local song = GAMESTATE:GetCurrentSong()
-
-	if song then
-
-	if i>6 then
-		if GAMESTATE:GetNumSidesJoined() == 2 then
-
-			if song:HasStepsTypeAndDifficulty("StepsType_Pump_Routine","Difficulty_"..difficulties["diff"..i-6]) then
-				self:settext(song:GetOneSteps("StepsType_Pump_Routine","Difficulty_"..difficulties["diff"..i-6]):GetMeter());
-				self:diffusealpha(1);
+					self:settext("--");
+				end
 			else
-				self:diffusealpha(0.3);
-				self:settext("--");
+				if song:HasStepsTypeAndDifficulty("StepsType_Pump_Double","Difficulty_"..difficulties["diff"..i-6]) then
+					self:settext(song:GetOneSteps("StepsType_Pump_Double","Difficulty_"..difficulties["diff"..i-6]):GetMeter());
+					self:diffusealpha(1);
+				else
+					self:diffusealpha(0.3);
+					self:settext("--");
+				end
 			end
 		else
-			if song:HasStepsTypeAndDifficulty("StepsType_Pump_Double","Difficulty_"..difficulties["diff"..i-6]) then
-				self:settext(song:GetOneSteps("StepsType_Pump_Double","Difficulty_"..difficulties["diff"..i-6]):GetMeter());
+			if song:HasStepsTypeAndDifficulty("StepsType_Pump_Single","Difficulty_"..difficulties["diff"..i]) then
+				self:settext(song:GetOneSteps("StepsType_Pump_Single","Difficulty_"..difficulties["diff"..i]):GetMeter());
 				self:diffusealpha(1);
 			else
 				self:diffusealpha(0.3);
 				self:settext("--");
 			end
 		end
-	else
-		if song:HasStepsTypeAndDifficulty("StepsType_Pump_Single","Difficulty_"..difficulties["diff"..i]) then
-			self:settext(song:GetOneSteps("StepsType_Pump_Single","Difficulty_"..difficulties["diff"..i]):GetMeter());
-			self:diffusealpha(1);
+
 		else
-			self:diffusealpha(0.3);
-			self:settext("--");
+				self:diffusealpha(0.3);
+				self:settext("--");
 		end
-	end
-
-	else
-			self:diffusealpha(0.3);
-			self:settext("--");
-	end
 
 
-	--[[self:sleep(delay);
-	self:linear(0.2);
-	self:diffusealpha(0);]]
-	end
+		--[[self:sleep(delay);
+		self:linear(0.2);
+		self:diffusealpha(0);]]
+		end
 
 
-}
+	}
 
 
 end

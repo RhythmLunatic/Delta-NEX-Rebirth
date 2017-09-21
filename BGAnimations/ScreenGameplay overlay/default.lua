@@ -697,6 +697,18 @@ t[#t+1] = LoadFont("venacti/_venacti_outline 26px bold monospace numbers") .. {
 				end
 };			
 
+t[#t+1] = Def.ActorFrame{
+
+	InitCommand=cmd(xy,SCREEN_CENTER_X,SCREEN_BOTTOM-20);
+	LoadActor("progressmeter")..{
+		InitCommand=cmd(diffusealpha,.8;zoomx,0;);
+		OnCommand=cmd(sleep,GAMESTATE:GetCurrentSong():GetFirstBeat();linear,GAMESTATE:GetCurrentSong():GetStepsSeconds();zoomx,1);
+	};
+
+	LoadActor("progress-bar")..{
+	};
+
+};
 			
 --[[ MISC ///////////////////////////////////
 

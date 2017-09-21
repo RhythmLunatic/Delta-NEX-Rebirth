@@ -776,10 +776,12 @@ t[#t+1] = StandardDecorationFromFileOptional("SortOrder","SortOrderText") .. {
 	end;
 };
 
+
+--[[
 t[#t+1] = StandardDecorationFromFileOptional("SongTime","SongTime") .. {
-	InitCommand=cmd(draworder,100);
+	InitCommand=cmd(draworder,100;settext,0);
 	SetCommand=function(self)
-		local curSelection = nil;
+		local curSelection;
 		local length = 0.0;
 		if GAMESTATE:IsCourseMode() then
 			curSelection = GAMESTATE:GetCurrentCourse();
@@ -818,8 +820,8 @@ t[#t+1] = StandardDecorationFromFileOptional("SongTime","SongTime") .. {
 	CurrentTrailP1ChangedMessageCommand=cmd(playcommand,"Set");
 	CurrentTrailP2ChangedMessageCommand=cmd(playcommand,"Set");
 }
-
-
+]]
+--t[#t+1] = StandardDecorationFromFileOptional("SongTime","SongTime")..{};
 
 t[#t+1] = LoadFont("venacti/_venacti 26px bold diffuse")..{
 		InitCommand=cmd(diffuse,0.6,0.6,0.6,1;diffusetopedge,1,1,1,1;draworder,100;horizalign,right;x,SCREEN_CENTER_X+98;y,SCREEN_CENTER_Y-2;zoomx,0.35;zoomy,0.35;shadowlengthy,1;shadowlengthx,0.8);
@@ -1711,27 +1713,18 @@ end
 
 
 --next/prev indicator
---[[
-t[#t+1] = LoadActor(THEME:GetPathG("","downTap"))..{
-	InitCommand=cmd(draworder,100;x,SCREEN_CENTER_X-156;y,SCREEN_CENTER_Y+130;zoom,0.55);
-	PreviousSongMessageCommand=cmd(stoptweening;x,SCREEN_CENTER_X-159;sleep,0.12;decelerate,0.2;x,SCREEN_CENTER_X-156);
-}
 
-
-t[#t+1] = LoadActor(THEME:GetPathG("","downTap"))..{
-	InitCommand=cmd(draworder,100;x,SCREEN_CENTER_X+156;y,SCREEN_CENTER_Y+130;zoomy,0.55;zoomx,-0.55);
-	NextSongMessageCommand=cmd(stoptweening;x,SCREEN_CENTER_X+159;sleep,0.12;decelerate,0.2;x,SCREEN_CENTER_X+156);
-}]]
-
-t[#t+1] = LoadActor(THEME:GetPathG("", "downTap/arrow_left"))..{
-		InitCommand=cmd(draworder,131;horizalign,left;vertalign,bottom;xy,SCREEN_LEFT,SCREEN_BOTTOM;zoom,.675;);
-		PreviousSongMessageCommand=cmd(stoptweening;glow,color("1,1,1,.8");xy,SCREEN_LEFT-5,SCREEN_BOTTOM+5;sleep,.12;decelerate,.2;glow,color("0,0,0,0");xy,SCREEN_LEFT,SCREEN_BOTTOM;);
-	};
-t[#t+1] = LoadActor(THEME:GetPathG("", "downTap/arrow_right"))..{
-		InitCommand=cmd(draworder,131;horizalign,right;vertalign,bottom;xy,SCREEN_RIGHT,SCREEN_BOTTOM;zoom,.675;);
-		NextSongMessageCommand=cmd(stoptweening;glow,color("1,1,1,.8");xy,SCREEN_RIGHT+5,SCREEN_BOTTOM+5;sleep,.12;decelerate,.2;glow,color("0,0,0,0");xy,SCREEN_RIGHT,SCREEN_BOTTOM;);
-	};
-
+--I like it in dance, but people will probably complain...
+if GAMESTATE:GetCurrentGame():GetName() == "pump" then
+	t[#t+1] = LoadActor(THEME:GetPathG("", "downTap/arrow_left"))..{
+			InitCommand=cmd(draworder,131;horizalign,left;vertalign,bottom;xy,SCREEN_LEFT,SCREEN_BOTTOM;zoom,.675;);
+			PreviousSongMessageCommand=cmd(stoptweening;glow,color("1,1,1,.8");xy,SCREEN_LEFT-5,SCREEN_BOTTOM+5;sleep,.12;decelerate,.2;glow,color("0,0,0,0");xy,SCREEN_LEFT,SCREEN_BOTTOM;);
+		};
+	t[#t+1] = LoadActor(THEME:GetPathG("", "downTap/arrow_right"))..{
+			InitCommand=cmd(draworder,131;horizalign,right;vertalign,bottom;xy,SCREEN_RIGHT,SCREEN_BOTTOM;zoom,.675;);
+			NextSongMessageCommand=cmd(stoptweening;glow,color("1,1,1,.8");xy,SCREEN_RIGHT+5,SCREEN_BOTTOM+5;sleep,.12;decelerate,.2;glow,color("0,0,0,0");xy,SCREEN_RIGHT,SCREEN_BOTTOM;);
+		};
+end;
 --t[#t+1] = LoadActor("_arrows")..{InitCommand=cmd(draworder,131);};
 
 t[#t+1] = LoadActor(THEME:GetPathS("","EX_Move"))..{

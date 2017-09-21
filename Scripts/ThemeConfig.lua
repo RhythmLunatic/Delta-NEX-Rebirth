@@ -57,13 +57,6 @@ function SetPrefBranch()
 		end
 end
 
-
-
-function PrevSong() if GAMESTATE:GetCurrentGame():GetName() == "dance" then return "MenuUp" else return "MenuLeft" end; end;
-function NextSong() if GAMESTATE:GetCurrentGame():GetName() == "dance" then return "MenuDown" else return "MenuRight" end ;end;
-function PrevDiff() if GAMESTATE:GetCurrentGame():GetName() == "dance" then return "MenuLeft" else return "MenuUp" end; end;
-function NextDiff() if GAMESTATE:GetCurrentGame():GetName() == "dance" then return "MenuRight" else return "MenuDown" end; end;
-
 --foi uma merda pra entender isso, então pra não esquecer eu vou comentar esse lixo.
 function UserPrefGameLevel()
 	local t = {
@@ -474,7 +467,7 @@ function Setup()
 		P2State:SetPlayerOptions("ModsLevel_Preferred", P2Options..","..FailMode());
 		
 		PREFSMAN:SetPreference("ShowNativeLanguage",true);
-		PREFSMAN:SetPreference("EventMode",true);
+		--PREFSMAN:SetPreference("EventMode",true);
 		PREFSMAN:SetPreference("EditorNoteSkinP1","delta-note");
 		PREFSMAN:SetPreference("EditorNoteSkinP2","delta-note");
 		PREFSMAN:SetPreference("PercentageScoring",true);

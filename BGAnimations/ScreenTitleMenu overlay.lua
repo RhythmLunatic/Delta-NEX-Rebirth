@@ -7,4 +7,9 @@ return Def.ActorFrame{
 	InitCommand=cmd(Center;zoom,60;spin;effectmagnitude,0,100,0);
 	};
 ]]
+
+	LoadFont("soms2/_soms2 techy")..{
+		Text="EVENT MODE";
+		InitCommand=cmd(visible,GAMESTATE:IsEventMode();xy,SCREEN_CENTER_X,SCREEN_BOTTOM-50;diffusebottomedge,Color("HoloBlue"));
+	};
 };
