@@ -982,14 +982,14 @@ CodeMessageCommand = function(self, params)
 
 			local P1State = GAMESTATE:GetPlayerState(PLAYER_1);
 			local P1Options = P1State:GetPlayerOptionsString("ModsLevel_Preferred");
-			--local Speed = (P1State:GetCurrentPlayerOptions():GetXMod()+1).."x";
+			--local Speed = (P1State:GetCurrentPlayerOptions():XMod()+1).."x";
 
 
 			--[[if Speed == nil then
 				Speed = "1.5x";
 			end
 
-			local XMod = P1State:GetCurrentPlayerOptions():GetXMod()
+			local XMod = P1State:GetCurrentPlayerOptions():XMod()
 			if XMod >= 7.25 then
 				Speed = "1.5x";
 			end]]
@@ -1008,13 +1008,13 @@ CodeMessageCommand = function(self, params)
 
 			local P1State = GAMESTATE:GetPlayerState(PLAYER_1);
 			local P1Options = P1State:GetPlayerOptionsString("ModsLevel_Preferred");
-			local Speed = (P1State:GetCurrentPlayerOptions():GetXMod()-1).."x";
+			local Speed = (P1State:GetCurrentPlayerOptions():XMod()-1).."x";
 
 			if Speed == nil then
 				Speed = "1.5x";
 			end
 
-			local XMod = P1State:GetCurrentPlayerOptions():GetXMod()
+			local XMod = P1State:GetCurrentPlayerOptions():XMod()
 			if XMod <= 2 then
 				Speed = "8x";
 			end
@@ -1031,13 +1031,13 @@ CodeMessageCommand = function(self, params)
 
 			local P1State = GAMESTATE:GetPlayerState(PLAYER_1);
 			local P1Options = P1State:GetPlayerOptionsString("ModsLevel_Preferred");
-			local Speed = (P1State:GetCurrentPlayerOptions():GetXMod()+0.5).."x";
+			local Speed = (P1State:GetCurrentPlayerOptions():XMod()+0.5).."x";
 
 			if Speed == nil then
 				Speed = "1.5x";
 			end
 
-			local XMod = P1State:GetCurrentPlayerOptions():GetXMod()
+			local XMod = P1State:GetCurrentPlayerOptions():XMod()
 			if XMod >= 7.75 then
 				Speed = "1.5x";
 			end
@@ -1054,13 +1054,13 @@ CodeMessageCommand = function(self, params)
 
 			local P1State = GAMESTATE:GetPlayerState(PLAYER_1);
 			local P1Options = P1State:GetPlayerOptionsString("ModsLevel_Preferred");
-			local Speed = (P1State:GetCurrentPlayerOptions():GetXMod()-0.5).."x";
+			local Speed = (P1State:GetCurrentPlayerOptions():XMod()-0.5).."x";
 
 			if Speed == nil then
 				Speed = "1.5x";
 			end
 
-			local XMod = P1State:GetCurrentPlayerOptions():GetXMod()
+			local XMod = P1State:GetCurrentPlayerOptions():XMod()
 			if XMod <= 1.5 then
 				Speed = "8x";
 			end
@@ -1077,13 +1077,13 @@ CodeMessageCommand = function(self, params)
 
 			local P1State = GAMESTATE:GetPlayerState(PLAYER_1);
 			local P1Options = P1State:GetPlayerOptionsString("ModsLevel_Preferred");
-			local Speed = (P1State:GetCurrentPlayerOptions():GetXMod()+0.25).."x";
+			local Speed = (P1State:GetCurrentPlayerOptions():XMod()+0.25).."x";
 
 			if Speed == nil then
 				Speed = "1.5x";
 			end
 
-			local XMod = P1State:GetCurrentPlayerOptions():GetXMod()
+			local XMod = P1State:GetCurrentPlayerOptions():XMod()
 			if XMod >= 8 then
 				Speed = "1.5x";
 			end
@@ -1100,13 +1100,13 @@ CodeMessageCommand = function(self, params)
 
 			local P1State = GAMESTATE:GetPlayerState(PLAYER_1);
 			local P1Options = P1State:GetPlayerOptionsString("ModsLevel_Preferred");
-			local Speed = (P1State:GetCurrentPlayerOptions():GetXMod()-0.25).."x";
+			local Speed = (P1State:GetCurrentPlayerOptions():XMod()-0.25).."x";
 
 			if Speed == nil then
 				Speed = "1.5x";
 			end
 
-			local XMod = P1State:GetCurrentPlayerOptions():GetXMod()
+			local XMod = P1State:GetCurrentPlayerOptions():XMod()
 			if XMod <= 1.5 then
 				Speed = "8x";
 			end
@@ -1142,13 +1142,13 @@ CodeMessageCommand = function(self, params)
 
 			local P2State = GAMESTATE:GetPlayerState(PLAYER_2);
 			local P2Options = P2State:GetPlayerOptionsString("ModsLevel_Preferred");
-			local Speed = (P2State:GetCurrentPlayerOptions():GetXMod()+1).."x";
+			local Speed = (P2State:GetCurrentPlayerOptions():XMod()+1).."x";
 
 			if Speed == nil then
 				Speed = "1.5x";
 			end
 
-			local XMod = P2State:GetCurrentPlayerOptions():GetXMod()
+			local XMod = P2State:GetCurrentPlayerOptions():XMod()
 			if XMod >= 7.25 then
 				Speed = "1.5x";
 			end
@@ -1164,13 +1164,13 @@ CodeMessageCommand = function(self, params)
 
 			local P2State = GAMESTATE:GetPlayerState(PLAYER_2);
 			local P2Options = P2State:GetPlayerOptionsString("ModsLevel_Preferred");
-			local Speed = (P2State:GetCurrentPlayerOptions():GetXMod()-1).."x";
+			local Speed = (P2State:GetCurrentPlayerOptions():XMod()-1).."x";
 
 			if Speed == nil then
 				Speed = "1.5x";
 			end
 
-			local XMod = P2State:GetCurrentPlayerOptions():GetXMod()
+			local XMod = P2State:GetCurrentPlayerOptions():XMod()
 			if XMod <= 2 then
 				Speed = "8x";
 			end
@@ -1186,13 +1186,13 @@ CodeMessageCommand = function(self, params)
 
 			local P2State = GAMESTATE:GetPlayerState(PLAYER_2);
 			local P2Options = P2State:GetPlayerOptionsString("ModsLevel_Preferred");
-			local Speed = (P2State:GetCurrentPlayerOptions():GetXMod()+0.5).."x";
+			local Speed = (P2State:GetCurrentPlayerOptions():XMod()+0.5).."x";
 
 			if Speed == nil then
 				Speed = "1.5x";
 			end
 
-			local XMod = P2State:GetCurrentPlayerOptions():GetXMod()
+			local XMod = P2State:GetCurrentPlayerOptions():XMod()
 			if XMod >= 7.75 then
 				Speed = "1.5x";
 			end
@@ -1209,13 +1209,13 @@ CodeMessageCommand = function(self, params)
 
 			local P2State = GAMESTATE:GetPlayerState(PLAYER_2);
 			local P2Options = P2State:GetPlayerOptionsString("ModsLevel_Preferred");
-			local Speed = (P2State:GetCurrentPlayerOptions():GetXMod()-0.5).."x";
+			local Speed = (P2State:GetCurrentPlayerOptions():XMod()-0.5).."x";
 
 			if Speed == nil then
 				Speed = "1.5x";
 			end
 
-			local XMod = P2State:GetCurrentPlayerOptions():GetXMod()
+			local XMod = P2State:GetCurrentPlayerOptions():XMod()
 			if XMod <= 1.5 then
 				Speed = "8x";
 			end
@@ -1231,13 +1231,13 @@ CodeMessageCommand = function(self, params)
 
 			local P2State = GAMESTATE:GetPlayerState(PLAYER_2);
 			local P2Options = P2State:GetPlayerOptionsString("ModsLevel_Preferred");
-			local Speed = (P2State:GetCurrentPlayerOptions():GetXMod()+0.25).."x";
+			local Speed = (P2State:GetCurrentPlayerOptions():XMod()+0.25).."x";
 
 			if Speed == nil then
 				Speed = "1.5x";
 			end
 
-			local XMod = P2State:GetCurrentPlayerOptions():GetXMod()
+			local XMod = P2State:GetCurrentPlayerOptions():XMod()
 			if XMod >= 8 then
 				Speed = "1.5x";
 			end
@@ -1254,13 +1254,13 @@ CodeMessageCommand = function(self, params)
 
 			local P2State = GAMESTATE:GetPlayerState(PLAYER_2);
 			local P2Options = P2State:GetPlayerOptionsString("ModsLevel_Preferred");
-			local Speed = (P2State:GetCurrentPlayerOptions():GetXMod()-0.25).."x";
+			local Speed = (P2State:GetCurrentPlayerOptions():XMod()-0.25).."x";
 
 			if Speed == nil then
 				Speed = "1.5x";
 			end
 
-			local XMod = P2State:GetCurrentPlayerOptions():GetXMod()
+			local XMod = P2State:GetCurrentPlayerOptions():XMod()
 			if XMod <= 1.5 then
 				Speed = "8x";
 			end
@@ -1568,7 +1568,7 @@ t[#t+1] = LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
 	InitCommand=cmd(draworder,100;x,SCREEN_LEFT+27;y,SCREEN_CENTER_Y-22;zoomx,0.41;zoomy,0.38;diffusebottomedge,0.7,0.7,0.7,1;maxwidth,55;shadowlength,0.8);
 	--OnCommand=cmd(visible,GAMESTATE:IsHumanPlayer(PLAYER_1);settext,(math.ceil(GAMESTATE:GetPlayerState(PLAYER_1):GetCurrentPlayerOptions():XMod()*100)/100).."x");
 	--sleep,0.1;queuecommand,"On");
-	OptionsListClosedMessageCommand=cmd(settext,(math.ceil(GAMESTATE:GetPlayerState(PLAYER_1):GetCurrentPlayerOptions():GetXMod()*100)/100).."x");
+	OptionsListClosedMessageCommand=cmd(settext,(math.ceil(GAMESTATE:GetPlayerState(PLAYER_1):GetCurrentPlayerOptions():XMod()*100)/100).."x");
 	PlayerJoinedMessageCommand=cmd(visible,GAMESTATE:IsHumanPlayer(PLAYER_1);settext,(math.ceil(GAMESTATE:GetPlayerState(PLAYER_1):GetCurrentPlayerOptions():XMod()*100)/100).."x");
 	CodeMessageCommand=function(self)
 		self:stoptweening()
@@ -1580,8 +1580,8 @@ t[#t+1] = LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
 	InitCommand=cmd(draworder,100;x,SCREEN_RIGHT-26;y,SCREEN_CENTER_Y-22;zoomx,0.41;zoomy,0.38;diffusebottomedge,0.7,0.7,0.7,1;maxwidth,55;shadowlength,0.8);
 	OnCommand=cmd(visible,GAMESTATE:IsHumanPlayer(PLAYER_2);settext,(math.ceil(GAMESTATE:GetPlayerState(PLAYER_2):GetCurrentPlayerOptions():XMod()*100)/100).."x");
 	--sleep,0.1;queuecommand,"On");
-	OptionsListClosedMessageCommand=cmd(settext,(math.ceil(GAMESTATE:GetPlayerState(PLAYER_2):GetCurrentPlayerOptions():GetXMod()*100)/100).."x");
-	PlayerJoinedMessageCommand=cmd(visible,GAMESTATE:IsHumanPlayer(PLAYER_2);settext,(math.ceil(GAMESTATE:GetPlayerState(PLAYER_2):GetCurrentPlayerOptions():GetXMod()*100)/100).."x");
+	OptionsListClosedMessageCommand=cmd(settext,(math.ceil(GAMESTATE:GetPlayerState(PLAYER_2):GetCurrentPlayerOptions():XMod()*100)/100).."x");
+	PlayerJoinedMessageCommand=cmd(visible,GAMESTATE:IsHumanPlayer(PLAYER_2);settext,(math.ceil(GAMESTATE:GetPlayerState(PLAYER_2):GetCurrentPlayerOptions():XMod()*100)/100).."x");
 	CodeMessageCommand=function(self)
 		self:stoptweening()
 		self:visible(GAMESTATE:IsHumanPlayer(PLAYER_2));

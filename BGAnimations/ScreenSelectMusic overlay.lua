@@ -1,5 +1,5 @@
 local isSelectingDifficulty = false;
-local musicWheel;
+local ScreenSelectMusic;
 
 local function inputs(event)
 	
@@ -15,8 +15,35 @@ local function inputs(event)
 	--Keytester
 	--SCREENMAN:SystemMessage(button.." "..tostring(isSelectingDifficulty));
 	if button == "UpLeft" or button == "UpRight" then
-		SCREENMAN:GetTopScreen():GetChild('MusicWheel'):SetOpenSection("");
-	end;
+		if ScreenSelectMusic:CanOpenOptionsList(pn) then --If options list isn't currently open
+			--Yes, this is actually how the StepMania source does it. It's pretty buggy.
+			local MusicWheel = ScreenSelectMusic:GetChild('MusicWheel');
+			--local sectionName = MusicWheel:GetSelectedSection("");
+			--Unfortunately not lua accessible...
+			--MusicWheel:SelectSection(sectionName);
+			SCREENMAN:SystemMessage(MusicWheel:GetCurrentIndex());
+			--It's broken???
+			--MusicWheel:Move(5);
+			--MusicWheel:SetOpenSection("");
+			ScreenSelectMusic:CloseCurrentSection();
+		end
+	elseif button == "MenuUp" then
+		--SCREENMAN:SystemMessage(button.." "..tostring(isSelectingDifficulty));
+		local groupName = ScreenSelectMusic:GetChild('MusicWheel'):GetSelectedSection();
+		--[[
+		local temp = split("/",SONGMAN:GetSongGroupBannerPath(groupName));
+		SCREENMAN:SystemMessage(#temp);
+		local jacket = "";
+		for i=1,#temp-1 do
+			jacket = jacket..temp[i].."/"
+		end;
+		if #temp > 0 then
+			jacket = jacket.."jacket.png"
+		end]]
+		local jacket = GetSongGroupJacketPath(groupName)
+		SCREENMAN:SystemMessage(jacket);
+		
+	end
 	
 end;
 
@@ -25,8 +52,9 @@ local t = Def.ActorFrame{
 	
         --Custom input code that isn't confusing at all /s
 		SCREENMAN:GetTopScreen():AddInputCallback(inputs);
-		SCREENMAN:GetTopScreen():GetChild('MusicWheel');
 		--SCREENMAN:set_input_redirected(PLAYER_1,false);
+		
+		ScreenSelectMusic = SCREENMAN:GetTopScreen();
 	end;
 	SongChosenMessageCommand=function(self)
 		isSelectingDifficulty = true;
