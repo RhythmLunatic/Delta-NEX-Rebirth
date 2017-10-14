@@ -3,7 +3,7 @@ local t = Def.ActorFrame{}
 
 --diff
 t[#t+1] = LoadFont("venacti/_venacti 26px bold diffuse") .. {
-	InitCommand=cmd(maxwidth,150;x,30;zoom,0.5;y,2;vertalign,top;horizalign,right;shadowlengthy,1.2;shadowlengthx,0.8;shadowcolor,color("0,0,0,0.6");diffuse,color("1,1,1,1");diffusebottomedge,color("0.75,0.75,0.75,1");queuecommand,"Set");
+	InitCommand=cmd(maxwidth,300;x,30;zoom,0.5;y,2;vertalign,top;horizalign,right;shadowlengthy,1.2;shadowlengthx,0.8;shadowcolor,color("0,0,0,0.6");diffuse,color("1,1,1,1");diffusebottomedge,color("0.75,0.75,0.75,1");queuecommand,"Set");
 
 	NormalColorCommand=cmd(diffuse,color("1,1,1,1");diffusebottomedge,color("0.75,0.75,0.75,1"));
 	ExtraColorCommand=cmd(diffuse,color("1,1,0,1");diffusebottomedge,color("0.9,0.5,0.2,1"));
@@ -18,21 +18,28 @@ t[#t+1] = LoadFont("venacti/_venacti 26px bold diffuse") .. {
 			self:diffusealpha(1);
 			
 
-			
-			local diff = string.gsub(string.gsub(ToEnumShortString(GAMESTATE:GetCurrentSteps(player):GetStepsType()),".*_",""), ".*", string.upper);
-			local meter = GAMESTATE:GetCurrentSteps(player):GetMeter()
+			local steps = GAMESTATE:GetCurrentSteps(player);
+			local diff = string.gsub(string.gsub(ToEnumShortString(steps:GetStepsType()),".*_",""), ".*", string.upper);
+			local meter = steps:GetMeter()
 			local threshold = THEME:GetMetric("SongManager","ExtraColorMeter");
-			self:settext(diff)
-			
-					if GAMESTATE:GetCurrentSteps(player):IsAutogen() then
-							self:playcommand("AutogenColor");
-					else
-						if meter>=threshold then
-							self:playcommand("ExtraColor");
-						else
-							self:playcommand("NormalColor");
-						end
-					end
+			if diff == "DOUBLE" then
+				if string.find(steps:GetDescription(), "DP") then
+					self:settext("Double Performance")
+				else
+					self:settext(diff);
+				end;
+			else
+				self:settext(diff);
+			end;
+			if GAMESTATE:GetCurrentSteps(player):IsAutogen() then
+					self:playcommand("AutogenColor");
+			else
+				if meter>=threshold then
+					self:playcommand("ExtraColor");
+				else
+					self:playcommand("NormalColor");
+				end
+			end
 		else
 			self:playcommand("NormalColor");
 			self:settext("---");
