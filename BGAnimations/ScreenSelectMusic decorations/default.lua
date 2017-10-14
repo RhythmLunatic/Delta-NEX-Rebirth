@@ -117,22 +117,24 @@ t[#t+1] = Def.ActorFrame {
 		end;
 	};
 	Def.Sprite {
-		CurrentSongChangedMessageCommand=cmd(finishtweening;queuecommand,"ModifySongBackground");
+		CurrentSongChangedMessageCommand=cmd(finishtweening;diffusealpha,0;queuecommand,"ModifySongBackground");
 
 		ModifySongBackgroundCommand=function(self)
-			self:stoptweening();
 			if GAMESTATE:GetCurrentSong() ~= nil then
+				--self:linear(0);
 				if GAMESTATE:GetCurrentSong():HasPreviewVid() then
-					--self:sleep(1);
-					self:LoadBackground( GAMESTATE:GetCurrentSong():GetPreviewVidPath() );
-					self:scaletoclipped(290,160);
-					(cmd(visible,true;diffusealpha,0;bouncebegin,1;diffusealpha,1))(self);
-				else
-					self:visible(false);
+					self:sleep(1);
+					self:queuecommand("LoadSongBG"); --If you use playcommand, the sleep() will be ignored!
+					self:linear(1);
+					self:diffusealpha(1);
 				end;
-			else
-				self:visible(false);
-			end
+			end;
+		end;
+		
+		--It's in a separate command because that's the only way to delay Load();
+		LoadSongBGCommand=function(self)
+			self:Load( GAMESTATE:GetCurrentSong():GetPreviewVidPath() );
+			self:scaletoclipped(290,160);
 		end;
 	};
 	Def.Quad{

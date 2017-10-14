@@ -85,6 +85,12 @@ t[#t+1] = LoadActor(THEME:GetPathG("","GradeDisplayEval/"..grade))..{
 	OnCommand=cmd(sleep,1+delay*11+0.15;diffusealpha,1;linear,0.8;diffusealpha,0;zoom,0.85);
 }
 
+t[#t+1] = LoadActor(THEME:GetPathS("","GradeShow"))..{
+	--There's some way to pause a sound for a while without queuecommand, right?
+	OnCommand=cmd(sleep,1+delay*11;queuecommand,"PlaySound");
+	PlaySoundCommand=cmd(play);
+};
+
 
 --%
 t[#t+1] = LoadFont("venacti/_venacti 26px bold diffuse")..{
