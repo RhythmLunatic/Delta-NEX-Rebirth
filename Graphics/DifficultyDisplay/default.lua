@@ -8,15 +8,26 @@ local baseY = 80;
 
 local stepsArray;
 
+
+function SortCharts(a,b)
+    local bST = StepsType:Compare(a:GetStepsType(),b:GetStepsType()) < 0
+    if a:GetStepsType() == b:GetStepsType() then
+        return a:GetMeter() < b:GetMeter()
+    else
+        return bST
+    end;
+end
+
+
 --What's the point of this when we're playing Pump?
-local difficulties = {
+--[[local difficulties = {
 	diff1 = "Beginner",
 	diff2 = "Easy",
 	diff3 = "Medium",
 	diff4 = "Hard",
 	diff5 = "Challenge",
 	diff6 = "Edit",
-};
+};]]
 
 
 t[#t+1] = Def.ActorFrame{
@@ -26,6 +37,7 @@ t[#t+1] = Def.ActorFrame{
 			local song = GAMESTATE:GetCurrentSong();
 			if song then
 				stepsArray = song:GetAllSteps();
+				table.sort(stepsArray, SortCharts)
 			else
 				stepsArray = nil;
 			end;

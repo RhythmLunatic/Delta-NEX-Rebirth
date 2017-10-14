@@ -30,19 +30,16 @@ local function inputs(event)
 	elseif button == "MenuUp" then
 		--SCREENMAN:SystemMessage(button.." "..tostring(isSelectingDifficulty));
 		local groupName = ScreenSelectMusic:GetChild('MusicWheel'):GetSelectedSection();
-		--[[
-		local temp = split("/",SONGMAN:GetSongGroupBannerPath(groupName));
-		SCREENMAN:SystemMessage(#temp);
-		local jacket = "";
-		for i=1,#temp-1 do
-			jacket = jacket..temp[i].."/"
-		end;
-		if #temp > 0 then
-			jacket = jacket.."jacket.png"
-		end]]
 		local jacket = GetSongGroupJacketPath(groupName)
-		SCREENMAN:SystemMessage(jacket);
-		
+		if jacket then
+			SCREENMAN:SystemMessage(jacket);
+		else
+			SCREENMAN:SystemMessage("none");
+		end;
+	elseif button == "MenuDown" then
+		local groupName = ScreenSelectMusic:GetChild('MusicWheel'):GetSelectedSection();
+		local banner = SONGMAN:GetSongGroupBannerPath(groupName);
+		SCREENMAN:SystemMessage(banner);
 	end
 	
 end;
