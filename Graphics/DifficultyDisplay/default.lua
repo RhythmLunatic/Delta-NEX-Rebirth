@@ -18,6 +18,16 @@ function SortCharts(a,b)
     end;
 end
 
+function GetCurrentStepsIndex(pn)
+	local playerSteps = GAMESTATE:GetCurrentSteps(pn);
+	for i=1,#stepsArray do
+		if playerSteps == stepsArray[i] then
+			return i;
+		end;
+	end;
+	--If it reaches this point, the selected steps doesn't equal anything.
+	return -1;
+end;
 
 --What's the point of this when we're playing Pump?
 --[[local difficulties = {
@@ -85,13 +95,26 @@ for i=1,12 do
 				]]
 				
 				if stepsArray then
-					if stepsArray[i] then
-						local steps = stepsArray[i];
+					local j;
+					--TODO: Fix it so it can account for over 24 charts.
+					if GetCurrentStepsIndex(PLAYER_1) > 12 or GetCurrentStepsIndex(PLAYER_2) > 12 then
+						j = i+12;
+					else
+						j = i;
+					end;
+					if stepsArray[j] then
+
+						local steps = stepsArray[j];
 						self:diffusealpha(1);
 						if steps:GetStepsType() == "StepsType_Pump_Single" then
 							self:setstate(2);
 						elseif steps:GetStepsType() == "StepsType_Pump_Double" then
-							self:setstate(6);
+							--Check for StepF2 Double Performace tag
+							if string.find(steps:GetDescription(), "DP") then
+								self:setstate(0);
+							else
+								self:setstate(6);
+							end;
 						elseif steps:GetStepsType() == "StepsType_Pump_Halfdouble" then
 							self:setstate(4);
 						elseif steps:GetStepsType() == "StepsType_Pump_Routine" then
@@ -117,9 +140,16 @@ for i=1,12 do
 				self:stoptweening();
 
 				if stepsArray then
-					if stepsArray[i] then
+					local j;
+					--TODO: Fix it so it can account for over 24 charts.
+					if GetCurrentStepsIndex(PLAYER_1) > 12 or GetCurrentStepsIndex(PLAYER_2) > 12 then
+						j = i+12;
+					else
+						j = i;
+					end;
+					if stepsArray[j] then
 						self:diffusealpha(1);
-						local steps = stepsArray[i];
+						local steps = stepsArray[j];
 						self:settext(steps:GetMeter());
 					else
 						self:diffusealpha(0.3);
@@ -146,14 +176,12 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 
 		--I know this looks moronic, but I don't think there's any other way to do it...
 		SetCommand=function(self)
-			local playerSteps = GAMESTATE:GetCurrentSteps(pn);
 			if stepsArray then
-				for i=1,#stepsArray do
-					if playerSteps == stepsArray[i] then
-						self:x(baseX+spacing*(i-1));
-					end;
+				local index = GetCurrentStepsIndex(pn);
+				if index > 12 then
+					index = index%12;
 				end;
-				
+				self:x(baseX+spacing*(index-1));
 			end;
 		end;
 	}
