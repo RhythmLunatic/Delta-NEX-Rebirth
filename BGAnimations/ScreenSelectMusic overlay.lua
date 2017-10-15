@@ -14,7 +14,7 @@ local function inputs(event)
 	
 	--Keytester
 	--SCREENMAN:SystemMessage(button.." "..tostring(isSelectingDifficulty));
-	if button == "UpLeft" or button == "UpRight" then
+	if button == "UpRight" then
 		if ScreenSelectMusic:CanOpenOptionsList(pn) then --If options list isn't currently open
 			--Yes, this is actually how the StepMania source does it. It's pretty buggy.
 			local MusicWheel = ScreenSelectMusic:GetChild('MusicWheel');
@@ -25,6 +25,8 @@ local function inputs(event)
 			--It's broken???
 			--MusicWheel:Move(5);
 			--MusicWheel:SetOpenSection("");
+			
+			--And this is the new function that's far less buggy.
 			ScreenSelectMusic:CloseCurrentSection();
 		end
 	elseif button == "MenuUp" then
@@ -37,9 +39,10 @@ local function inputs(event)
 			SCREENMAN:SystemMessage("none");
 		end;
 	elseif button == "MenuDown" then
-		local groupName = ScreenSelectMusic:GetChild('MusicWheel'):GetSelectedSection();
+		--[[local groupName = ScreenSelectMusic:GetChild('MusicWheel'):GetSelectedSection();
 		local banner = SONGMAN:GetSongGroupBannerPath(groupName);
-		SCREENMAN:SystemMessage(banner);
+		SCREENMAN:SystemMessage(banner);]]
+		SCREENMAN:SystemMessage(tostring(inGroupSelect));
 	end
 	
 end;
@@ -53,16 +56,52 @@ local t = Def.ActorFrame{
 		
 		ScreenSelectMusic = SCREENMAN:GetTopScreen();
 	end;
-	SongChosenMessageCommand=function(self)
-		isSelectingDifficulty = true;
+	
+	--Handle moving the MusicWheel;
+	CurrentSongChangedMessageCommand=function(self)
+		local MusicWheel = SCREENMAN:GetTopScreen():GetChild('MusicWheel');
+		local song = GAMESTATE:GetCurrentSong();
+		if song then
+			MusicWheel:y(SCREEN_CENTER_Y+125);
+			--self:settext(song:GetTranslitMainTitle())
+		else --if no song
+			--inGroupSelect = true;
+			MusicWheel:y(SCREEN_CENTER_Y);
+			local groupName = MusicWheel:GetSelectedSection();
+			if groupName ~= nil or groupName ~= "" then
+				--self:settext("Select from origin "..groupName.." category");
+				ANNOUNCER_PlaySound("Song Category Names", groupName);
+				--SOUND:PlayAnnouncer("Song Category Names/"..groupName); --Unfortunately, does not work.
+			else
+				self:settext("");
+			end;
+		end
 	end;
+	
 	
 	--Needs to sleep because without it, isSelectingDifficulty will be false while they close the difficulty select instead of after.
 	TwoPartConfirmCanceledMessageCommand=function(self)
+		local MusicWheel = SCREENMAN:GetTopScreen():GetChild('MusicWheel');
+		MusicWheel:accelerate(.2);
+		MusicWheel:y(SCREEN_CENTER_Y+125)
+		
 		self:sleep(.05);
 		self:queuecommand("DifficultySelectExited");
 	end;
+	
+	SongChosenMessageCommand=function(self)
+		local MusicWheel = SCREENMAN:GetTopScreen():GetChild('MusicWheel');
+		MusicWheel:accelerate(.2);
+		MusicWheel:y(SCREEN_BOTTOM+300);
+		
+		isSelectingDifficulty = true;
+	end;
+	
 	SongUnchosenMessageCommand=function(self)
+		local MusicWheel = SCREENMAN:GetTopScreen():GetChild('MusicWheel');
+		MusicWheel:accelerate(.2);
+		MusicWheel:y(SCREEN_CENTER_Y+125)
+		
 		self:sleep(.05);
 		self:queuecommand("DifficultySelectExited");
 	end;

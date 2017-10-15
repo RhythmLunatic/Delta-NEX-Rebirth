@@ -472,7 +472,7 @@ function Setup()
 		PREFSMAN:SetPreference("EditorNoteSkinP2","delta-note");
 		PREFSMAN:SetPreference("PercentageScoring",true);
 		PREFSMAN:SetPreference("LifeDifficultyScale",0.4);
-		PREFSMAN:SetPreference("ProgressiveLifebar",true);
+		--PREFSMAN:SetPreference("ProgressiveLifebar",true);
 		PREFSMAN:SetPreference("AllowW1","AllowW1_Never");	
 		PREFSMAN:SetPreference("OnlyDedicatedMenuButtons",false);	
 		PREFSMAN:SetPreference("Premium","Premium_DoubleFor1Credit");

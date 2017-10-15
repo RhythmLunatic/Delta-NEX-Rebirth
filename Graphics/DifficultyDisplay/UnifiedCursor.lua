@@ -9,6 +9,20 @@ end;
 
 local t = Def.ActorFrame{
 
+	--Hide cursors until they're selecting a song
+	--TODO: Maybe move to the actor that loads this.
+	OnCommand=cmd(visible,false);
+	
+	SongChosenMessageCommand=function(self)
+		self:visible(true);
+	end;
+	SongUnchosenMessageCommand=function(self)
+		self:visible(false);
+	end;
+	TwoPartConfirmCanceledMessageCommand=function(self)
+		self:visible(false);
+	end;
+	
 	LoadActor("cursor_half")..{
 		InitCommand=cmd(diffuse,colorVar;blend,Blend.Add);
 		OnCommand=function(self)

@@ -138,11 +138,11 @@ t[#t+1] = Def.ActorFrame {
 		end;
 	};
 	Def.Quad{
-		InitCommand=cmd(setsize,284,30;diffuse,color("0,0,0,.8");addy,65;fadetop,.2);
+		InitCommand=cmd(setsize,284,35;vertalign,bottom;diffuse,color("0,0,0,.8");addy,80;fadetop,.2);
 	};
 
 	LoadFont("venacti/_venacti 26px bold diffuse")..{
-		InitCommand=cmd(addy,67;zoom,.5;maxwidth,530);
+		InitCommand=cmd(addy,58;zoom,.5;maxwidth,530);
 		CurrentSongChangedMessageCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong();
 			if song then
@@ -152,7 +152,91 @@ t[#t+1] = Def.ActorFrame {
 			end;
 		end;
 	};
+	
+	LoadFont("venacti/_venacti 26px bold diffuse")..{
+		InitCommand=cmd(maxwidth,530;horizalign,center;addy,71;zoomx,0.385;zoomy,0.38;shadowlength,1);
+		OnCommand=cmd(diffusealpha,0;strokecolor,Color("Outline");shadowlength,1;sleep,0.3;linear,0.8;diffusealpha,1);
+		CurrentSongChangedMessageCommand=function(self)
+			local song = GAMESTATE:GetCurrentSong()
+			if song then
+				self:settext(song:GetDisplayArtist());
+				self:diffusealpha(1);
+			else
+				self:settext("---")
+				self:diffusealpha(0.3);
+			end
+
+		end;
+	}
 };
+
+
+t[#t+1] = LoadActor("jacket_light") .. {
+	InitCommand=cmd(draworder,100;xy,SCREEN_CENTER_X,SCREEN_CENTER_Y+126;zoomx,.80;zoomy,.81;effectclock,"bgm";blend,Blend.Add);
+
+	CurrentSongChangedMessageCommand=function(self)
+		--local JacketOrBanner;
+		local song = GAMESTATE:GetCurrentSong();
+		self:finishtweening();
+		self:linear(.5);
+		if song then
+			if song:HasJacket() then
+				self:zoomx(.81);
+				self:diffusealpha(1);
+			elseif song:HasBanner() then
+				self:zoomx(1.14);
+				self:diffusealpha(1);
+			end;
+			--SCREENMAN:SystemMessage(
+		else
+			self:diffusealpha(0);
+		end;
+		self:playcommand("CheckSteps");
+	end;
+	CurrentStepsP1ChangedMessageCommand=cmd(playcommand,"CheckSteps");
+	CurrentStepsP2ChangedMessageCommand=cmd(playcommand,"CheckSteps");
+
+	SongChosenMessageCommand=function(self)
+		self:visible(false);
+	end;
+	SongUnchosenMessageCommand=function(self)
+		self:visible(true);
+	end;
+	TwoPartConfirmCanceledMessageCommand=function(self)
+		self:visible(true);
+	end;
+	
+	CheckStepsCommand=function(self,params)
+
+		local stepsP1 = GAMESTATE:GetCurrentSteps(PLAYER_1);
+		local stepsP2 = GAMESTATE:GetCurrentSteps(PLAYER_2);
+		local threshold = THEME:GetMetric("SongManager","ExtraColorMeter");
+
+			if not stepsP1 then
+				meterP1 = 0
+			else
+				meterP1 = stepsP1:GetMeter()
+			end
+
+			if not stepsP2 then
+				meterP2 = 0
+			else
+				meterP2 = stepsP2:GetMeter()
+			end
+
+
+			if meterP1>=threshold or meterP2>=threshold then
+				self:playcommand("Extra");
+			else
+				self:playcommand("Normal");
+			end;
+
+	end;
+
+	NormalCommand=cmd(blend,Blend.Add;diffuseshift;effectcolor1,color("#88CCFFFF");effectcolor2,color("#88CCFF33"));
+	ExtraCommand=cmd(blend,Blend.Add;diffuseshift;effectcolor1,color("#FFCC00FF");effectcolor2,color("#FFCC0033"));
+
+}
 
 -- BANNER MASK DANCE
 
@@ -281,14 +365,14 @@ if GAMESTATE:GetCurrentGame():GetName() == "dance" then
 end
 
 -- BANNER MASK PUMP
+if false then
 
-if GAMESTATE:GetCurrentGame():GetName() == "pump" then
-	t[#t+1] = LoadActor("pump/bannermask") .. {
+t[#t+1] = Def.ActorFrame{
+	LoadActor("pump/bannermask") .. {
 		InitCommand=cmd(draworder,5;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+123;zoomy,0.58;zoomx,0.58);
-
 	};
 
-	t[#t+1] = LoadActor("pump/A1") .. {
+	LoadActor("pump/A1") .. {
 		InitCommand=cmd(draworder,4;x,SCREEN_CENTER_X-115;y,SCREEN_CENTER_Y+125;draworder,2;diffusealpha,0);
 		SongChosenMessageCommand=cmd(diffusealpha,0);
 		PreviousSongMessageCommand=cmd(horizalign,right;diffusealpha,0.9;stoptweening;zoomy,0.5;zoomx,0.5;linear,0.2;zoomx,0.3;diffusealpha,0);
@@ -309,9 +393,9 @@ if GAMESTATE:GetCurrentGame():GetName() == "pump" then
 			end;
 		end;
 
-	}
+	};
 
-	t[#t+1] = LoadActor("pump/A2") .. {
+	LoadActor("pump/A2") .. {
 		InitCommand=cmd(draworder,4;x,SCREEN_CENTER_X-115;y,SCREEN_CENTER_Y+125;draworder,2;diffusealpha,0);
 		SongChosenMessageCommand=cmd(diffusealpha,0);
 		PreviousSongMessageCommand=cmd(horizalign,right;diffusealpha,0.9;stoptweening;zoomy,0.5;zoomx,0.5;linear,0.2;zoomx,0.3;diffusealpha,0);
@@ -331,10 +415,10 @@ if GAMESTATE:GetCurrentGame():GetName() == "pump" then
 			end;
 			end;
 
-	}
+	};
 
 
-	t[#t+1] = LoadActor("pump/A1") .. {
+	LoadActor("pump/A1") .. {
 		InitCommand=cmd(draworder,4;x,SCREEN_CENTER_X+115;y,SCREEN_CENTER_Y+125;draworder,2;diffusealpha,0;rotationy,180);
 		SongChosenMessageCommand=cmd(diffusealpha,0);
 		NextSongMessageCommand=cmd(horizalign,right;diffusealpha,0.9;stoptweening;zoomy,0.5;zoomx,0.5;linear,0.2;zoomx,0.3;diffusealpha,0);
@@ -353,9 +437,9 @@ if GAMESTATE:GetCurrentGame():GetName() == "pump" then
 			elseif params.Direction == -1 then
 			end;
 			end;
-	}
+	};
 
-	t[#t+1] = LoadActor("pump/A2") .. {
+	LoadActor("pump/A2") .. {
 		InitCommand=cmd(draworder,4;x,SCREEN_CENTER_X+115;y,SCREEN_CENTER_Y+125;draworder,2;diffusealpha,0;rotationy,180);
 		SongChosenMessageCommand=cmd(diffusealpha,0);
 		NextSongMessageCommand=cmd(horizalign,right;diffusealpha,0.9;stoptweening;zoomy,0.5;zoomx,0.5;linear,0.2;zoomx,0.3;diffusealpha,0);
@@ -374,8 +458,9 @@ if GAMESTATE:GetCurrentGame():GetName() == "pump" then
 			elseif params.Direction == -1 then
 			end;
 			end;
-	}
+	};
 
+}
 	--[[t[#t+1] = LoadActor("bannermaskleftlight") .. {
 		InitCommand=cmd(diffusealpha,0;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-14;zoomy,0.52;zoomx,0.64;blend,Blend.Add);
 		PreviousSongMessageCommand=cmd(stoptweening;diffusealpha,1;sleep,0.15;linear,0.3;diffusealpha,0);
@@ -442,64 +527,6 @@ end;
 };]]
 
 
-t[#t+1] = LoadActor("jacket_light") .. {
-	InitCommand=cmd(draworder,100;xy,SCREEN_CENTER_X,SCREEN_CENTER_Y+126;zoomx,.80;zoomy,.81;effectclock,"bgm";blend,Blend.Add);
-
-	CurrentSongChangedMessageCommand=function(self)
-		--local JacketOrBanner;
-		local song = GAMESTATE:GetCurrentSong();
-		self:finishtweening();
-		self:linear(.5);
-		if song then
-			if song:HasJacket() then
-				self:zoomx(.81);
-				self:diffusealpha(1);
-			elseif song:HasBanner() then
-				self:zoomx(1.14);
-				self:diffusealpha(1);
-			end;
-			--SCREENMAN:SystemMessage(
-		else
-			self:diffusealpha(0);
-		end;
-		self:playcommand("CheckSteps");
-	end;
-	CurrentStepsP1ChangedMessageCommand=cmd(playcommand,"CheckSteps");
-	CurrentStepsP2ChangedMessageCommand=cmd(playcommand,"CheckSteps");
-
-	CheckStepsCommand=function(self,params)
-
-		local stepsP1 = GAMESTATE:GetCurrentSteps(PLAYER_1);
-		local stepsP2 = GAMESTATE:GetCurrentSteps(PLAYER_2);
-		local threshold = THEME:GetMetric("SongManager","ExtraColorMeter");
-
-			if not stepsP1 then
-				meterP1 = 0
-			else
-				meterP1 = stepsP1:GetMeter()
-			end
-
-			if not stepsP2 then
-				meterP2 = 0
-			else
-				meterP2 = stepsP2:GetMeter()
-			end
-
-
-			if meterP1>=threshold or meterP2>=threshold then
-				self:playcommand("Extra");
-			else
-				self:playcommand("Normal");
-			end;
-
-	end;
-
-	NormalCommand=cmd(blend,Blend.Add;diffuseshift;effectcolor1,color("#88CCFFFF");effectcolor2,color("#88CCFF33"));
-	ExtraCommand=cmd(blend,Blend.Add;diffuseshift;effectcolor1,color("#FFCC00FF");effectcolor2,color("#FFCC0033"));
-
-}
-
-
 t[#t+1] = LoadActor("leftpress") .. {
 	InitCommand=cmd(draworder,100;x,SCREEN_CENTER_X;vertalign,top;diffusealpha,0;zoom,0.675;blend,Blend.Add);
 	PreviousSongMessageCommand=cmd(stoptweening;diffusealpha,1;sleep,0.15;linear,0.3;diffusealpha,0);
@@ -508,30 +535,6 @@ t[#t+1] = LoadActor("leftpress") .. {
 t[#t+1] = LoadActor("rightpress") .. {
 	InitCommand=cmd(draworder,100;x,SCREEN_CENTER_X;vertalign,top;diffusealpha,0;zoom,0.675;blend,Blend.Add);
 	NextSongMessageCommand=cmd(stoptweening;diffusealpha,1;sleep,0.15;linear,0.3;diffusealpha,0);
-}
-
-
-
-
-
-
-
-
--- DIFFICULT BAR
-
-t[#t+1] = LoadActor(THEME:GetPathG("bg","diff_12"))..{
-	InitCommand=cmd(draworder,7;vertalign,top;y,SCREEN_TOP-150;x,SCREEN_CENTER_X;zoomy,0.71;zoomx,0.665;visible,GAMESTATE:GetCurrentGame():GetName() == "pump");
-	SongChosenMessageCommand=cmd(stoptweening;decelerate,0.25;y,SCREEN_TOP);
-	TwoPartConfirmCanceledMessageCommand=cmd(stoptweening;decelerate,0.25;y,SCREEN_TOP-150);
-	SongUnchosenMessageCommand=cmd(stoptweening;decelerate,0.25;y,SCREEN_TOP-150);
-}
-
-
-t[#t+1] = LoadActor(THEME:GetPathG("","DifficultyDisplay"))..{
-	InitCommand=cmd(draworder,8;vertalign,top;y,SCREEN_TOP-85;x,SCREEN_CENTER_X;visible,GAMESTATE:GetCurrentGame():GetName() == "pump");
-	SongChosenMessageCommand=cmd(stoptweening;decelerate,0.25;y,SCREEN_TOP+15);
-	TwoPartConfirmCanceledMessageCommand=cmd(stoptweening;decelerate,0.25;y,SCREEN_TOP-85);
-	SongUnchosenMessageCommand=cmd(stoptweening;decelerate,0.25;y,SCREEN_TOP-85);
 }
 
 -- LONG SONG
@@ -683,77 +686,110 @@ t[#t+1] = LoadActor("marathon_add") .. {
 
 
 
---READY BANNER
-
-
-t[#t+1] = LoadActor("rdy_add")..{
-	InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-20;diffusealpha,0;zoom,0.8;draworder,100;blend,Blend.Multiply;);
-	SongChosenMessageCommand=cmd(stoptweening;linear,0.15;diffusealpha,1);
-	TwoPartConfirmCanceledMessageCommand=cmd(stoptweening;linear,0.15;diffusealpha,0);
-	SongUnchosenMessageCommand=cmd(stoptweening;linear,0.15;diffusealpha,0);
-};
-
-t[#t+1] = LoadActor("rdy_add")..{
-	InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-20;zoom,0.8;diffusealpha,0;draworder,100;blend,Blend.Add;);
-	SongChosenMessageCommand=cmd(stoptweening;linear,0.15;diffusealpha,1);
-	TwoPartConfirmCanceledMessageCommand=cmd(stoptweening;linear,0.15;diffusealpha,0);
-	SongUnchosenMessageCommand=cmd(stoptweening;linear,0.15;diffusealpha,0);
-};
-
-
-t[#t+1] = LoadActor("rdy_sub")..{
-	InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+17;zoom,0.75;diffusealpha,0;draworder,100;diffuse,0,0,0,0);
-	SongChosenMessageCommand=cmd(stoptweening;linear,0.15;y,SCREEN_CENTER_Y+17;diffusealpha,1);
-	TwoPartConfirmCanceledMessageCommand=cmd(stoptweening;linear,0.15;y,SCREEN_CENTER_Y+37;diffusealpha,0);
-	SongUnchosenMessageCommand=cmd(stoptweening;linear,0.15;y,SCREEN_CENTER_Y+37;diffusealpha,0);
-};
 
 
 
-
-t[#t+1] = LoadActor("rdy_logo")..{
-	InitCommand=cmd(x,SCREEN_CENTER_X+3;y,SCREEN_CENTER_Y-42;zoom,0.4;draworder,100;thump;effectperiod,2;;diffuse,0,0,0,0;diffusetopedge,0.25,0.25,0.25,0);
-	SongChosenMessageCommand=cmd(stoptweening;linear,0.2;;diffusealpha,1);
-	TwoPartConfirmCanceledMessageCommand=cmd(stoptweening;linear,0.2;diffusealpha,0;);
-	SongUnchosenMessageCommand=cmd(stoptweening;linear,0.2;diffusealpha,0;);
-};
-
-
-t[#t+1] = LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
-	InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-20;zoom,0.35;zoomy,0.325;shadowlengthy,0.8;draworder,100;diffuse,0.65,0.65,0.65,0;diffusetopedge,0.8,0.8,0.8,0);
-	SongChosenMessageCommand=cmd(stoptweening;linear,0.15;y,SCREEN_CENTER_Y-18;diffusealpha,1);
-	TwoPartConfirmCanceledMessageCommand=cmd(stoptweening;linear,0.15;y,SCREEN_CENTER_Y+16;diffusealpha,0);
-	SongUnchosenMessageCommand=cmd(stoptweening;linear,0.15;y,SCREEN_CENTER_Y+18;diffusealpha,0);
-	Text=" - PRESS CENTER STEP TO START - "
-};
-
-
-
-
-
-
-
-
-
-
-
+--DIFFICULTY BAR
 
 t[#t+1] = Def.ActorFrame{
-	LoadActor("mid")..{
+	--[[LoadActor("mid")..{
 		InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+3;zoom,0.675);
 		--OnCommand=cmd(draworder,1);
+	};]]
+
+	LoadActor(THEME:GetPathG("bg","diff_12"))..{
+		--[[InitCommand=cmd(draworder,7;vertalign,top;y,SCREEN_TOP-150;x,SCREEN_CENTER_X;zoomy,0.71;zoomx,0.665;visible,GAMESTATE:GetCurrentGame():GetName() == "pump");
+		SongChosenMessageCommand=cmd(stoptweening;decelerate,0.25;y,SCREEN_TOP);
+		TwoPartConfirmCanceledMessageCommand=cmd(stoptweening;decelerate,0.25;y,SCREEN_TOP-150);
+		SongUnchosenMessageCommand=cmd(stoptweening;decelerate,0.25;y,SCREEN_TOP-150);]]
+		InitCommand=cmd(xy,SCREEN_CENTER_X,210;zoomy,0.71;zoomx,0.665;);
+	};
+
+
+	LoadActor(THEME:GetPathG("","DifficultyDisplay"))..{
+		--Old code from when the DifficultyDisplay was hidden
+		--[[InitCommand=cmd(draworder,8;vertalign,top;y,SCREEN_TOP-85;x,SCREEN_CENTER_X;visible,GAMESTATE:GetCurrentGame():GetName() == "pump");
+		SongChosenMessageCommand=cmd(stoptweening;decelerate,0.25;y,SCREEN_TOP+15);
+		TwoPartConfirmCanceledMessageCommand=cmd(stoptweening;decelerate,0.25;y,SCREEN_TOP-85);
+		SongUnchosenMessageCommand=cmd(stoptweening;decelerate,0.25;y,SCREEN_TOP-85);]]
+		InitCommand=cmd(xy,SCREEN_CENTER_X,165);
 	};
 };
 
 
+--READY BANNER
+
 t[#t+1] = Def.ActorFrame{
-	LoadFont("venacti/_venacti 26px bold diffuse")..{
+
+	InitCommand=cmd(xy,SCREEN_CENTER_X,SCREEN_HEIGHT*.8);
+
+	LoadActor("rdy_add")..{
+		InitCommand=cmd(y,-20;diffusealpha,0;zoom,0.8;draworder,100;blend,Blend.Multiply;);
+		SongChosenMessageCommand=cmd(stoptweening;linear,0.15;diffusealpha,1);
+		TwoPartConfirmCanceledMessageCommand=cmd(stoptweening;linear,0.15;diffusealpha,0);
+		SongUnchosenMessageCommand=cmd(stoptweening;linear,0.15;diffusealpha,0);
+	};
+
+	LoadActor("rdy_add")..{
+		InitCommand=cmd(y,-20;zoom,0.8;diffusealpha,0;draworder,100;blend,Blend.Add;);
+		SongChosenMessageCommand=cmd(stoptweening;linear,0.15;diffusealpha,1);
+		TwoPartConfirmCanceledMessageCommand=cmd(stoptweening;linear,0.15;diffusealpha,0);
+		SongUnchosenMessageCommand=cmd(stoptweening;linear,0.15;diffusealpha,0);
+	};
+
+
+	LoadActor("rdy_sub")..{
+		InitCommand=cmd(y,17;zoom,0.75;diffusealpha,0;draworder,100;diffuse,0,0,0,0);
+		SongChosenMessageCommand=cmd(stoptweening;linear,0.15;y,SCREEN_CENTER_Y+17;diffusealpha,1);
+		TwoPartConfirmCanceledMessageCommand=cmd(stoptweening;linear,0.15;y,SCREEN_CENTER_Y+37;diffusealpha,0);
+		SongUnchosenMessageCommand=cmd(stoptweening;linear,0.15;y,SCREEN_CENTER_Y+37;diffusealpha,0);
+	};
+
+
+
+
+	LoadActor("rdy_logo")..{
+		InitCommand=cmd(x,3;y,-42;zoom,0.4;draworder,100;thump;effectperiod,2;;diffuse,0,0,0,0;diffusetopedge,0.25,0.25,0.25,0);
+		SongChosenMessageCommand=cmd(stoptweening;linear,0.2;;diffusealpha,1);
+		TwoPartConfirmCanceledMessageCommand=cmd(stoptweening;linear,0.2;diffusealpha,0;);
+		SongUnchosenMessageCommand=cmd(stoptweening;linear,0.2;diffusealpha,0;);
+	};
+
+
+	LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
+		InitCommand=cmd(y,-20;zoom,0.35;zoomy,0.325;shadowlengthy,0.8;draworder,100;diffuse,0.65,0.65,0.65,0;diffusetopedge,0.8,0.8,0.8,0);
+		SongChosenMessageCommand=cmd(stoptweening;linear,0.15;y,SCREEN_CENTER_Y-18;diffusealpha,1);
+		TwoPartConfirmCanceledMessageCommand=cmd(stoptweening;linear,0.15;y,SCREEN_CENTER_Y+16;diffusealpha,0);
+		SongUnchosenMessageCommand=cmd(stoptweening;linear,0.15;y,SCREEN_CENTER_Y+18;diffusealpha,0);
+		Text=" - PRESS CENTER STEP TO START - "
+	};
+	
+	LoadActor(THEME:GetPathG("", "_press "..GAMESTATE:GetCurrentGame():GetName().. " 5x2"))..{
+		Frames = Sprite.LinearFrames(10,.3);
+		InitCommand=cmd(x,-110;y,-64;zoom,0.45;visible,false;draworder,100);
+		SongChosenMessageCommand=cmd(setstate,0;visible,true);
+		TwoPartConfirmCanceledMessageCommand=cmd(visible,false);
+		SongUnchosenMessageCommand=cmd(visible,false);
+	};
+	LoadActor(THEME:GetPathG("", "_press "..GAMESTATE:GetCurrentGame():GetName().. " 5x2"))..{
+		Frames = Sprite.LinearFrames(10,.3);
+		InitCommand=cmd(x,110;y,-64;zoom,0.45;visible,false;draworder,100);
+		SongChosenMessageCommand=cmd(setstate,0;visible,true);
+		TwoPartConfirmCanceledMessageCommand=cmd(visible,false);
+		SongUnchosenMessageCommand=cmd(visible,false);
+	};
+
+}
+
+
+t[#t+1] = Def.ActorFrame{
+	--[[LoadFont("venacti/_venacti 26px bold diffuse")..{
 			InitCommand=cmd(diffuse,0.6,0.6,0.6,1;diffusetopedge,1,1,1,1;draworder,100;horizalign,center;x,SCREEN_CENTER_X-90;y,SCREEN_CENTER_Y-2;zoomx,0.35;zoomy,0.35;shadowlengthy,1;shadowlengthx,0.8);
 			Text="BPM"
 	};
 	StandardDecorationFromFileOptional("BPMDisplay","BPMDisplay")..{
 		InitCommand=cmd(draworder,100);
-	}
+	}]]
 
 	--[[LoadFont("BPMDisplay bpm")..{
 		CurrentSongChangedMessageCommand=function(self)
@@ -825,7 +861,7 @@ t[#t+1] = StandardDecorationFromFileOptional("SongTime","SongTime") .. {
 ]]
 --t[#t+1] = StandardDecorationFromFileOptional("SongTime","SongTime")..{};
 
-t[#t+1] = LoadFont("venacti/_venacti 26px bold diffuse")..{
+--[[t[#t+1] = LoadFont("venacti/_venacti 26px bold diffuse")..{
 		InitCommand=cmd(diffuse,0.6,0.6,0.6,1;diffusetopedge,1,1,1,1;draworder,100;horizalign,right;x,SCREEN_CENTER_X+98;y,SCREEN_CENTER_Y-2;zoomx,0.35;zoomy,0.35;shadowlengthy,1;shadowlengthx,0.8);
 		Text="TIME"
 }
@@ -834,23 +870,7 @@ t[#t+1] = LoadFont("venacti/_venacti 26px bold diffuse")..{
 t[#t+1] = LoadFont("venacti/_venacti 26px bold diffuse")..{
 		InitCommand=cmd(diffuse,0.6,0.6,0.6,1;diffusetopedge,1,1,1,1;draworder,100;horizalign,center;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-2;zoomx,0.35;zoomy,0.35;shadowlengthy,1;shadowlengthx,0.8);
 		Text="ARTIST"
-}
-
-t[#t+1] = LoadFont("venacti/_venacti 26px bold diffuse")..{
-	InitCommand=cmd(maxwidth,350;draworder,100;horizalign,center;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+22;zoomx,0.385;zoomy,0.38;shadowlength,1);
-	OnCommand=cmd(diffusealpha,0;strokecolor,Color("Outline");shadowlength,1;sleep,0.3;linear,0.8;diffusealpha,1);
-	CurrentSongChangedMessageCommand=function(self)
-		local song = GAMESTATE:GetCurrentSong()
-		if song then
-			self:settext(song:GetDisplayArtist());
-			self:diffusealpha(1);
-		else
-			self:settext("---")
-			self:diffusealpha(0.3);
-		end
-
-	end;
-}
+}]]
 
 
 t[#t+1] = LoadFont("venacti/_venacti 26px bold diffuse")..{
@@ -933,24 +953,6 @@ t[#t+1] = Def.ActorFrame{
 			self:visible(not GAMESTATE:IsHumanPlayer(PLAYER_2))
 		end;
 	};
-};
-
-
-
-
-t[#t+1] = LoadActor(THEME:GetPathG("", "_press "..GAMESTATE:GetCurrentGame():GetName().. " 5x2"))..{
-	Frames = Sprite.LinearFrames(10,.3);
-	InitCommand=cmd(x,SCREEN_CENTER_X-110;y,SCREEN_CENTER_Y-64;zoom,0.45;visible,false;draworder,100);
-	SongChosenMessageCommand=cmd(setstate,0;visible,true);
-	TwoPartConfirmCanceledMessageCommand=cmd(visible,false);
-	SongUnchosenMessageCommand=cmd(visible,false);
-};
-t[#t+1] = LoadActor(THEME:GetPathG("", "_press "..GAMESTATE:GetCurrentGame():GetName().. " 5x2"))..{
-	Frames = Sprite.LinearFrames(10,.3);
-	InitCommand=cmd(x,SCREEN_CENTER_X+110;y,SCREEN_CENTER_Y-64;zoom,0.45;visible,false;draworder,100);
-	SongChosenMessageCommand=cmd(setstate,0;visible,true);
-	TwoPartConfirmCanceledMessageCommand=cmd(visible,false);
-	SongUnchosenMessageCommand=cmd(visible,false);
 };
 
 
