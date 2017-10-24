@@ -8,6 +8,14 @@ Rebirth mod written by Rhythm Lunatic with new graphics created by Joao Almeida.
 
 This theme is 100% free and open source. Don't abuse it and shove it on your bootlegged PIU machine, go buy the game if you want to run a business.
 
+## Song Group Configuration
+
+To add descriptions to your song groups, add a folder named info inside your song group and then add a file named text.ini with the song group description inside it.
+
+The theme will automatically hide group numbers if you have them (Such as 15-PRIME -> PRIME, 05-SKILLUP ZONE -> SKILLUP ZONE)
+
+## Frequently Asked Questions
+
 Q: Why do my StepF2 files look weird / not work at all?
 
 A: Because supporting closed source software with zero documentation is a pain in the neck.

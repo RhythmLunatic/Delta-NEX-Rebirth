@@ -702,7 +702,7 @@ t[#t+1] = Def.ActorFrame{
 	InitCommand=cmd(y,SCREEN_BOTTOM-20);
 	LoadActor("progressmeter")..{
 		InitCommand=cmd(diffusealpha,.8;zoomx,0;horizalign,left;x,SCREEN_CENTER_X-607/2);
-		OnCommand=cmd(sleep,GAMESTATE:GetCurrentSong():GetFirstBeat();linear,GAMESTATE:GetCurrentSong():GetStepsSeconds();zoomx,1);
+		OnCommand=cmd(sleep,math.abs(GAMESTATE:GetCurrentSong():GetFirstBeat());linear,GAMESTATE:GetCurrentSong():GetStepsSeconds();zoomx,1);
 	};
 
 	LoadActor("progress-bar")..{

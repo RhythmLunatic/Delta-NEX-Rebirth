@@ -57,33 +57,54 @@ local t = Def.ActorFrame{
 		ScreenSelectMusic = SCREENMAN:GetTopScreen();
 	end;
 	
-	--Handle moving the MusicWheel;
-	CurrentSongChangedMessageCommand=function(self)
-		local MusicWheel = SCREENMAN:GetTopScreen():GetChild('MusicWheel');
-		local song = GAMESTATE:GetCurrentSong();
-		if song then
-			MusicWheel:y(SCREEN_CENTER_Y+125);
-			--self:settext(song:GetTranslitMainTitle())
-		else --if no song
-			--inGroupSelect = true;
-			MusicWheel:y(SCREEN_CENTER_Y);
-			local groupName = MusicWheel:GetSelectedSection();
-			if groupName ~= nil or groupName ~= "" then
-				--self:settext("Select from origin "..groupName.." category");
-				ANNOUNCER_PlaySound("Song Category Names", groupName);
-				--SOUND:PlayAnnouncer("Song Category Names/"..groupName); --Unfortunately, does not work.
-			else
+		--I guess this might as well be here since all the musicwheel stuff is here already
+	--Handle group descriptions.
+	LoadFont("frutiger/frutiger 24px")..{
+		InitCommand=cmd(Center;addy,150;--[[diffusebottomedge,Color("Red")]]);
+		
+		--Handle moving the MusicWheel;
+		CurrentSongChangedMessageCommand=function(self)
+			local MusicWheel = SCREENMAN:GetTopScreen():GetChild('MusicWheel');
+			local song = GAMESTATE:GetCurrentSong();
+			if song then
+				MusicWheel:y(SCREEN_CENTER_Y+120);
+				MESSAGEMAN:Broadcast("SelectingSong");
 				self:settext("");
-			end;
-		end
-	end;
+				--self:settext(song:GetTranslitMainTitle())
+			else --if no song
+				--inGroupSelect = true;
+				MESSAGEMAN:Broadcast("SelectingGroup");
+				MusicWheel:y(SCREEN_CENTER_Y);
+				local groupName = MusicWheel:GetSelectedSection();
+				if groupName then
+					local fir = SONGMAN:GetSongGroupBannerPath(groupName);
+					local dir = gisub(fir,'banner.png','info/text.ini');
+					--SCREENMAN:SystemMessage(dir);
+					if FILEMAN:DoesFileExist(dir) then
+						local tt = lua.ReadFile(dir);
+						self:settext(tt);
+						(cmd(stoptweening;zoom,.7;shadowlength,0;wrapwidthpixels,420/1;))(self);
+					else
+						self:settext("");
+					end;
+					--TODO: This should be a theme setting for sound priority.
+					--Right now it's Announcer -> info folder but some people might like info folder -> announcer
+					--Or possibly even info only?
+					ANNOUNCER_PlaySound("Song Category Names", groupName);
+					--SOUND:PlayAnnouncer("Song Category Names/"..groupName); --Unfortunately, does not work.
+				else
+					self:settext("");
+				end;
+			end
+		end;
+	};
 	
 	
 	--Needs to sleep because without it, isSelectingDifficulty will be false while they close the difficulty select instead of after.
 	TwoPartConfirmCanceledMessageCommand=function(self)
 		local MusicWheel = SCREENMAN:GetTopScreen():GetChild('MusicWheel');
 		MusicWheel:accelerate(.2);
-		MusicWheel:y(SCREEN_CENTER_Y+125)
+		MusicWheel:y(SCREEN_CENTER_Y+120)
 		
 		self:sleep(.05);
 		self:queuecommand("DifficultySelectExited");
@@ -100,7 +121,7 @@ local t = Def.ActorFrame{
 	SongUnchosenMessageCommand=function(self)
 		local MusicWheel = SCREENMAN:GetTopScreen():GetChild('MusicWheel');
 		MusicWheel:accelerate(.2);
-		MusicWheel:y(SCREEN_CENTER_Y+125)
+		MusicWheel:y(SCREEN_CENTER_Y+120)
 		
 		self:sleep(.05);
 		self:queuecommand("DifficultySelectExited");
@@ -109,6 +130,7 @@ local t = Def.ActorFrame{
 	DifficultySelectExitedCommand=function(self)
 		isSelectingDifficulty = false;
 	end;
+
 }
 
 

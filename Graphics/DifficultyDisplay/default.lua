@@ -52,11 +52,15 @@ t[#t+1] = Def.ActorFrame{
 				stepsArray = nil;
 			end;
 	end;
-	Def.Quad{
+	--[[Def.Quad{
 		InitCommand=cmd(vertalign,top;zoomto,SCREEN_WIDTH,60;diffuse,0,0,0,1;fadebottom,0.9);
+	};]]
+	
+	LoadActor("bg diff_12")..{
+		InitCommand=cmd(addy,baseY-35;zoomy,0.71;zoomx,0.665;);
 	};
 	
-	LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
+	--[[LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
 		InitCommand=cmd(Center;addx,-100);
 		--InitCommand=cmd(draworder,999);
 		CurrentSongChangedMessageCommand=cmd(playcommand,"Refresh");
@@ -67,7 +71,7 @@ t[#t+1] = Def.ActorFrame{
 				self:settext("nil");
 			end;
 		end;
-	};
+	};]]
 }
 
 

@@ -78,7 +78,7 @@ t[#t+1] = Def.ActorFrame{
 	};
 
 	LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
-		InitCommand=cmd(addy,-8;maxwidth,300;zoomy,0.55;zoomx,0.58;diffuse,color("#FFFF66FF");diffusebottomedge,color("#DDAA44FF");shadowlength,0.8);
+		InitCommand=cmd(addy,-8;maxwidth,400;zoomy,0.55;zoomx,0.58;diffuse,color("#FFFF66FF");diffusebottomedge,color("#DDAA44FF");shadowlength,0.8);
 		Text=string.upper(song:GetDisplayMainTitle().." "..song:GetDisplaySubTitle())
 	};
 
