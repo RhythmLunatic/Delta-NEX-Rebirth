@@ -14,6 +14,12 @@ To add descriptions to your song groups, add a folder named info inside your son
 
 The theme will automatically hide group numbers if you have them (Such as 15-PRIME -> PRIME, 05-SKILLUP ZONE -> SKILLUP ZONE)
 
+## Announcers
+
+To add announcers, make an announcer with a folder named Song Category Names and then put in the sound that matches your groups.
+
+Alternatively, you can just put the sound in the "info" folder in your group, as long as it's named sound.ogg/wav/mp3.
+
 ## Frequently Asked Questions
 
 Q: Why do my StepF2 files look weird / not work at all?
