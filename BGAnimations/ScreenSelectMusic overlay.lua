@@ -90,8 +90,12 @@ local t = Def.ActorFrame{
 					--TODO: This should be a theme setting for sound priority.
 					--Right now it's Announcer -> info folder but some people might like info folder -> announcer
 					--Or possibly even info only?
-					ANNOUNCER_PlaySound("Song Category Names", groupName);
-					--SOUND:PlayAnnouncer("Song Category Names/"..groupName); --Unfortunately, does not work.
+					if not ANNOUNCER_PlaySound("Song Category Names", groupName) then
+						--If ANNOUNCER_PlaySound() didn't find a sound or there isn't an announcer enabled, it will return false.
+						local snd = string.gsub(dir, "text.ini", "sound")
+						--SCREENMAN:SystemMessage(snd);
+						PlaySound(snd)
+					end;
 				else
 					self:settext("");
 				end;

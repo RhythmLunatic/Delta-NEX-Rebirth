@@ -16,8 +16,24 @@ function ANNOUNCER_PlaySound(category, name)
 		end;
 			
 		SOUND:PlayOnce(file);
+		return true;
 	else
 		--SCREENMAN:SystemMessage("ANN. UTILS: No announcer enabled.");
-		return;
+		return false;
 	end;
+end;
+
+function PlaySound(fullpath)
+	local wav = fullpath..".wav"
+	local ogg = fullpath..".ogg"
+	local mp3 = fullpath..".mp3"
+	
+	if (FILEMAN:DoesFileExist(ogg)) then file = ogg;
+	elseif (FILEMAN:DoesFileExist(mp3)) then file = mp3;
+	elseif (FILEMAN:DoesFileExist(wav)) then file = wav;
+	else
+		return false;
+	end;
+		
+	SOUND:PlayOnce(file);
 end;
