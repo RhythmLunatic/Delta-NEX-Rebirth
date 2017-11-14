@@ -1364,8 +1364,8 @@ t[#t+1] = LoadActor(THEME:GetPathS("","EX_Confirm"))..{
 t[#t+1] = LoadActor(THEME:GetPathS("","EX_Select"))..{
 CodeMessageCommand = function(self, params)
 	if params.Name == 'OpenOpList' then
-	--if params.PlayerNumber == pn then
-	SCREENMAN:GetTopScreen():OpenOptionsList(params.PlayerNumber)
+		--SCREENMAN:SystemMessage("OptionsList opened")
+		SCREENMAN:GetTopScreen():OpenOptionsList(params.PlayerNumber)
 	end
 end;
 };

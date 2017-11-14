@@ -14,6 +14,11 @@ local function inputs(event)
 	
 	--Keytester
 	--SCREENMAN:SystemMessage(button.." "..tostring(isSelectingDifficulty));
+	--I'm sorry, but this was the easiest way to get it to move the musicwheel when a folder was closed/opened...
+	if button == "Center" then
+		MESSAGEMAN:Broadcast("CurrentSongChanged");
+	end
+
 	if button == "UpRight" then
 		if ScreenSelectMusic:CanOpenOptionsList(pn) then --If options list isn't currently open
 			--Yes, this is actually how the StepMania source does it. It's pretty buggy.
@@ -42,7 +47,8 @@ local function inputs(event)
 		--[[local groupName = ScreenSelectMusic:GetChild('MusicWheel'):GetSelectedSection();
 		local banner = SONGMAN:GetSongGroupBannerPath(groupName);
 		SCREENMAN:SystemMessage(banner);]]
-		SCREENMAN:SystemMessage(tostring(inGroupSelect));
+		local MusicWheel = ScreenSelectMusic:GetChild('MusicWheel');
+		SCREENMAN:SystemMessage(MusicWheel:GetWheelItem(MusicWheel:GetCurrentIndex()):GetType());
 	end
 	
 end;
@@ -71,7 +77,13 @@ local t = Def.ActorFrame{
 				MESSAGEMAN:Broadcast("SelectingSong");
 				self:settext("");
 				--self:settext(song:GetTranslitMainTitle())
-			else --if no song
+			--if no song, but there's a song next to the currently selected one, a folder is probably still open or has been opened
+			elseif song == nil and MusicWheel:GetWheelItem(MusicWheel:GetCurrentIndex()):GetType() == 2 then
+				MusicWheel:y(SCREEN_CENTER_Y+120);
+				MESSAGEMAN:Broadcast("SelectingSong");
+				self:settext("");
+			--if no song and no song next to it, the folder is probably closed
+			else
 				--inGroupSelect = true;
 				MESSAGEMAN:Broadcast("SelectingGroup");
 				MusicWheel:y(SCREEN_CENTER_Y);

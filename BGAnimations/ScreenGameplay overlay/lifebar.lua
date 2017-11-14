@@ -1,4 +1,8 @@
+--LoadActor("file.lua", argument) -> arguments are passed in as "...". As in literally, the variable is named "..." (without the quotes)
 local player = ...;
+
+--TODO: Turn the lifebar width into a variable instead of SCREEN_WIDTH/2 etc etc etc
+--And figure out why the fuck horizalign left isn't working on this thing
 return Def.ActorFrame{
 	--Wavy line
 	LoadActor("hot_lores") .. {
