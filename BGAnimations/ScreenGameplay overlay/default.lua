@@ -22,13 +22,13 @@ t[#t+1] = LoadActor(THEME:GetPathB("ScreenWithMenuElements","background")) .. {
 
 -- Left Hex Corner Decoration
 t[#t+1] = LoadActor("decoration_corner") .. {
-	InitCommand=cmd(visible,GAMESTATE:IsHumanPlayer(PLAYER_1));
+	InitCommand=cmd(visible,(GAMESTATE:IsHumanPlayer(PLAYER_1) or ToEnumShortString(GAMESTATE:GetCurrentStyle():GetStyleType()) == "OnePlayerTwoSides"));
 	OnCommand=cmd(horizalign,left;x,SCREEN_LEFT;vertalign,top;y,SCREEN_TOP;zoomy,0.4;zoomx,0.6;diffusealpha,0.3;blend,Blend.Add); 
 }; 
 
 -- Right Hex Corner Decoration
 t[#t+1] = LoadActor("decoration_corner") .. {
-	InitCommand=cmd(visible,GAMESTATE:IsHumanPlayer(PLAYER_2));
+	InitCommand=cmd(visible,(GAMESTATE:IsHumanPlayer(PLAYER_2) or ToEnumShortString(GAMESTATE:GetCurrentStyle():GetStyleType()) == "OnePlayerTwoSides"));
 	OnCommand=cmd(horizalign,left;x,SCREEN_RIGHT;vertalign,top;y,SCREEN_TOP;zoomy,0.4;;zoomx,-0.6;diffusealpha,0.3;blend,Blend.Add); 
 }; 
 
@@ -185,8 +185,8 @@ t[#t+1] = LoadActor("danger") .. {
 
 -- METERS ////////////////////////
 
--- Player 1
-t[#t+1] = LoadActor("lifebar")..{
+-- Player 1 & Doubles
+t[#t+1] = LoadActor("lifebar", PLAYER_1)..{
 	InitCommand=cmd(visible,GAMESTATE:IsHumanPlayer(PLAYER_1);xy,225,34);
 
 }
@@ -235,22 +235,26 @@ t[#t+1] = LoadActor("tip") .. {
 
 -- Player 2
 t[#t+1] = Def.ActorFrame{
+	--[[InitCommand=function(self)
+		local style = GAMESTATE:GetCurrentStyle();
+		if style:GetStyleType() == "StyleType_OnePlayerTwoSides" then
+			self:visible(false);
+		end
+	end;]]
+
 	--P2
 	LoadActor("hot_lores") .. {
 		OnCommand=cmd(diffusealpha,0;visible,GAMESTATE:IsHumanPlayer(PLAYER_2);horizalign,left;x,SCREEN_RIGHT-18;vertalign,top;y,SCREEN_TOP+16;zoomtowidth,(SCREEN_WIDTH/2-26)*-1;texcoordvelocity,0.1,0;queuecommand,"Begin");
 		BeginCommand=function(self)
-			local style = GAMESTATE:GetCurrentStyle();
-			if style:GetStyleType() == "StyleType_OnePlayerTwoSides" then
-				self:visible(false);
-			else
+
 			local move = GAMESTATE:GetSongBPS()/2
-				if GAMESTATE:GetSongFreeze() then 
-					move = 0; 
-				end
-					self:texcoordvelocity(move,0);
-					self:sleep(0.05);
-					self:queuecommand("Begin");
-			end;
+			if GAMESTATE:GetSongFreeze() then 
+				move = 0; 
+			end
+			self:texcoordvelocity(move,0);
+			self:sleep(0.05);
+			self:queuecommand("Begin");
+			
 		end;
 		
 		
@@ -267,16 +271,16 @@ t[#t+1] = Def.ActorFrame{
 	};
 	
 	LoadActor("basemeter") .. {	
-		InitCommand=cmd(visible,GAMESTATE:IsHumanPlayer(PLAYER_2);horizalign,right;x,SCREEN_RIGHT+18;valign,0.5;y,SCREEN_TOP+41;zoomy,0.5;blend,Blend.Add;queuecommand,"Set"); 
+		InitCommand=cmd(visible,GAMESTATE:IsHumanPlayer(PLAYER_2);horizalign,right;x,SCREEN_RIGHT+18;valign,0.5;y,SCREEN_TOP+41;zoomy,0.5;blend,Blend.Add;--[[queuecommand,"Set"]]); 
 		OnCommand=cmd(bounce;effectmagnitude,40,0,0;effectclock,"bgm";effecttiming,1,0,0,0;);
-		SetCommand=function(self,params)
-						local style = GAMESTATE:GetCurrentStyle();	
-							if style:GetStyleType() == "StyleType_OnePlayerTwoSides" then
-								self:effectmagnitude(-40,0,0);
-								self:horizalign(left);
-								self:x(SCREEN_LEFT+18);
-					end;
+		--[[SetCommand=function(self,params)
+			local style = GAMESTATE:GetCurrentStyle();	
+			if style:GetStyleType() == "StyleType_OnePlayerTwoSides" then
+				self:effectmagnitude(-40,0,0);
+				self:horizalign(left);
+				self:x(SCREEN_LEFT+18);
 			end;
+		end;]]
 			
 
 			
@@ -449,6 +453,10 @@ t[#t+1] = Def.ActorFrame{
 	};
 
 }
+
+
+
+
 
 -- Progress bar
 t[#t+1] = Def.ActorFrame{

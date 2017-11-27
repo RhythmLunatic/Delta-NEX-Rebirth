@@ -78,7 +78,7 @@ t[#t+1] = Def.ActorFrame{
 	};
 
 	LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
-		InitCommand=cmd(addy,-8;maxwidth,400;zoomy,0.55;zoomx,0.58;diffuse,color("#FFFF66FF");diffusebottomedge,color("#DDAA44FF");shadowlength,0.8);
+		InitCommand=cmd(addy,-8;maxwidth,500;zoomy,0.55;zoomx,0.58;diffuse,color("#FFFF66FF");diffusebottomedge,color("#DDAA44FF");shadowlength,0.8);
 		Text=string.upper(song:GetDisplayMainTitle().." "..song:GetDisplaySubTitle())
 	};
 
@@ -290,40 +290,10 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 	t[#t+1] = LoadActor("PlayerNumbers", pn)..{
 		InitCommand=cmd(xy,SCREEN_CENTER_X+235*position,123)
 	};
+	t[#t+1] = LoadActor("PlayerGrade", pn)..{
+		InitCommand=cmd(xy,SCREEN_CENTER_X+300*position,SCREEN_CENTER_Y);
+	};
 end
-
---[[t[#t+1] = LoadActor("P2Stats")..{
-	InitCommand=cmd(draworder,100;y,SCREEN_CENTER_Y-40;);
-	OnCommand=function(self)
-
-	if GAMESTATE:IsHumanPlayer(PLAYER_2) then
-		if STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2):IsDisqualified()==true then
-			self:visible(false);
-		else
-			self:visible(true);
-		end
-	else
-		self:visible(false);
-	end
-
-
-		if GAMESTATE:GetNumSidesJoined() == 2 then
-			self:x(SCREEN_CENTER_X+170);
-
-			if GAMESTATE:GetCurrentStyle():GetStyleType() == "StyleType_TwoPlayersSharedSides" then
-			self:visible(false)
-
-				if GAMESTATE:GetMasterPlayerNumber() == "PlayerNumber_P2" then
-					self:visible(true)
-					self:x(SCREEN_CENTER_X);
-				end
-			end
-
-		else
-			self:x(SCREEN_CENTER_X);
-		end
-	end
-}]]
 
 
 t[#t+1] = LoadFont("venacti/_venacti 26px bold diffuse")..{
