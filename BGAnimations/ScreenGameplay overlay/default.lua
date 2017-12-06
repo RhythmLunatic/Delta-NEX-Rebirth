@@ -18,7 +18,7 @@ t[#t+1] = LoadActor(THEME:GetPathB("ScreenWithMenuElements","background")) .. {
 
 -- DECORATIONS ////////////////////////
 
-
+--TODO: These need to be put in the "pn in ivalues" statement eventually but it would break doubles
 
 -- Left Hex Corner Decoration
 t[#t+1] = LoadActor("decoration_corner") .. {
@@ -30,46 +30,6 @@ t[#t+1] = LoadActor("decoration_corner") .. {
 t[#t+1] = LoadActor("decoration_corner") .. {
 	InitCommand=cmd(visible,(GAMESTATE:IsHumanPlayer(PLAYER_2) or ToEnumShortString(GAMESTATE:GetCurrentStyle():GetStyleType()) == "OnePlayerTwoSides"));
 	OnCommand=cmd(horizalign,left;x,SCREEN_RIGHT;vertalign,top;y,SCREEN_TOP;zoomy,0.4;;zoomx,-0.6;diffusealpha,0.3;blend,Blend.Add); 
-}; 
-
---P1 NAME
-t[#t+1] = LoadFont("venacti/_venacti_outline 26px bold diffuse") .. {
-				InitCommand=cmd(maxwidth,300;horizalign,left;x,SCREEN_LEFT+30;y,SCREEN_TOP+14;zoom,0.45;shadowlength,1;uppercase,true);
-			
-				
-				BeginCommand=function(self)
-					local profile = PROFILEMAN:GetProfile(PLAYER_1);
-					local name = profile:GetDisplayName();
-					
-					if GAMESTATE:IsHumanPlayer(PLAYER_1) == true then
-						if name=="" then
-							self:settext("Player 1");
-						else
-							self:settext( name );
-						end
-					end	
-					
-				end;
-};
-
---P2 NAME
-t[#t+1] = LoadFont("venacti/_venacti_outline 26px bold diffuse") .. {
-				InitCommand=cmd(maxwidth,300;horizalign,right;x,SCREEN_RIGHT-30;y,SCREEN_TOP+14;zoom,0.45;shadowlength,1;uppercase,true);
-			
-				
-				BeginCommand=function(self)
-					local profile = PROFILEMAN:GetProfile(PLAYER_2);
-					local name = profile:GetDisplayName();
-					
-					if GAMESTATE:IsHumanPlayer(PLAYER_2) == true then
-						if name=="" then
-							self:settext("Player 1");
-						else
-							self:settext( name );
-						end
-					end	
-					
-				end;
 };
 
 
@@ -116,6 +76,7 @@ local style = (ToEnumShortString(GAMESTATE:GetCurrentStyle():GetStyleType()) == 
 
 if style == "Single" then
 	for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+		
 		--The good lifebar
 		t[#t+1] = LoadActor("lifebar", pn)..{
 			InitCommand=cmd(visible,GAMESTATE:IsHumanPlayer(PLAYER_1);y,34);
@@ -128,7 +89,37 @@ if style == "Single" then
 					self:horizalign(right);
 				end;
 			end;
-		}
+		};
+		
+		
+		--NAME
+		LoadFont("venacti/_venacti_outline 26px bold diffuse") .. {
+			InitCommand=cmd(maxwidth,300;y,SCREEN_TOP+14;zoom,0.45;shadowlength,1;uppercase,true);
+			OnCommand=function(self)
+				if player == PLAYER_1 then
+					self:horizalign(left);
+					self:x(SCREEN_LEFT+30);
+				else
+					self:horizalign(right);
+					self:x(SCREEN_RIGHT-30);
+				end;
+			end;
+		
+			
+			BeginCommand=function(self)
+				local profile = PROFILEMAN:GetProfile(PLAYER_1);
+				local name = profile:GetDisplayName();
+				
+				if GAMESTATE:IsHumanPlayer(PLAYER_1) == true then
+					if name=="" then
+						self:settext("Player 1");
+					else
+						self:settext( name );
+					end
+				end	
+				
+			end;
+		};
 	end;
 else
 
