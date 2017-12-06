@@ -93,10 +93,10 @@ if style == "Single" then
 		
 		
 		--NAME
-		LoadFont("venacti/_venacti_outline 26px bold diffuse") .. {
+		t[#t+1] = LoadFont("venacti/_venacti_outline 26px bold diffuse") .. {
 			InitCommand=cmd(maxwidth,300;y,SCREEN_TOP+14;zoom,0.45;shadowlength,1;uppercase,true);
 			OnCommand=function(self)
-				if player == PLAYER_1 then
+				if pn == PLAYER_1 then
 					self:horizalign(left);
 					self:x(SCREEN_LEFT+30);
 				else
