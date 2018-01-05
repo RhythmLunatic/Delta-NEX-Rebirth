@@ -217,10 +217,23 @@ t[#t+1] = Def.ActorFrame{
 --The current stage
 --TODO: Some kind of cool graphic under the text
 t[#t+1] = Def.ActorFrame{
-	LoadFont("soms2/_soms2 techy") .. {
-		Text="Hello World";
-		InitCommand=cmd(xy,SCREEN_CENTER_X,12);
-	}
+
+	--[[InitCommand=cmd(xy,SCREEN_CENTER_X,11;);
+	Def.Quad{
+		InitCommand=cmd(setsize,250,20;fadeleft,.3;faderight,.3;diffuse,Color("Black"));
+	
+	};
+	LoadFont("venacti/_venacti 15px bold") .. {
+		InitCommand=cmd(addy,-2);
+		--Text="Hello World";
+		OnCommand=function(self)
+			if not GAMESTATE:IsEventMode() then
+				self:settext("STAGE "..GAMESTATE:GetCurrentStage());
+			else
+				self:settext("EVENT STAGE");
+			end;
+		end;
+	}]]
 }
 
 			

@@ -90,7 +90,7 @@ function ApplyThemeSettings()
     PREFSMAN:SetPreference("Center1Player",         tconf.CenterPlayer);
     PREFSMAN:SetPreference("TimingWindowScale",     timing_mapping[tconf.TimingDifficulty] );
     PREFSMAN:SetPreference("LifeDifficultyScale",   life_mapping[tconf.LifeDifficulty] );
-    PREFSMAN:SetPreference("AllowW1",               tconf.AllowW1 and "AllowW1_Everywhere" or "AllowW1_Never" );
+    --PREFSMAN:SetPreference("AllowW1",               tconf.AllowW1 and "AllowW1_Everywhere" or "AllowW1_Never" );
 
     -------------------------------------------------------------------------------------------------------
     local sops= GAMESTATE:GetSongOptionsObject("ModsLevel_Preferred");

@@ -3,7 +3,7 @@ local player = ...
 --local centered = ...[2];
 
 --Size of frame (just the inner part of the lifebar)
-local LIFEBAR_WIDTH = SCREEN_WIDTH/2-85
+local LIFEBAR_WIDTH = SCREEN_WIDTH/2-130
 
 --Size of the actual lifebar. Yes I know this is terrible code I'll fix it later I swear
 local LIFEBAR_REALWIDTH = LIFEBAR_WIDTH+60

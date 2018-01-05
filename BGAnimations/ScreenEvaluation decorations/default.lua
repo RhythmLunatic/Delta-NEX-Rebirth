@@ -144,7 +144,7 @@ t[#t+1] = Def.ActorFrame{
 };
 
 t[#t+1] = LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
-	InitCommand=cmd(visible,GetUserPref("UserPrefSetPreferences") == "No";maxwidth,1020;zoomy,0.55;zoomx,0.58;x,SCREEN_CENTER_X;y,SCREEN_BOTTOM-93;shadowlength,0.8);
+	InitCommand=cmd(visible,GetUserPref("UserPrefSetPreferences") == "No";maxwidth,1020;zoomy,0.55;zoomx,0.58;x,SCREEN_CENTER_X;y,SCREEN_BOTTOM-70;shadowlength,0.8);
 	Text="NO GAME LEVEL"
 }
 
@@ -185,20 +185,29 @@ t[#t+1] = Def.ActorFrame{
 	--LoadActor("P1Stats")..{};
 };
 
+--It's not like this theme supports course mode anyway, so I don't think AllowW1_CoursesOnly will ever appear
+local AllowSuperb = (PREFSMAN:GetPreference("AllowW1") == 'AllowW1_Everywhere');
+local spacing = AllowSuperb and 36 or 40;
 
-local spacing = 40;
 t[#t+1] = Def.ActorFrame{
 
 	--Marvelous/Superb
-	InitCommand=cmd(xy,SCREEN_CENTER_X,125);
+	InitCommand=function(self)
+		self:x(SCREEN_CENTER_X);
+		self:y(AllowSuperb and 156 or 125);
+	end;
+	
+	Def.Quad{
+		InitCommand=cmd(y,-spacing;setsize,500,30;faderight,1;fadeleft,1;diffuse,color("#FFFFFF");blend,Blend.Add;visible,AllowSuperb);
+	};
 	LoadFont("venacti/_venacti 26px bold diffuse")..{
-		OnCommand=function(self)
-			if	GetUserPref("UserPrefJudgmentType") == "Pro" then
-				self:settext("SUPERB");
-			else
-				self:settext("PERFECT");
-			end
-		end
+		InitCommand=cmd(y,-spacing;visible,AllowSuperb);
+		Text="SUPERB";
+	};
+	
+	--Perfect
+	LoadFont("venacti/_venacti 26px bold diffuse")..{
+		Text="PERFECT";
 	};
 
 	Def.Quad{
@@ -206,16 +215,10 @@ t[#t+1] = Def.ActorFrame{
 		--OnCommand=cmd(x,itembaseX;y,itembaseY);
 	};
 
-	--Perfect/Great
+	--Great
 	LoadFont("venacti/_venacti 26px bold diffuse")..{
 		InitCommand=cmd(y,spacing);
-		OnCommand=function(self)
-			if	GetUserPref("UserPrefJudgmentType") == "Pro" then
-				self:settext("PERFECT");
-			else
-				self:settext("GREAT");
-			end
-		end
+		Text="GREAT";
 	};
 	Def.Quad{
 		InitCommand=cmd(setsize,500,30;faderight,1;fadeleft,1;diffuse,color("#34851f");blend,Blend.Add);
@@ -224,14 +227,8 @@ t[#t+1] = Def.ActorFrame{
 
 	--GOODS
 	LoadFont("venacti/_venacti 26px bold diffuse")..{
-		InitCommand=cmd(y,80);
-		OnCommand=function(self)
-			if	GetUserPref("UserPrefJudgmentType") == "Pro" then
-				self:settext("GREAT");
-			else
-				self:settext("GOOD");
-			end
-		end
+		InitCommand=cmd(y,spacing*2);
+		Text="GOOD";
 	};
 	Def.Quad{
 		InitCommand=cmd(setsize,500,30;faderight,1;fadeleft,1;diffuse,color("#85781f");blend,Blend.Add);
@@ -240,13 +237,7 @@ t[#t+1] = Def.ActorFrame{
 	--BADS
 	LoadFont("venacti/_venacti 26px bold diffuse")..{
 		InitCommand=cmd(y,spacing*3);
-		OnCommand=function(self)
-			if	GetUserPref("UserPrefJudgmentType") == "Pro" then
-				self:settext("GOOD");
-			else
-				self:settext("BAD");
-			end
-		end
+		Text="BAD"
 	};
 	Def.Quad{
 		InitCommand=cmd(setsize,500,30;faderight,1;fadeleft,1;diffuse,color("#932192");blend,Blend.Add);
@@ -287,8 +278,9 @@ t[#t+1] = Def.ActorFrame{
 for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 	-- position = pn==PLAYER_2 ? 1 : -1;
 	local position = (pn == "PlayerNumber_P2") and 1 or -1;
+	local sPosition = AllowSuperb and 154 or 123;
 	t[#t+1] = LoadActor("PlayerNumbers", pn)..{
-		InitCommand=cmd(xy,SCREEN_CENTER_X+235*position,123)
+		InitCommand=cmd(xy,SCREEN_CENTER_X+235*position,sPosition)
 	};
 	t[#t+1] = LoadActor("PlayerGrade", pn)..{
 		InitCommand=cmd(xy,SCREEN_CENTER_X+300*position,SCREEN_CENTER_Y);
