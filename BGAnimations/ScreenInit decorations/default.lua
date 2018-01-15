@@ -1,9 +1,4 @@
 local t = Def.ActorFrame{
-
-	LoadActor("andamiro")..{
-	
-	};
-
 }
 
 t[#t+1] = Def.ActorFrame{
@@ -11,7 +6,8 @@ t[#t+1] = Def.ActorFrame{
   InitCommand=cmd(Center);
 	LoadActor("back") .. {
 		InitCommand=cmd(scaletoclipped,SCREEN_WIDTH,SCREEN_HEIGHT;);
-		OnCommand=cmd(diffusealpha,0;sleep,7;linear,.3;diffusealpha,1);
+		OnCommand=cmd(pause;diffusealpha,0;sleep,7;queuecommand,"Play"); --play ignores sleep
+		PlayCommand=cmd(play;linear,.3;diffusealpha,1);
 	};
 	LoadActor("stepmania")..{
 		InitCommand=cmd(y,0;diffusealpha,0;zoom,0.3;);
@@ -35,9 +31,9 @@ t[#t+1] = Def.ActorFrame{
 	InitCommand=cmd(x,SCREEN_CENTER_X;diffusealpha,0);
 	OnCommand=cmd(sleep,7;linear,3;diffusealpha,1);
 	
-	Def.Quad{
+	--[[Def.Quad{
 		InitCommand=cmd(vertalign,bottom;y,SCREEN_BOTTOM;zoomto,SCREEN_WIDTH,50;diffuse,0,0,0,0.5);
-	};
+	};]]
 
 	Def.Quad{
 		InitCommand=cmd(vertalign,top;y,SCREEN_TOP;zoomto,SCREEN_WIDTH,50;diffuse,0,0,0,0.5);
@@ -52,5 +48,11 @@ t[#t+1] = Def.ActorFrame{
 	};
 
 };
+
+t[#t+1] = Def.ActorFrame{
+	LoadActor("andamiro")..{
+		OnCommand=cmd(sleep,6;linear,.5;diffusealpha,0);
+	};
+}
 
 return t

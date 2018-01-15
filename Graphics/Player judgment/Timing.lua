@@ -5,7 +5,7 @@ local current = 0;
 local scoreAdd = 0;
 local multiplier = 1;
 local meter = 0;
-
+local AllowSuperb = (PREFSMAN:GetPreference("AllowW1") == 'AllowW1_Everywhere');
 
 local t = Def.ActorFrame {
 
@@ -32,7 +32,7 @@ local JudgeCmds = {
 };
 ]]
 
-
+--Specifies which frame is for which grading in the node judgment sprites
 local TNSFrames = {
 	TapNoteScore_W1 = 0;
 	TapNoteScore_W2 = 1;
@@ -40,7 +40,7 @@ local TNSFrames = {
 	TapNoteScore_W4 = 3;
 	TapNoteScore_W5 = 4;
 	TapNoteScore_Miss = 5;
-	TapNoteScore_CheckpointHit = 1;
+	TapNoteScore_CheckpointHit = (AllowSuperb and 0 or 1);
 	TapNoteScore_CheckpointMiss = 5;
 	TapNoteScore_AvoidMine = 0;
 };
