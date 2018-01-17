@@ -42,34 +42,6 @@ t[#t+1] = LoadActor("decoration_corner") .. {
 --customtexturerect,0,0,[PixelsToCoverWidth]/[ImageWidth],[PixelsToCoverHeight]/[ImageHeight]
 --I said that I was gonna write it down. thx midi
 
-t[#t+1] = LoadActor("hot_lores") .. {
-	OnCommand=cmd(diffusealpha,0;horizalign,left;x,SCREEN_LEFT+18;vertalign,top;y,SCREEN_TOP+16;zoomtowidth,SCREEN_WIDTH-36;customtexturerect,0,0,600/(SCREEN_WIDTH-36),1;;queuecommand,"Begin");
-	BeginCommand=function(self)
-		local style = GAMESTATE:GetCurrentStyle();
-		if style:GetStyleType() == "StyleType_OnePlayerTwoSides" then
-		local move = GAMESTATE:GetSongBPS()/2
-			if GAMESTATE:GetSongFreeze() then 
-				move = 0; 
-			end
-		self:texcoordvelocity(move,0);
-		self:sleep(0.05);
-		self:queuecommand("Begin");
-		else
-		self:visible(false);
-	end;
-	end;
-
-	
-	LifeChangedMessageCommand=function(self,params)
-			local life=params.LifeMeter:GetLife();
-			if life>=THEME:GetMetric("LifeMeterBar", "HotValue") then
-					self:diffusealpha(0.5);
-				else
-					self:diffusealpha(0);
-				end;
-	end;	
-};
-
 
 -- METERS ////////////////////////
 local style = (ToEnumShortString(GAMESTATE:GetCurrentStyle():GetStyleType()) == "OnePlayerTwoSides") and "Double" or "Single";
@@ -150,11 +122,11 @@ else
 
 	-- Doubles... And legacy code.
 	t[#t+1] = LoadActor("doubles_lifebar", PLAYER_1)..{
-		InitCommand=cmd(visible,GAMESTATE:IsHumanPlayer(PLAYER_1);xy,225,34);
+		InitCommand=cmd(visible,GAMESTATE:IsHumanPlayer(PLAYER_1);xy,SCREEN_CENTER_X,34);
 
 	}
 
-	t[#t+1] = LoadActor("tip") .. {	
+	--[[t[#t+1] = LoadActor("tip") .. {	
 			InitCommand=cmd(visible,GAMESTATE:IsHumanPlayer(PLAYER_1);valign,0.5;y,SCREEN_TOP+41;zoom,0.5;blend,Blend.Add;queuecommand,"Set"); 
 
 			
@@ -193,7 +165,7 @@ else
 						end;
 			end;
 
-	};
+	};]]
 end
 
 
