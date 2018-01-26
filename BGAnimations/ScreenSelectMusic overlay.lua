@@ -19,22 +19,33 @@ local function inputs(event)
 		MESSAGEMAN:Broadcast("CurrentSongChanged");
 	end
 
-	if button == "UpRight" then
-		if ScreenSelectMusic:CanOpenOptionsList(pn) then --If options list isn't currently open
-			--Yes, this is actually how the StepMania source does it. It's pretty buggy.
-			local MusicWheel = ScreenSelectMusic:GetChild('MusicWheel');
-			--local sectionName = MusicWheel:GetSelectedSection("");
-			--Unfortunately not lua accessible...
-			--MusicWheel:SelectSection(sectionName);
-			SCREENMAN:SystemMessage(MusicWheel:GetCurrentIndex());
-			--It's broken???
-			--MusicWheel:Move(5);
-			--MusicWheel:SetOpenSection("");
-			
-			--And this is the new function that's far less buggy.
-			ScreenSelectMusic:CloseCurrentSection();
-		end
-	elseif button == "MenuUp" then
+	--If basic mode, don't allow them to close the folder.
+	if ScreenSelectMusic:GetName() == "ScreenSelectMusic" then
+		if button == "UpRight" or button == "UpLeft" then
+			if ScreenSelectMusic:CanOpenOptionsList(pn) then --If options list isn't currently open
+				ScreenSelectMusic:StartTransitioningScreen("SM_GoToPrevScreen");
+				
+				
+				--Yes, this is actually how the StepMania source does it. It's pretty buggy.
+				--local MusicWheel = ScreenSelectMusic:GetChild('MusicWheel');
+				--local sectionName = MusicWheel:GetSelectedSection("");
+				--Unfortunately not lua accessible...
+				--MusicWheel:SelectSection(sectionName);
+				--SCREENMAN:SystemMessage(MusicWheel:GetCurrentIndex());
+				--It's broken???
+				--MusicWheel:Move(5);
+				--MusicWheel:SetOpenSection("");
+				
+				--And this is the new function that's far less buggy.
+				--ScreenSelectMusic:CloseCurrentSection();
+				
+				--Debugging stuff
+				
+			end
+		end;
+	end;
+	
+	if button == "MenuUp" then
 		--SCREENMAN:SystemMessage(button.." "..tostring(isSelectingDifficulty));
 		local groupName = ScreenSelectMusic:GetChild('MusicWheel'):GetSelectedSection();
 		local jacket = GetSongGroupJacketPath(groupName)
@@ -63,7 +74,18 @@ local t = Def.ActorFrame{
 		ScreenSelectMusic = SCREENMAN:GetTopScreen();
 	end;
 	
-		--I guess this might as well be here since all the musicwheel stuff is here already
+	CodeMessageCommand=function(self, params)
+		if params.Name == "GoFullMode" then
+			ScreenSelectMusic:lockinput(3);
+			--SCREENMAN:SystemMessage("Full Mode triggered!");
+			GAMESTATE:ApplyGameCommand("sort,group");
+			ScreenSelectMusic:StartTransitioningScreen("SM_GoToPrevScreen");
+		else
+			SCREENMAN:SystemMessage("WTF? "..params.Name);
+		end;
+	end;
+	
+	--I guess this might as well be here since all the musicwheel stuff is here already
 	--Handle group descriptions.
 	LoadFont("frutiger/frutiger 24px")..{
 		InitCommand=cmd(Center;addy,150;--[[diffusebottomedge,Color("Red")]]);

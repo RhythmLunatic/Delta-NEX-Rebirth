@@ -4,7 +4,7 @@
 
 An old StepMania theme, modded and fixed to support StepMania 5.0.12 along with other stuff.
 
-Rebirth mod written by Rhythm Lunatic with new graphics created by Joao Almeida.
+Rebirth mod written by Rhythm Lunatic with new graphics created by Joao Almeida. Rest of the credits are in credits.txt
 
 This theme is 100% free and open source. Don't abuse it and shove it on your bootlegged PIU machine, go buy the game if you want to run a business.
 
@@ -19,6 +19,22 @@ The theme will automatically hide group numbers if you have them (Such as 15-PRI
 To add announcers, make an announcer with a folder named Song Category Names and then put in the sound that matches your groups.
 
 Alternatively, you can just put the sound in the "info" folder in your group, as long as it's named sound.ogg/wav/mp3.
+
+## Basic Mode
+
+Basic Mode must be enabled in the settings to use this feature.
+
+The Basic Mode screen consists of songs that meet the requirements of having three single difficulties less than lv7 and one doubles difficulty less than lv7.
+
+Just like real PIU you can enter the full mode code to go into full mode.
+
+## Free Play
+
+When using Free Play, you will be able to play three stages. This theme does not use PIU's heart system.
+
+Extra Stage and OMES is currently unimplemented.
+
+When not in game the theme will cycle through the Attract, logo, and title screen.
 
 ## Frequently Asked Questions
 
@@ -37,3 +53,7 @@ A: StepF2, being the paragon of good standards, uses Double charts for Double Pe
 Q: I get an error when I press UpLeft or UpRight on the song select screen.
 
 A: Your StepMania is out of date. Use my branch or grab a nightly from the main branch.
+
+Q: Your theme lags when I scroll through songs.
+
+A: Can't be fixed without editing the StepMania source. It runs at full speed on Linux, though. (ProTip: Use a lowlatency kernel if you're putting this on your arcade cabinet!)

@@ -5,7 +5,7 @@ local t = Def.ActorFrame {
 	};
 
 	LoadActor("LASH")..{
-		InitCommand=cmd(x,SCREEN_CENTER_X-150;y,SCREEN_CENTER_Y+18;diffusealpha,0;sleep,4.15;linear,0.5;diffusealpha,1;)
+		InitCommand=cmd(x,SCREEN_CENTER_X-150;y,SCREEN_CENTER_Y+18;cropright,1;sleep,4.15;linear,0.5;cropright,0;)
 	};
 
 	LoadActor("A")..{

@@ -19,37 +19,6 @@
 -- StepManiaCredits.AddSection(theme_credits, "Special Thanks", true)
 
 -- StepManiaCredits is defined in _fallback/Scripts/04 CreditsHelpers.lua.
-local theme_credits = {
-	name= "Theme Credits",
-	"Respect Mod: RhythmLunatic",
-	"Original Authors: \n",
-	"\nProgrammers:",
-	"AJ",
-	"Shakesoda",
-	"Midiman",
-	"TeruFSX",
-	"DaisuMaster",
-	"Saturn2888",
-	"\nBeta Testers",
-	"Keoma",
-	"Aegis",
-	"[mDM] Cesar",
-	"Meck",
-	"Keb Kab",
-	"\nNoteskin:",
-	"Keoma",
-	"Aegis",
-	"\nSounds",
-	"D_Trucks",
-	"Sanxion7 (flashkit.com)",
-	"Andamiro",
-	"\nIdeas:",
-	"Keoma",
-	"Meck",
-	"Keb Kab"
-};
---It's broken, no idea why.
---StepManiaCredits.AddSection(theme_credits);
 
 local line_on = cmd(zoom,0.875;strokecolor,color("#444444");shadowcolor,color("#444444");shadowlength,1)
 local section_on = cmd(diffuse,color("#88DDFF");strokecolor,color("#446688");shadowcolor,color("#446688");shadowlength,1)
@@ -85,11 +54,17 @@ end
 
 
 creditScroller.BeginCommand=function(self)
-	--SCREENMAN:GetTopScreen():PostScreenMessage( 'SM_MenuTimer', (creditScroller.SecondsPerItem * (#creditScroller + item_padding_start) + 10) );
-    SCREENMAN:GetTopScreen():PostScreenMessage('SM_MenuTimer', 116);
+	SCREENMAN:GetTopScreen():PostScreenMessage( 'SM_MenuTimer', (creditScroller.SecondsPerItem * (#creditScroller + item_padding_start) + 5) );
+    --SCREENMAN:GetTopScreen():PostScreenMessage('SM_MenuTimer', 116);
 end;
 
 return Def.ActorFrame{
+	
+	LoadActor(THEME:GetPathG("","_VIDEOS/back"))..{
+		InitCommand=cmd(FullScreen;Center;);
+		OffCommand=cmd(accelerate,3;zoom,25);
+	};
+	
 	creditScroller..{
 		--InitCommand=cmd(CenterX;y,SCREEN_BOTTOM-64);
         OnCommand=cmd(sleep,creditScroller.SecondsPerItem * (#creditScroller + item_padding_start) + 3;linear,1;diffusealpha,0);

@@ -826,7 +826,7 @@ t[#t+1] = StandardDecorationFromFileOptional("SortOrder","SortOrderText") .. {
 	SetCommand=function(self)
 		local s = SortOrderToLocalizedString( GAMESTATE:GetSortOrder() );
 		self:settext( s );
-		self:playcommand("Sort");
+		--self:playcommand("Sort");
 	end;
 };
 
@@ -958,8 +958,8 @@ would know how to do this!!
 	InitCommand=cmd(draworder,110;visible,THEME:GetMetric("GameState", "AllowLateJoin"));
 }]]
 t[#t+1] = Def.ActorFrame{
-	LoadActor("JoinOverlay")..{
-		InitCommand=cmd(xy,SCREEN_WIDTH*.2,SCREEN_CENTER_Y-50;visible,THEME:GetMetric("GameState", "AllowLateJoin");playcommand,"RefreshPlayer");
+	LoadActor(THEME:GetPathG("","JoinOverlay"))..{
+		InitCommand=cmd(xy,SCREEN_WIDTH*.15,SCREEN_CENTER_Y-50;zoom,.75;visible,THEME:GetMetric("GameState", "AllowLateJoin");playcommand,"RefreshPlayer");
 		PlayerJoinedMessageCommand=cmd(playcommand,"RefreshPlayer");
 		CoinModeChangedMessageCommand=cmd(playcommand,"RefreshPlayer");
 		CoinInsertedMessageCommand=cmd(playcommand,"RefreshPlayer");
@@ -967,8 +967,8 @@ t[#t+1] = Def.ActorFrame{
 			self:visible(not GAMESTATE:IsHumanPlayer(PLAYER_1))
 		end;
 	};
-	LoadActor("JoinOverlay")..{
-		InitCommand=cmd(xy,SCREEN_WIDTH*.9,SCREEN_CENTER_Y-50;visible,THEME:GetMetric("GameState", "AllowLateJoin");playcommand,"RefreshPlayer");
+	LoadActor(THEME:GetPathG("","JoinOverlay"))..{
+		InitCommand=cmd(xy,SCREEN_WIDTH*.85,SCREEN_CENTER_Y-50;zoom,.75;visible,THEME:GetMetric("GameState", "AllowLateJoin");playcommand,"RefreshPlayer");
 		PlayerJoinedMessageCommand=cmd(playcommand,"RefreshPlayer");
 		CoinModeChangedMessageCommand=cmd(playcommand,"RefreshPlayer");
 		CoinInsertedMessageCommand=cmd(playcommand,"RefreshPlayer");
@@ -1378,7 +1378,7 @@ end;
 
 --I love having seizures! /s
 --Change it to true if you want the flashing lights back.
-t[#t+1] = LoadActor(THEME:GetPathG("","header"), GAMESTATE:GetCurrentGame():GetName() == "pump")..{
+t[#t+1] = LoadActor(THEME:GetPathG("","header"), false)..{
 	InitCommand=cmd(draworder,100);
 }
 

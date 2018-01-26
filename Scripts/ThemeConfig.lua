@@ -1,6 +1,6 @@
 
 
-function FailMode()
+--[[function FailMode()
 	if GetUserPref("UserPrefGameLevel") == "Ultimate" then
 		return "FailImmediate"
 	end
@@ -13,7 +13,7 @@ function FailMode()
 	if GetUserPref("UserPrefGameLevel") == "Beginner" then
 		return "FailOff"
 	end
-end
+end]]
 
 
 function scorecap(n) -- credit http://richard.warburton.it
@@ -24,7 +24,7 @@ end
 
 
 
-function InitUserPrefs()
+--[[function InitUserPrefs()
 	if GetUserPref("UserPrefGameLevel") == nil then
 		SetUserPref("UserPrefGameLevel", "Standard");
 	end;
@@ -46,7 +46,7 @@ function InitUserPrefs()
 	end;
 
 		
-end;
+end;]]
 
 
 function SetPrefBranch()
@@ -116,9 +116,33 @@ function UserPrefGameLevel()
 	return t;
 end
 
-
-
-
+function BasicModeConfig()
+	local t = {
+		Name = "EnableBasicMode";
+		LayoutType = "ShowAllInRow";
+		SelectType = "SelectOne";
+		OneChoiceForAllPlayers = true;
+		ExportOnChange = true;
+		Choices = {"Enabled", "Disabled"};
+		--Values = { true, false };
+		LoadSelections = function(self, list, pn)
+			if ReadPrefFromFile("UserPrefBasicMode") == "Enabled" then
+				list[1] = true;
+			else
+				list[2] = true;
+			end;
+		end;
+		SaveSelections = function(self, list, pn)
+			if list[1] then
+				WritePrefToFile("UserPrefBasicMode","Enabled");
+			else
+				WritePrefToFile("UserPrefBasicMode","Disabled");
+			end;
+		end;
+	};
+	setmetatable( t, t );
+	return t;
+end;
 
 
 function UserPrefLite()

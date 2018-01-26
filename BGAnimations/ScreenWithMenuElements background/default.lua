@@ -11,9 +11,9 @@ t[#t+1]=Def.ActorFrame{
 		OnCommand=cmd(queuecommand,"Loop");
 		LoopCommand=cmd(diffusealpha,0.5;linear,1;diffusealpha,1;linear,1;diffusealpha,0.5;queuecommand,"Loop");
 	};]]
-	LoadActor("LOAD") .. {
+	--[[LoadActor("LOAD") .. {
 		InitCommand=cmd(zoomto,SCREEN_WIDTH+1,SCREEN_HEIGHT);
-	};
+	};]]
 };
 
 

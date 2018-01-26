@@ -4,7 +4,7 @@ local t = Def.ActorFrame{
 t[#t+1] = Def.ActorFrame{
   FOV=90;
   InitCommand=cmd(Center);
-	LoadActor("back") .. {
+	LoadActor(THEME:GetPathG("","_VIDEOS/init")) .. {
 		InitCommand=cmd(scaletoclipped,SCREEN_WIDTH,SCREEN_HEIGHT;);
 		OnCommand=cmd(pause;diffusealpha,0;sleep,7;queuecommand,"Play"); --play ignores sleep
 		PlayCommand=cmd(play;linear,.3;diffusealpha,1);
@@ -22,8 +22,12 @@ t[#t+1] = Def.ActorFrame{
 		OnCommand=cmd(sleep,11;linear,0.5;diffusealpha,0.8;y,0;sleep,2;linear,0.5;y,-50;diffusealpha,0;);
 	};
 	LoadActor("author")..{
-		InitCommand=cmd(y,50;diffusealpha,0;zoom,0.4);
-		OnCommand=cmd(sleep,14;linear,0.5;diffusealpha,0.8;y,0;sleep,2;linear,0.5;zoom,0.45;diffusealpha,0;);
+		InitCommand=cmd(y,100;diffusealpha,0;zoom,0.4);
+		OnCommand=cmd(sleep,14;linear,0.5;diffusealpha,0.8;y,50;sleep,2;linear,0.5;zoom,0.45;diffusealpha,0;);
+	};
+	LoadActor("RhythmLunatic logo")..{
+		InitCommand=cmd(y,-100;cropright,1;diffusealpha,0);
+		OnCommand=cmd(sleep,14;diffusealpha,1;decelerate,1;cropright,0;sleep,1.5;linear,0.5;diffusealpha,0;);
 	};
 };
 

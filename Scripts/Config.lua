@@ -1,5 +1,7 @@
 --//================================================================
 
+
+
 local theme_conf_default = {
     BGBrightness = 100,
     DefaultBG = false,
@@ -126,7 +128,7 @@ local player_conf_default= {
     SpeedModifier = 25,
 }
 
-NOTESCONFIG = notefield_prefs_config;
+--[[NOTESCONFIG = notefield_prefs_config;
 PLAYERCONFIG = create_lua_config{
     name = "PLAYERCONFIG", 
     file = "player_config.lua",
@@ -134,7 +136,7 @@ PLAYERCONFIG = create_lua_config{
 }
 
 add_standard_lua_config_save_load_hooks(PLAYERCONFIG);
-set_notefield_default_yoffset(170)
+set_notefield_default_yoffset(170)]]
 
 --//================================================================
 

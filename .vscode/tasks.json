@@ -1,0 +1,12 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "StepMania",
+            "type": "shell",
+            "command": "/media/arc/LocalHDD/Games/StepMania\\ 5\\ IIDXtheme/stepmania-linux"
+        }
+    ]
+}

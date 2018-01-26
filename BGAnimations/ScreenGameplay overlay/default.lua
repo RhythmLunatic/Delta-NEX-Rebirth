@@ -83,7 +83,7 @@ if style == "Single" then
 				local name = profile:GetDisplayName();
 				
 				if GAMESTATE:IsHumanPlayer(PLAYER_1) == true then
-					if name=="" then
+					if name=="" and SCREENMAN:GetTopScreen():GetName() ~= "ScreenDemonstration" then
 						self:settext("Player 1");
 					else
 						self:settext( name );
@@ -175,6 +175,7 @@ end
 t[#t+1] = Def.ActorFrame{
 
 	InitCommand=cmd(y,SCREEN_BOTTOM-20);
+	OnCommand=cmd(visible,SCREENMAN:GetTopScreen():GetName() ~= "ScreenDemonstration");
 	LoadActor("progressmeter")..{
 		InitCommand=cmd(diffusealpha,.8;zoomx,0;horizalign,left;x,SCREEN_CENTER_X-607/2);
 		OnCommand=cmd(sleep,math.abs(GAMESTATE:GetCurrentSong():GetFirstBeat());linear,GAMESTATE:GetCurrentSong():GetStepsSeconds();zoomx,1);
