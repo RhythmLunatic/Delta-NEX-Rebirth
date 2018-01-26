@@ -60,7 +60,10 @@ local function inputs(event)
 	if event.type == "InputEventType_Release" then return end
 	
 	if button == "Center" then
-		SCREENMAN:SystemMessage(scroller:get_info_at_focus_pos());
+		--SCREENMAN:SystemMessage(scroller:get_info_at_focus_pos());
+		--IT'S A HACK! (if you don't put local it makes a global variable)
+		currentGroup = scroller:get_info_at_focus_pos();
+		SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen");
 	elseif button == "DownLeft" then
 		scroller:scroll_by_amount(-1);
 	elseif button == "DownRight" then

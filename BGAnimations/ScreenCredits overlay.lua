@@ -69,4 +69,10 @@ return Def.ActorFrame{
 		--InitCommand=cmd(CenterX;y,SCREEN_BOTTOM-64);
         OnCommand=cmd(sleep,creditScroller.SecondsPerItem * (#creditScroller + item_padding_start) + 3;linear,1;diffusealpha,0);
 	};
+
+	LoadFont("venacti/_venacti 26px bold diffuse")..{
+		Text="Thank You For Playing!";
+		InitCommand=cmd(Center;diffusebottomedge,Color("Blue");shadowcolor,color("#000000");shadowlength,1;fadeleft,1;faderight,1;diffusealpha,0);
+		OffCommand=cmd(linear,1;diffusealpha,1;fadeleft,0;faderight,0);
+	}
 };

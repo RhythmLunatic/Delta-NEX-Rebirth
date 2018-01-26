@@ -67,11 +67,17 @@ end;
 local t = Def.ActorFrame{
 	OnCommand=function(self)
 	
+		
         --Custom input code that isn't confusing at all /s
 		SCREENMAN:GetTopScreen():AddInputCallback(inputs);
 		--SCREENMAN:set_input_redirected(PLAYER_1,false);
 		
 		ScreenSelectMusic = SCREENMAN:GetTopScreen();
+		--CurrentGroup comes from the group select overlay (It's a global variable hack!)
+		if currentGroup ~= nil then
+			SCREENMAN:SystemMessage(currentGroup);
+			ScreenSelectMusic:GetChild('MusicWheel'):SetOpenSection(currentGroup);
+		end;
 	end;
 	
 	CodeMessageCommand=function(self, params)
