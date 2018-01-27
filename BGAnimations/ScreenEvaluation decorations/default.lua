@@ -16,10 +16,8 @@ t[#t+1] = Def.ActorFrame {
 	};]]
 
 
-	LoadActor("../ScreenSelectMusic background/back_nex") .. {
+	LoadActor("../_backgroundRedir", "musicSelect") .. {
 		InitCommand=function(self)
-			self:scaletoclipped(SCREEN_WIDTH,SCREEN_HEIGHT);
-			self:Center();
 			self:visible(not GAMESTATE:GetCurrentSong():HasBackground());
 		end;
 	};

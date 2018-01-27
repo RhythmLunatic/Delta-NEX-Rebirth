@@ -23,8 +23,8 @@ local function inputs(event)
 	if ScreenSelectMusic:GetName() == "ScreenSelectMusic" then
 		if button == "UpRight" or button == "UpLeft" then
 			if ScreenSelectMusic:CanOpenOptionsList(pn) then --If options list isn't currently open
-				ScreenSelectMusic:StartTransitioningScreen("SM_GoToPrevScreen");
-				
+				--ScreenSelectMusic:StartTransitioningScreen("SM_GoToPrevScreen");
+				SCREENMAN:SetNewScreen("ScreenSelectGroup");
 				
 				--Yes, this is actually how the StepMania source does it. It's pretty buggy.
 				--local MusicWheel = ScreenSelectMusic:GetChild('MusicWheel');
@@ -75,8 +75,13 @@ local t = Def.ActorFrame{
 		ScreenSelectMusic = SCREENMAN:GetTopScreen();
 		--CurrentGroup comes from the group select overlay (It's a global variable hack!)
 		if currentGroup ~= nil then
-			SCREENMAN:SystemMessage(currentGroup);
+			--SCREENMAN:SystemMessage(currentGroup);
 			ScreenSelectMusic:GetChild('MusicWheel'):SetOpenSection(currentGroup);
+			--ScreenSelectMusic:GetChild('MusicWheel'):Move(1);
+			--This doesn't actually work. I think the MusicWheel is bugged.
+			--[[local songs = SONGMAN:GetSongsInGroup(currentGroup);
+			local out = ScreenSelectMusic:GetChild('MusicWheel'):SelectSong(songs[1])
+			SCREENMAN:SystemMessage(tostring(out).." "..songs[1]:GetTranslitMainTitle());]]
 		end;
 	end;
 	
@@ -85,7 +90,10 @@ local t = Def.ActorFrame{
 			ScreenSelectMusic:lockinput(3);
 			--SCREENMAN:SystemMessage("Full Mode triggered!");
 			GAMESTATE:ApplyGameCommand("sort,group");
-			ScreenSelectMusic:StartTransitioningScreen("SM_GoToPrevScreen");
+			--ScreenSelectMusic:StartTransitioningScreen("SM_GoToPrevScreen");
+			SOUND:PlayOnce(THEME:GetPathS("", "FULL_SOUND"));
+			SOUND:PlayOnce(THEME:GetPathS("", "FULL_VOICE"));
+			SCREENMAN:SetNewScreen("ScreenSelectMusic");
 		else
 			SCREENMAN:SystemMessage("WTF? "..params.Name);
 		end;

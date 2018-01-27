@@ -73,7 +73,7 @@ local t = Def.ActorFrame {
 	};
 
 	 LoadFont("Common normal") .. {
-		Text="Delta NEX Rebirth 1.0";
+		Text="Delta NEX Rebirth "..tostring(themeVersion);
 		InitCommand=cmd(horizalign,left;x,SCREEN_LEFT+15;y,SCREEN_TOP+15;zoom,0.45)
 	};
 

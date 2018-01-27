@@ -62,7 +62,10 @@ return Def.ActorFrame{
 	
 	LoadActor(THEME:GetPathG("","_VIDEOS/back"))..{
 		InitCommand=cmd(FullScreen;Center;);
-		OffCommand=cmd(accelerate,3;zoom,25);
+		OffCommand=cmd(accelerate,3;zoom,25;queuecommand,"StopMusic");
+		StopMusicCommand=function(self)
+			GAMESTATE:ApplyGameCommand("stopmusic");
+		end;
 	};
 	
 	creditScroller..{
