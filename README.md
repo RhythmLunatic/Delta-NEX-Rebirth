@@ -1,6 +1,6 @@
 # Pump It Up Delta NEX Rebirth
 
-### DO NOT USE THIS IN ARCADES. DO NOT ENABLE PAY MODE. DO NOT SELL IT. DO NOT REMOVE THE CREDITS. NO NO NO. 
+### DO NOT ENABLE PAY MODE. DO NOT SELL THIS THEME. DO NOT REMOVE THE CREDITS. NO NO NO. 
 
 An old StepMania theme, modded and fixed to support StepMania 5.0.12 along with other stuff.
 
