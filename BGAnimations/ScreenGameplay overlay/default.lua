@@ -51,7 +51,7 @@ if style == "Single" then
 		
 		--The good lifebar
 		t[#t+1] = LoadActor("lifebar", pn)..{
-			InitCommand=cmd(visible,GAMESTATE:IsHumanPlayer(PLAYER_1);y,34);
+			InitCommand=cmd(y,34);
 			OnCommand=function(self)
 				if pn == PLAYER_1 then
 					self:x(225);
@@ -79,12 +79,12 @@ if style == "Single" then
 		
 			
 			BeginCommand=function(self)
-				local profile = PROFILEMAN:GetProfile(PLAYER_1);
+				local profile = PROFILEMAN:GetProfile(pn);
 				local name = profile:GetDisplayName();
 				
-				if GAMESTATE:IsHumanPlayer(PLAYER_1) == true then
+				if GAMESTATE:IsHumanPlayer(pn) == true then
 					if name=="" and SCREENMAN:GetTopScreen():GetName() ~= "ScreenDemonstration" then
-						self:settext("Player 1");
+						self:settext("Player");
 					else
 						self:settext( name );
 					end

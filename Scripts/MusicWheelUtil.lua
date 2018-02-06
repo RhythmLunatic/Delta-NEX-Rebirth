@@ -29,9 +29,10 @@ function AssembleBasicMode()
 	for _, song in pairs(SONGMAN:GetAllSongs()) do
 		local steps = song:GetStepsByStepsType('StepsType_Pump_Single');
 		local doublesSteps = song:GetStepsByStepsType('StepsType_Pump_Double');
-		if #steps >= 3 and doublesSteps then --No need to check length of doubles steps since if it's not nil it will have at least one
+		--Trace(song:GetDisplayMainTitle());
+		if #steps >= 3 and #doublesSteps >= 1 then --Somehow doublesSteps can be non nil despite having no doubles steps.
 			if steps[1]:GetMeter() < 9 and steps[2]:GetMeter() < 9 and steps[3]:GetMeter() < 9 and doublesSteps[1]:GetMeter() < 9 then
-				--Trace(song:GetDisplayMainTitle());
+				
 				local shortSongDir = string.match(song:GetSongDir(),isolatePattern)
 				--Trace("sDir: "..shortSongDir)
 				local groupName = song:GetGroupName()
