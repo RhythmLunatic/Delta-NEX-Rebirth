@@ -12,12 +12,22 @@ local item_mt= {
 	-- create_actors must return an actor.  The name field is a convenience.
 	create_actors= function(self, params)
 	  self.name= params.name
-		return Def.BitmapText{
-		  Name= name, Font= "Common Normal", InitCommand= function(subself)
-			  -- Setting self.container to point to the actor gives a convenient
+		return Def.ActorFrame{		
+			InitCommand= function(subself)
+				-- Setting self.container to point to the actor gives a convenient
 				-- handle for manipulating the actor.
-			  self.container= subself
-			end}
+		  		self.container= subself
+			end;
+				
+			Def.BitmapText{
+				Name= "text",
+				Font= "Common Normal",
+			};
+			
+			Def.Sprite{
+				Name="banner";
+			};
+		};
 	end,
 	-- item_index is the index in the list, ranging from 1 to num_items.
 	-- is_focus is only useful if the disable_wrapping flag in the scroller is
@@ -25,10 +35,10 @@ local item_mt= {
 	transform= function(self, item_index, num_items, is_focus)
 		local offsetFromCenter = item_index-math.floor(numWheelItems/2)
 		PrimeWheel(self.container,offsetFromCenter,item_index,numWheelItems)
-		--[[self.container:xy(item_index*50,item_index*50)
-		self.container:zoom(math.abs(offsetFromCenter)+1/2)
+		--self.container:x(item_index*50)
+		--self.container:zoom(math.abs(offsetFromCenter)+1/2)
 		
-		if offsetFromCenter == 0 then
+		--[[if offsetFromCenter == 0 then
 			self.container:diffuse(Color("Red"));
 		else
 			self.container:diffuse(Color("White"));
@@ -36,10 +46,11 @@ local item_mt= {
 	end,
 	-- info is one entry in the info set that is passed to the scroller.
 	set= function(self, info)
-	  self.container:settext(info)
+	  self.container:GetChild("text"):settext(info)
+	  self.container:GetChild("banner"):Load(SONGMAN:GetSongGroupBannerPath(info))
 	end,
 	gettext=function(self)
-		return self.container:gettext()
+		return self.container:GetChild("text"):gettext()
 	end,
 }}
 --local info_set= {"fin", "tail", "gorg", "lilk", "zos", "mink", "aaa"}
@@ -69,6 +80,11 @@ local function inputs(event)
 	elseif button == "DownRight" then
 		scroller:scroll_by_amount(1);
 	end
+	
+	if button == "MenuDown" then
+		local groupName = scroller:get_info_at_focus_pos()
+		SCREENMAN:SystemMessage(groupName.." | "..SONGMAN:GetSongGroupBannerPath(groupName));
+	end;
 	
 end;
 

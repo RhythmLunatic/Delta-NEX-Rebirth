@@ -15,9 +15,10 @@ LoadActor("Timing",player) .. {
 	
 		if GAMESTATE:GetCurrentStyle():GetStyleType() == "StyleType_TwoPlayersSharedSides" then	
 			if GAMESTATE:GetMasterPlayerNumber() == "PlayerNumber_P2" then
-				self:x(0+(THEME:GetMetric("ScreenGameplay","PlayerP1OnePlayerOneSideX")/2));
+			--What was the point of this? They're treated as one player, so there's only going to be a judgement label in the middle.
+				--self:x(0+(THEME:GetMetric("ScreenGameplay","PlayerP1OnePlayerOneSideX")/2));
 			else
-				self:x(0-(THEME:GetMetric("ScreenGameplay","PlayerP2OnePlayerOneSideX")/5));
+				--self:x(0-(THEME:GetMetric("ScreenGameplay","PlayerP2OnePlayerOneSideX")/5));
 			end
 			
 			if Var "LoadingScreen" == "ScreenEdit" then

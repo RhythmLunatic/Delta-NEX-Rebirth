@@ -912,7 +912,7 @@ t[#t+1] = LoadFont("venacti/_venacti 26px bold diffuse")..{
 }
 
 t[#t+1] = LoadFont("venacti/_venacti 26px bold diffuse")..{
-	Text="SORT";
+	Text="GENRE";
 	InitCommand=cmd(xy,SCREEN_WIDTH*.9,10;uppercase,true;draworder,101;strokecolor,Color("Outline");zoom,0.45;shadowlength,1);
 
 };
@@ -920,7 +920,12 @@ t[#t+1] = LoadFont("venacti/_venacti 26px bold diffuse")..{
 t[#t+1] = LoadFont("venacti/_venacti 26px bold diffuse")..{
 	InitCommand=cmd(diffusetopedge,0.5,0.88,0.95,1;diffusebottomedge,1,1,1,1;uppercase,true;draworder,110;horizalign,center;x,SCREEN_WIDTH*.9;y,23;zoomx,0.385;zoomy,0.38;shadowlength,1);
 	CurrentSongChangedMessageCommand=function(self)
-		self:settext(ToEnumShortString(GAMESTATE:GetSortOrder()));
+		local song = GAMESTATE:GetCurrentSong();
+		if song and song:GetGenre() ~= "" then
+			self:settext(song:GetGenre());
+		else
+			self:settext("NONE");
+		end;
 	end;
 }
 

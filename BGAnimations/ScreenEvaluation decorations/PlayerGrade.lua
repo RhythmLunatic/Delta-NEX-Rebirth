@@ -7,6 +7,8 @@ end
 local delay = 0.325
 
 local dancepoints = round(STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetPercentDancePoints()*100)
+local misses = 	STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetTapNoteScores("TapNoteScore_Miss")+
+		STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetTapNoteScores("TapNoteScore_CheckpointMiss");
 
 --local grade = ToEnumShortString(STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetGrade());
 
@@ -42,6 +44,10 @@ end
 
 return Def.ActorFrame{
 
+	--[[OnCommand=function(self)
+		SCREENMAN:SystemMessage("DP: "..dancepoints.." | Misses: "..misses.." | Grade: "..grade);
+	end;]]
+	
 	--GRADE
 	LoadActor(THEME:GetPathG("","GradeDisplayEval/"..grade))..{
 		InitCommand=cmd(draworder,200;zoom,1.2;skewx,-0.1;);
