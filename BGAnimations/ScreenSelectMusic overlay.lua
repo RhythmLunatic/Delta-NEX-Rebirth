@@ -77,7 +77,8 @@ local t = Def.ActorFrame{
 		if currentGroup ~= nil then
 			--SCREENMAN:SystemMessage(currentGroup);
 			ScreenSelectMusic:GetChild('MusicWheel'):SetOpenSection(currentGroup);
-			--ScreenSelectMusic:GetChild('MusicWheel'):Move(1);
+			ScreenSelectMusic:GetChild('MusicWheel'):Move(1);
+			ScreenSelectMusic:GetChild('MusicWheel'):Move(0);
 			--This doesn't actually work. I think the MusicWheel is bugged.
 			--[[local songs = SONGMAN:GetSongsInGroup(currentGroup);
 			local out = ScreenSelectMusic:GetChild('MusicWheel'):SelectSong(songs[1])
@@ -95,7 +96,7 @@ local t = Def.ActorFrame{
 			SOUND:PlayOnce(THEME:GetPathS("", "FULL_VOICE"));
 			SCREENMAN:SetNewScreen("ScreenSelectMusic");
 		else
-			SCREENMAN:SystemMessage("WTF? "..params.Name);
+			--SCREENMAN:SystemMessage("WTF? "..params.Name);
 		end;
 	end;
 	
