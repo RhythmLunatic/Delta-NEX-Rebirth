@@ -144,7 +144,11 @@ function UpdateInternal3(self, Player)
 					smallframe:visible(false);
 					bigframe:visible(false);
 					scroller:visible(false);
-					seltext:settext('No profile');
+					if PREFSMAN:GetPreference("MemoryCardProfiles") == false then
+						seltext:settext('No profile');
+					else
+						seltext:settext("no usb inserted");
+					end;
 				end;
 			end;
 		else

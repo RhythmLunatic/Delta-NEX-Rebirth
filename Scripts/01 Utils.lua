@@ -17,6 +17,12 @@ local main_credits = {
 };
 StepManiaCredits.AddSection(main_credits);
 
+local orig_credits = {
+	name = "Pump It Up Delta",
+	"Created by Luizsan"
+}
+StepManiaCredits.AddSection(orig_credits);
+
 local prog_credits = {
 	name = "Delta Programmers",
 	"AJ",
