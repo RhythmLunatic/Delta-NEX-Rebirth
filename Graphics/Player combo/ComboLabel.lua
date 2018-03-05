@@ -23,21 +23,16 @@ local t = Def.ActorFrame {
 			if param.Misses then
 				self:diffuse( color("#FF2020") );
 			end
-			if GetUserPref("UserPrefJudgmentType") == "Normal" or GetUserPref("UserPrefJudgmentType") == "Deviation" then
-				Pulse( self, param );
-			end
 
 			if GetUserPref("UserPrefJudgmentType") == "NX" then
-				(cmd(stoptweening;diffusealpha,1;zoomx,0.65;zoomy,0.75;linear,0.075;zoomx,0.465;zoomy,0.385;sleep,1;linear,0.2;diffusealpha,0;zoomx,1.05;zoomy,0.5))(c.ComboLabel,param);
+				(cmd(stoptweening;diffusealpha,1;zoomx,0.65;zoomy,0.75;linear,0.075;zoomx,0.465;zoomy,0.385;sleep,1;linear,0.2;diffusealpha,0;zoomx,1.05;zoomy,0.5))(self,param);
+			elseif GetUserPref("UserPrefJudgmentType") == "FIESTA2" then
+			(cmd(stoptweening;diffusealpha,1;zoomx,0.5;zoomy,1;linear,0.125;zoomx,0.35;zoomy,0.35;sleep,0.35;linear,0.2;diffusealpha,0;zoomx,1.5;zoomy,0.05))(self,param);
+			elseif GetUserPref("UserPrefJudgmentType") == "Delta LED" then
+				(cmd(stoptweening;diffusealpha,1;zoomx,0.75;zoomy,0.65;linear,0.075;zoomx,0.45;zoomy,0.45;sleep,0.3;linear,0.2;diffusealpha,0;zoomx,1;zoomy,0.2))(self,param);
+			else --if GetUserPref("UserPrefJudgmentType") == "Normal" or GetUserPref("UserPrefJudgmentType") == "Deviation" then
+				Pulse( self, param );
 			end
-
-			if GetUserPref("UserPrefJudgmentType") == "FIESTA2" then
-			(cmd(stoptweening;diffusealpha,1;zoomx,0.5;zoomy,1;linear,0.125;zoomx,0.35;zoomy,0.35;sleep,0.35;linear,0.2;diffusealpha,0;zoomx,1.5;zoomy,0.05))(c.ComboLabel,param);
-			end		
-
-			if GetUserPref("UserPrefJudgmentType") == "DELTANEX" then
-				(cmd(stoptweening;diffusealpha,1;zoomx,0.75;zoomy,0.65;linear,0.075;zoomx,0.45;zoomy,0.45;sleep,0.3;linear,0.2;diffusealpha,0;zoomx,1;zoomy,0.2))(c.ComboLabel,param);
-			end	
 
 			-- Do the above even if we're not going to show the combo, so the
 			-- tweening always matches up with the judgement.

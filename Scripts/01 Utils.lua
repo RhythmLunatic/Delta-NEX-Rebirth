@@ -5,6 +5,18 @@ function Actor:Cover()
 	self:scaletocover(0,0,SCREEN_RIGHT,SCREEN_BOTTOM);
 end;
 
+function ListActorChildren(frame)
+	if frame:GetNumChildren() == 0 then
+		return "No children in frame.";
+	end
+	local list = frame:GetNumChildren().." children: ";
+	local children = frame:GetChildren()
+	for key,value in pairs(children) do
+		list = list..key..", ";
+	end
+	return list;
+end
+
 --PIU D.N.R. Credits!
 local main_credits = {
 	name="Pump It Up Delta NEX Rebirth",

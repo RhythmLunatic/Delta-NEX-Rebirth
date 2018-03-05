@@ -92,6 +92,9 @@ local function inputs(event)
 		--SCREENMAN:SystemMessage(scroller:get_info_at_focus_pos());
 		--IT'S A HACK! (if you don't put local it makes a global variable)
 		currentGroup = scroller:get_info_at_focus_pos();
+		local curItem = scroller:get_actor_item_at_focus_pos();
+		--SCREENMAN:SystemMessage(ListActorChildren(curItem.container));
+		curItem.container:GetChild("banner"):accelerate(.3):zoom(2);
 		SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen");
 	elseif button == "DownLeft" then
 		scroller:scroll_by_amount(-1);
@@ -101,7 +104,11 @@ local function inputs(event)
 		scroller:scroll_by_amount(1);
 		SOUND:PlayOnce(THEME:GetPathS("MusicWheel", "change"));
 		MESSAGEMAN:Broadcast("NextGroup");
-	end
+	elseif button == "Back" then
+		SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToPrevScreen");
+	else
+		--SCREENMAN:SystemMessage(button);
+	end;
 	
 	if button == "MenuDown" then
 		local groupName = scroller:get_info_at_focus_pos()
@@ -116,7 +123,7 @@ local t = Def.ActorFrame{
 	OnCommand=function(self)
 		scroller:set_info_set(info_set, 1);
 		SCREENMAN:GetTopScreen():AddInputCallback(inputs);
-		SCREENMAN:SystemMessage(math.ceil(numWheelItems/2));
+		--SCREENMAN:SystemMessage(math.ceil(numWheelItems/2));
 	end;
 	
 };

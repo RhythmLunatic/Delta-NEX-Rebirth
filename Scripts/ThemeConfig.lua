@@ -260,7 +260,7 @@ function UserPrefJudgmentType()
 		ExportOnChange = true;
 		
 		-- escolhas em strings
-		Choices = { "Normal","Deviation","NX","FIESTA 2","Delta LED"};
+		Choices = { "Normal","ProTiming","NX","FIESTA 2","Delta LED"};
 		LoadSelections = function(self, list, pn)
 			if ReadPrefFromFile("UserPrefJudgmentType") == nil then
 				list[1] = true;
@@ -283,7 +283,7 @@ function UserPrefJudgmentType()
 					list[4] = true;
 				end	
 				
-				if GetUserPref("UserPrefJudgmentType") == "DELTANEX" then
+				if GetUserPref("UserPrefJudgmentType") == "Delta LED" then
 					list[5] = true;
 				end					
 				
@@ -310,7 +310,7 @@ function UserPrefJudgmentType()
 				end				
 
 				if list[5] then
-					val = "DELTANEX";
+					val = "Delta LED";
 				end					
 				
 			-- cria a merda do arquivo
