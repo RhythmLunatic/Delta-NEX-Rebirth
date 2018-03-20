@@ -5,6 +5,14 @@ function Actor:Cover()
 	self:scaletocover(0,0,SCREEN_RIGHT,SCREEN_BOTTOM);
 end;
 
+function string.starts(String,Start)
+   return string.sub(String,1,string.len(Start))==Start
+end
+
+function string.ends(String,End)
+   return End=='' or string.sub(String,-string.len(End))==End
+end
+
 function ListActorChildren(frame)
 	if frame:GetNumChildren() == 0 then
 		return "No children in frame.";
@@ -21,10 +29,10 @@ end
 local main_credits = {
 	name="Pump It Up Delta NEX Rebirth",
 	{logo= "RL", name= "Programmed by Rhythm Lunatic"},
+	"Feature ideas by Jakub Throo Prymus",
 	"New graphics by Joao Almeida",
-	"Advertisement & Ideas by Jakub Throo Prymus",
 	"Special Thanks to LogosPump",
-	"Special Thanks to DDR SN3 Team",
+	"Special Thanks to Midflight Digital (DDR SN3 TEAM)",
 	"Special Thanks to Andamiro & Bemani"
 };
 StepManiaCredits.AddSection(main_credits);

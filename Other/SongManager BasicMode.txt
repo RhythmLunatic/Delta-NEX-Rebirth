@@ -1,1 +1,58 @@
 50-Custom Music/[Step1] Ma Chouchoute
+BasicModeGroup/(AA) 1000B06 - Deja Vu
+BasicModeGroup/(AA) 1009 - To The Sky
+BasicModeGroup/(AA) 1108 - Magic
+BasicModeGroup/(AA) 1116 - Mother
+BasicModeGroup/(AA) 1316 - Bad Girl Good Girl
+BasicModeGroup/(AA) 1323 - Heart Breaker
+BasicModeGroup/(AA) 1335 - Online
+BasicModeGroup/(AA) 1336 - Dam
+BasicModeGroup/(AA) 1337 - Sugar Eyes
+BasicModeGroup/(AA) 1341 - Yeo Rae A
+BasicModeGroup/(AA) 1425 - Sugar Conspiracy Theory
+BasicModeGroup/(AA) 1452 - One
+BasicModeGroup/(AA) 1485 - Ai, Yurete
+BasicModeGroup/(AA) 1486 - Setsuna Trip
+BasicModeGroup/(AB) 0109 - Funky Tonight
+BasicModeGroup/(AB) 0213 - Mobius Strip
+BasicModeGroup/(AB) 0318 - We Are
+BasicModeGroup/(AB) 1000B02 - Hot
+BasicModeGroup/(AB) 1000B13 - I'll Give You All My Love
+BasicModeGroup/(AB) 1007 - By Chance
+BasicModeGroup/(AB) 1113 - Last Farewell
+BasicModeGroup/(AB) 1315 - Nobody
+BasicModeGroup/(AB) 1317 - Step
+BasicModeGroup/(AB) 1318 - I'm The Best
+BasicModeGroup/(AB) 1319 - Can't Nobody
+BasicModeGroup/(AB) 1322 - Lie
+BasicModeGroup/(AB) 1325 - Be Mine
+BasicModeGroup/(AB) 1330 - Rabiosa
+BasicModeGroup/(AB) 1331 - Lovumba
+BasicModeGroup/(AB) 1438 - On and On
+BasicModeGroup/(AB) 1439 - Elvis
+BasicModeGroup/(AB) 1442 - Pandora
+BasicModeGroup/(AB) 1443 - Venus
+BasicModeGroup/(AB) 1444 - Hate, Don't Hate!
+BasicModeGroup/(AB) 1445 - Supermagic
+BasicModeGroup/(AB) 1448 - NoNoNo
+BasicModeGroup/(AB) 1467 - Limbo
+BasicModeGroup/(AB) 1468 - Melodia
+BasicModeGroup/(AB) 1495 - Unlock
+BasicModeGroup/(AB) 1496 - Heavy Rotation
+BasicModeGroup/(AC) 0112 - Another Truth
+BasicModeGroup/(AC) 0503 - Rolling Christmas
+BasicModeGroup/(AC) 1015 - Fire
+BasicModeGroup/(AC) 1112 - Shock
+BasicModeGroup/(AC) 1321 - Fantastic Baby
+BasicModeGroup/(AC) 1324 - Hands Up (East4A Mix)
+BasicModeGroup/(AC) 1332 - One Two Three Go!
+BasicModeGroup/(AC) 1334 - Sik Asik
+BasicModeGroup/(AC) 1437 - Bar Bar Bar
+BasicModeGroup/(AC) 1449 - Loner
+BasicModeGroup/(AD) 0212 - Com' Back
+BasicModeGroup/(AD) 0505 - Beethoven Virus
+BasicModeGroup/(AD) 1002 - Sorceress Elise
+BasicModeGroup/(AD) 1326 - Crayon
+BasicModeGroup/(AD) 1327 - Mackerel
+BasicModeGroup/(AD) 1446 - Sugar Free
+BasicModeGroup/(AD) 1451 - Ineffective Boss Without Power

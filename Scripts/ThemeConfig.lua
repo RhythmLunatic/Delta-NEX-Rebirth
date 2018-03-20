@@ -144,6 +144,33 @@ function BasicModeConfig()
 	return t;
 end;
 
+function BasicModeType()
+	local t = {
+		Name = "BasicModeType";
+		LayoutType = "ShowAllInRow";
+		SelectType = "SelectOne";
+		OneChoiceForAllPlayers = true;
+		ExportOnChange = true;
+		Choices = {"Autogen", "BasicModeGroup"};
+		LoadSelections = function(self, list, pn)
+			if ReadPrefFromFile("UserPrefBasicModeType") == "Autogen" then
+				list[1] = true;
+			else
+				list[2] = true;
+			end;
+		end;
+		SaveSelections = function(self, list, pn)
+			if list[1] then
+				WritePrefToFile("UserPrefBasicModeType","Autogen");
+			else
+				WritePrefToFile("UserPrefBasicModeType","BasicModeGroup");
+			end;
+		end;
+	};
+	setmetatable( t, t );
+	return t;
+end;
+
 
 function UserPrefLite()
 	local t = {

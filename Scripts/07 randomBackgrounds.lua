@@ -3,25 +3,25 @@ function getRandomBackground(p)
     -- Allow users to artbitrarily add new judgment graphics to /Graphics/_judgments/
     -- without needing to modify this script;
     -- instead of hardcoding a list of judgment fonts, get directory listing via FILEMAN.
-    local path = THEME:GetPathG("",p)
-    local files = FILEMAN:GetDirListing(path.."/")
+    --'path' is a gloabl variable, don't use it!
+    local fullPath = THEME:GetPathG("",p)
+    local files = FILEMAN:GetDirListing(fullPath.."/")
     local backgrounds = {}
     local backgroundsLength=0 --Fucking lua
 
     for k,filename in ipairs(files) do
 
-        local name = filename:sub(1, -5)
-        backgrounds[#backgrounds+1] = name
-        backgroundsLength = backgroundsLength + 1;
+        --local name = filename:sub(1, -5)
+        --backgrounds[#backgrounds+1] = name
+        --backgroundsLength = backgroundsLength + 1;
+        
         -- A user might put something that isn't a suitable judgment graphic
         -- into /Graphics/_judgments/ (also sometimes hidden files like .DS_Store show up here).
         -- Do our best to filter out such files now.
-        --[[if string.match(filename, " %dx%d") then
-            -- use regexp to get only the name of the graphic, stripping out the extension
-            local name = filename:gsub(" %dx%d", ""):gsub(".png", "")
-            backgrounds[#backgrounds+1] = name
+        if string.ends(filename, ".jpg") then
+            backgrounds[#backgrounds+1] = filename:sub(1, -5)
             backgroundsLength = backgroundsLength+1;
-        end]]
+        end
     end
     
    

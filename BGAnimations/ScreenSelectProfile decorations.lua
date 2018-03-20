@@ -40,7 +40,7 @@ t[#t+1] = LoadFont("venacti/_venacti 26px bold diffuse")..{
 
 --STAGE
 
-t[#t+1] = LoadFont("venacti/_venacti_ 26px bold monospace numbers")..{
+--[[t[#t+1] = LoadFont("venacti/_venacti_ 26px bold monospace numbers")..{
 	InitCommand=cmd(draworder,102;diffuse,0.9,0.9,0.9,0.9;uppercase,true;horizalign,center;x,SCREEN_CENTER_X-160;maxwidth,45;zoomx,0.55;zoomy,0.55;y,SCREEN_TOP+25;shadowlengthx,1;shadowlengthy,-1);
 	Text="00";
 };
@@ -63,7 +63,7 @@ t[#t+1] = LoadActor("B2") .. {
 t[#t+1] = LoadFont("venacti/_venacti 26px bold diffuse")..{
 		InitCommand=cmd(draworder,102;diffuse,0.6,0.6,0.6,0.6;shadowcolor,0,0,0,0.3;shadowlengthx,0.8;shadowlengthy,-0.8;horizalign,right;x,SCREEN_CENTER_X-185;y,SCREEN_TOP+16;zoom,0.40);
 		Text="STAGE"
-};
+};]]
 
 
 return t
