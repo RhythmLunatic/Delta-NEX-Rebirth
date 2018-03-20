@@ -13,6 +13,11 @@ function string.ends(String,End)
    return End=='' or string.sub(String,-string.len(End))==End
 end
 
+function ternary(cond, T, F)
+    if cond then return T else return F end
+end
+
+
 function ListActorChildren(frame)
 	if frame:GetNumChildren() == 0 then
 		return "No children in frame.";

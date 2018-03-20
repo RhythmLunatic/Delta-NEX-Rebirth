@@ -79,6 +79,8 @@ local t = Def.ActorFrame{
 			ScreenSelectMusic:GetChild('MusicWheel'):SetOpenSection(currentGroup);
 			ScreenSelectMusic:GetChild('MusicWheel'):Move(1);
 			ScreenSelectMusic:GetChild('MusicWheel'):Move(0);
+			--Set it back to nil so it doesn't switch songs every time you exit and enter the same folder (or returning from a song)
+			currentGroup = nil;
 			--This doesn't actually work. I think the MusicWheel is bugged.
 			--[[local songs = SONGMAN:GetSongsInGroup(currentGroup);
 			local out = ScreenSelectMusic:GetChild('MusicWheel'):SelectSong(songs[1])
@@ -94,6 +96,7 @@ local t = Def.ActorFrame{
 			--ScreenSelectMusic:StartTransitioningScreen("SM_GoToPrevScreen");
 			SOUND:PlayOnce(THEME:GetPathS("", "FULL_SOUND"));
 			SOUND:PlayOnce(THEME:GetPathS("", "FULL_VOICE"));
+			inBasicMode = false;
 			SCREENMAN:SetNewScreen("ScreenSelectMusic");
 		else
 			--SCREENMAN:SystemMessage("WTF? "..params.Name);

@@ -29,7 +29,17 @@ t[#t+1] = LoadFont("venacti/_venacti 26px bold diffuse") .. {
 					self:settext(diff);
 				end;
 			else
-				self:settext(diff);
+				if inBasicMode then
+					if steps:GetMeter() <= 3 then
+						self:settext("NORMAL")
+					elseif steps:GetMeter() <= 7 then
+						self:settext("HARD")
+					else
+						self:settext("VERY HARD");
+					end;
+				else
+					self:settext(diff);
+				end;
 			end;
 			if GAMESTATE:GetCurrentSteps(player):IsAutogen() then
 					self:playcommand("AutogenColor");

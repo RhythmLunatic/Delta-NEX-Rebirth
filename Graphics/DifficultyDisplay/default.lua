@@ -1,9 +1,18 @@
-local t = Def.ActorFrame{}
+--[[Once again, we're using the global variable hack.
+Check the branch script for details.
+]]
+local basicMode = (ReadPrefFromFile("UserPrefBasicModeType") == "BasicModeGroup" and inBasicMode == true)
+local t = Def.ActorFrame{
+	OnCommand=function(self)
+		SCREENMAN:SystemMessage(tostring(basicMode));
+	end;
+}
 local baseZoom = 0.3
 local spacing = 29;
 local delay = 2
 
-local baseX = -(spacing*5.5);
+
+local baseX = ternary(basicMode,-spacing*1.5,-(spacing*5.5))
 local baseY = 80;
 
 local stepsArray;
@@ -29,17 +38,6 @@ function GetCurrentStepsIndex(pn)
 	return -1;
 end;
 
---What's the point of this when we're playing Pump?
---[[local difficulties = {
-	diff1 = "Beginner",
-	diff2 = "Easy",
-	diff3 = "Medium",
-	diff4 = "Hard",
-	diff5 = "Challenge",
-	diff6 = "Edit",
-};]]
-
-
 t[#t+1] = Def.ActorFrame{
 	CurrentSongChangedMessageCommand=cmd(playcommand,"Refresh");
 	RefreshCommand=function(self)
@@ -60,8 +58,9 @@ t[#t+1] = Def.ActorFrame{
 		InitCommand=cmd(addy,baseY-35;zoomy,0.71;zoomx,0.665;);
 	};
 	
+	--Debugging
 	--[[LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
-		InitCommand=cmd(Center;addx,-100);
+		InitCommand=cmd(draworder,999;addy,100);
 		--InitCommand=cmd(draworder,999);
 		CurrentSongChangedMessageCommand=cmd(playcommand,"Refresh");
 		RefreshCommand=function(self)
@@ -75,120 +74,220 @@ t[#t+1] = Def.ActorFrame{
 }
 
 
-
-for i=1,12 do
-
-	--The original code was an absolute fucking nightmare
-	t[#t+1] = Def.ActorFrame{
-		LoadActor("_icon")..{
-			InitCommand=cmd(zoom,baseZoom-0.05;x,baseX+spacing*(i-1);y,baseY;animate,false);
-			CurrentStepsP1ChangedMessageCommand=cmd(playcommand,"Refresh");
-			CurrentStepsP2ChangedMessageCommand=cmd(playcommand,"Refresh");
-			CurrentSongChangedMessageCommand=cmd(playcommand,"Refresh");
-			NextSongMessageCommand=cmd(playcommand,"Refresh");
-			PreviousSongMessageCommand=cmd(playcommand,"Refresh");
-			RefreshCommand=function(self)
-				--[[
-				The PIU default colors are
-				Single = Orange
-				Double = Green
-				Single Performance = Purple
-				Double Performance = Blue
-				Co-Op / Routine = Yellow
-				Halfdouble = Cyan (It's green in PIU, but it doesn't tell you if it's halfdouble)
-				]]
-				
-				if stepsArray then
-					local j;
-					--TODO: Fix it so it can account for over 24 charts.
-					if GetCurrentStepsIndex(PLAYER_1) > 12 or GetCurrentStepsIndex(PLAYER_2) > 12 then
-						j = i+12;
-					else
-						j = i;
+if basicMode then
+	for i=1,4 do --Basic mode songs only have easy, medium, hard, and doubles
+		t[#t+1] = Def.ActorFrame{
+			LoadActor("_icon")..{
+				InitCommand=cmd(zoom,baseZoom-0.05;x,baseX+spacing*(i-1);y,baseY;animate,false);
+				OnCommand=function(self)
+					if i == 4 then
+						self:setstate(6);
 					end;
-					if stepsArray[j] then
-
-						local steps = stepsArray[j];
-						self:diffusealpha(1);
-						if steps:GetStepsType() == "StepsType_Pump_Single" then
-							self:setstate(2);
-						elseif steps:GetStepsType() == "StepsType_Pump_Double" then
-							--Check for StepF2 Double Performace tag
-							if string.find(steps:GetDescription(), "DP") then
-								self:setstate(0);
-							else
-								self:setstate(6);
+				end;
+				CurrentStepsP1ChangedMessageCommand=cmd(playcommand,"Refresh");
+				CurrentStepsP2ChangedMessageCommand=cmd(playcommand,"Refresh");
+				CurrentSongChangedMessageCommand=cmd(playcommand,"Refresh");
+				NextSongMessageCommand=cmd(playcommand,"Refresh");
+				PreviousSongMessageCommand=cmd(playcommand,"Refresh");
+				RefreshCommand=function(self)
+					
+					if stepsArray then
+						if stepsArray[i] then
+							local steps = stepsArray[i];
+							
+							--[[
+							In Basic Mode, the colors & difficulty are based on level.
+							1-3: Normal, yellow
+							4-7: Hard, red
+							8-99: Very hard, purple
+							Doubles is always green and the level doesn't matter.
+							]]
+							if i < 4 then
+								if steps:GetMeter() <= 3 then
+									self:setstate(1);
+								elseif steps:GetMeter() <= 7 then
+									self:setstate(2);
+								else
+									self:setstate(5);
+								end;
 							end;
-						elseif steps:GetStepsType() == "StepsType_Pump_Halfdouble" then
-							self:setstate(4);
-						elseif steps:GetStepsType() == "StepsType_Pump_Routine" then
-							self:setstate(1);
+							self:diffusealpha(1);
 						else
-							self:setstate(3);
+							self:diffusealpha(0);
 						end;
-					else
-						self:diffusealpha(0);
-					end;
-				end
-			end
-		};
-
-		LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
-			InitCommand=cmd(zoomx,baseZoom+0.1;zoomy,baseZoom+0.075;shadowlength,0.8;shadowcolor,color("0,0,0,1");x,baseX-0.33+spacing*(i-1);y,baseY-0.33;);
-			CurrentStepsP1ChangedMessageCommand=cmd(playcommand,"Refresh");
-			CurrentStepsP2ChangedMessageCommand=cmd(playcommand,"Refresh");
-			CurrentSongChangedMessageCommand=cmd(playcommand,"Refresh");
-			NextSongMessageCommand=cmd(playcommand,"Refresh");
-			PreviousSongMessageCommand=cmd(playcommand,"Refresh");
-			RefreshCommand=function(self)
-				self:stoptweening();
-
-				if stepsArray then
-					local j;
-					--TODO: Fix it so it can account for over 24 charts.
-					if GetCurrentStepsIndex(PLAYER_1) > 12 or GetCurrentStepsIndex(PLAYER_2) > 12 then
-						j = i+12;
-					else
-						j = i;
-					end;
-					if stepsArray[j] then
-						self:diffusealpha(1);
-						local steps = stepsArray[j];
-						self:settext(steps:GetMeter());
-					else
-						self:diffusealpha(0.3);
-						self:settext("--");
 					end
 				end
-			end
+			};
+
+			LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
+				InitCommand=cmd(zoomx,baseZoom+0.1;zoomy,baseZoom+0.075;shadowlength,0.8;shadowcolor,color("0,0,0,1");x,baseX-0.33+spacing*(i-1);y,baseY-0.33;);
+				CurrentStepsP1ChangedMessageCommand=cmd(playcommand,"Refresh");
+				CurrentStepsP2ChangedMessageCommand=cmd(playcommand,"Refresh");
+				CurrentSongChangedMessageCommand=cmd(playcommand,"Refresh");
+				NextSongMessageCommand=cmd(playcommand,"Refresh");
+				PreviousSongMessageCommand=cmd(playcommand,"Refresh");
+				RefreshCommand=function(self)
+					self:stoptweening();
+
+					if stepsArray then
+						if stepsArray[i] then
+							self:diffusealpha(1);
+							local steps = stepsArray[i];
+							self:settext(steps:GetMeter());
+						else
+							self:diffusealpha(0.3);
+							self:settext("--");
+						end
+					end
+				end
 
 
+			};
 		};
-	};
+	end
 
+	for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+		t[#t+1] = LoadActor("UnifiedCursor", pn)..{
+			InitCommand=cmd(zoom,baseZoom-0.05;x,baseX;y,baseY;rotationx,180;rotationz,180;spin;playcommand,"Set";visible,GAMESTATE:IsSideJoined(pn));
+			CurrentStepsP1ChangedMessageCommand=cmd(playcommand,"Set");
+			CurrentStepsP2ChangedMessageCommand=cmd(playcommand,"Set");
+			CurrentSongChangedMessageCommand=cmd(playcommand,"Set");
+			NextSongMessageCommand=cmd(playcommand,"Set");
+			PreviousSongMessageCommand=cmd(playcommand,"Set");
 
-end
-
-for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-	t[#t+1] = LoadActor("UnifiedCursor", pn)..{
-		InitCommand=cmd(zoom,baseZoom-0.05;x,baseX;y,baseY;rotationx,180;rotationz,180;spin;playcommand,"Set";visible,GAMESTATE:IsSideJoined(pn));
-		CurrentStepsP1ChangedMessageCommand=cmd(playcommand,"Set");
-		CurrentStepsP2ChangedMessageCommand=cmd(playcommand,"Set");
-		CurrentSongChangedMessageCommand=cmd(playcommand,"Set");
-		NextSongMessageCommand=cmd(playcommand,"Set");
-		PreviousSongMessageCommand=cmd(playcommand,"Set");
-
-		--I know this looks moronic, but I don't think there's any other way to do it...
-		SetCommand=function(self)
-			if stepsArray then
-				local index = GetCurrentStepsIndex(pn);
-				if index > 12 then
-					index = index%12;
+			--I know this looks moronic, but I don't think there's any other way to do it...
+			SetCommand=function(self)
+				if stepsArray then
+					local index = GetCurrentStepsIndex(pn);
+					self:x(baseX+spacing*(index-1));
 				end;
-				self:x(baseX+spacing*(index-1));
 			end;
-		end;
-	}
-end
+		}
+	end;
+	--##########################################################
+	--##########################################################
+	--##########################################################
+else
+	for i=1,12 do
 
+		--The original code was an absolute fucking nightmare
+		t[#t+1] = Def.ActorFrame{
+			LoadActor("_icon")..{
+				InitCommand=cmd(zoom,baseZoom-0.05;x,baseX+spacing*(i-1);y,baseY;animate,false);
+				CurrentStepsP1ChangedMessageCommand=cmd(playcommand,"Refresh");
+				CurrentStepsP2ChangedMessageCommand=cmd(playcommand,"Refresh");
+				CurrentSongChangedMessageCommand=cmd(playcommand,"Refresh");
+				NextSongMessageCommand=cmd(playcommand,"Refresh");
+				PreviousSongMessageCommand=cmd(playcommand,"Refresh");
+				RefreshCommand=function(self)
+					--[[
+					The PIU default colors are
+					Single = Orange
+					Double = Green
+					Single Performance = Purple
+					Double Performance = Blue
+					Co-Op / Routine = Yellow
+					Halfdouble = Cyan (It's green in PIU, but it doesn't tell you if it's halfdouble)
+					]]
+					
+					if stepsArray then
+						local j;
+						--TODO: Fix it so it can account for over 24 charts.
+						if GetCurrentStepsIndex(PLAYER_1) > 12 or GetCurrentStepsIndex(PLAYER_2) > 12 then
+							j = i+12;
+						else
+							j = i;
+						end;
+						if stepsArray[j] then
+
+							local steps = stepsArray[j];
+							self:diffusealpha(1);
+							if steps:GetStepsType() == "StepsType_Pump_Single" then
+								self:setstate(2);
+							elseif steps:GetStepsType() == "StepsType_Pump_Double" then
+								--Check for StepF2 Double Performace tag
+								if string.find(steps:GetDescription(), "DP") then
+									self:setstate(0);
+								else
+									self:setstate(6);
+								end;
+							elseif steps:GetStepsType() == "StepsType_Pump_Halfdouble" then
+								self:setstate(4);
+							elseif steps:GetStepsType() == "StepsType_Pump_Routine" then
+								self:setstate(1);
+							else
+								self:setstate(3);
+							end;
+						else
+							self:diffusealpha(0);
+						end;
+					end
+				end
+			};
+
+			LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
+				InitCommand=cmd(zoomx,baseZoom+0.1;zoomy,baseZoom+0.075;shadowlength,0.8;shadowcolor,color("0,0,0,1");x,baseX-0.33+spacing*(i-1);y,baseY-0.33;);
+				CurrentStepsP1ChangedMessageCommand=cmd(playcommand,"Refresh");
+				CurrentStepsP2ChangedMessageCommand=cmd(playcommand,"Refresh");
+				CurrentSongChangedMessageCommand=cmd(playcommand,"Refresh");
+				NextSongMessageCommand=cmd(playcommand,"Refresh");
+				PreviousSongMessageCommand=cmd(playcommand,"Refresh");
+				RefreshCommand=function(self)
+					self:stoptweening();
+
+					if stepsArray then
+						local j;
+						--TODO: Fix it so it can account for over 24 charts.
+						if GetCurrentStepsIndex(PLAYER_1) > 12 or GetCurrentStepsIndex(PLAYER_2) > 12 then
+							j = i+12;
+						else
+							j = i;
+						end;
+						if stepsArray[j] then
+							self:diffusealpha(1);
+							local steps = stepsArray[j];
+							self:settext(steps:GetMeter());
+						else
+							self:diffusealpha(0.3);
+							self:settext("--");
+						end
+					end
+				end
+
+
+			};
+		};
+
+
+	end
+
+	for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+		t[#t+1] = LoadActor("UnifiedCursor", pn)..{
+			InitCommand=cmd(zoom,baseZoom-0.05;x,baseX;y,baseY;rotationx,180;rotationz,180;spin;playcommand,"Set";visible,GAMESTATE:IsSideJoined(pn));
+			CurrentStepsP1ChangedMessageCommand=cmd(playcommand,"Set");
+			CurrentStepsP2ChangedMessageCommand=cmd(playcommand,"Set");
+			CurrentSongChangedMessageCommand=cmd(playcommand,"Set");
+			NextSongMessageCommand=cmd(playcommand,"Set");
+			PreviousSongMessageCommand=cmd(playcommand,"Set");
+
+			--I know this looks moronic, but I don't think there's any other way to do it...
+			SetCommand=function(self)
+				if stepsArray then
+					local index = GetCurrentStepsIndex(pn);
+					if index > 12 then
+						index = index%12;
+					end;
+					self:x(baseX+spacing*(index-1));
+				end;
+			end;
+		}
+	end
+end;
+
+--[[t[#t+1] = Def.ActorFrame{
+	--Debug to check center
+	Def.Quad{
+		InitCommand=cmd(setsize,2,SCREEN_HEIGHT;diffuse,Color("White"));
+	};
+}]]
 return t
