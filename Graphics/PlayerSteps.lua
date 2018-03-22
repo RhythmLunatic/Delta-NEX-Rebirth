@@ -11,13 +11,11 @@ t[#t+1] = LoadFont("venacti/_venacti 26px bold diffuse") .. {
 
 	CurrentSongChangedMessageCommand=cmd(queuecommand,"Set");
 	CurrentStepsP1ChangedMessageCommand=cmd(queuecommand,"Set");
+	CurrentStepsP2ChangedMessageCommand=cmd(queuecommand,"Set");
 	SetCommand=function(self)
 		local song = GAMESTATE:GetCurrentSong()
 		if song then
-
 			self:diffusealpha(1);
-			
-
 			local steps = GAMESTATE:GetCurrentSteps(player);
 			local diff = string.gsub(string.gsub(ToEnumShortString(steps:GetStepsType()),".*_",""), ".*", string.upper);
 			local meter = steps:GetMeter()
@@ -136,8 +134,6 @@ t[#t+1] = LoadFont("venacti/_venacti 26px bold diffuse") .. {
 t[#t+1] = LoadFont("Common normal") .. {
 	Text="AUTOGEN";
 	InitCommand=cmd(visible,false;glowshift;horizalign,right;skewx,-0.1;zoom,0.375;y,15;x,18;vertalign,top;;shadowlengthy,1.2;shadowlengthx,0.8;shadowcolor,color("0,0,0,0.6");diffuse,color("0.4,1,0.6,1");diffusebottomedge,color("0.8,0.8,0.8,1");queuecommand,"Set");
-	
-
 	CurrentStepsP1ChangedMessageCommand=cmd(playcommand,"Steps");
 	CurrentStepsP2ChangedMessageCommand=cmd(playcommand,"Steps");
 	StepsCommand=function(self)

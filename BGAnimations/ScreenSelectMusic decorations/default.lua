@@ -787,7 +787,7 @@ end;
 
 if GAMESTATE:IsSideJoined(PLAYER_2) then
 	t[#t+1] = LoadActor(THEME:GetPathG("","PlayerSteps"), PLAYER_2)..{
-		InitCommand=cmd(draworder,100;xy,SCREEN_CENTER_X+135,SCREEN_HEIGHT*.77;visible,false);
+		InitCommand=cmd(draworder,100;xy,SCREEN_CENTER_X+80,SCREEN_HEIGHT*.77;visible,false);
 		SongChosenMessageCommand=cmd(visible,true);
 		TwoPartConfirmCanceledMessageCommand=cmd(visible,false);
 		SongUnchosenMessageCommand=cmd(visible,false);

@@ -3,9 +3,9 @@ Check the branch script for details.
 ]]
 local basicMode = (ReadPrefFromFile("UserPrefBasicModeType") == "BasicModeGroup" and inBasicMode == true)
 local t = Def.ActorFrame{
-	OnCommand=function(self)
+	--[[OnCommand=function(self)
 		SCREENMAN:SystemMessage(tostring(basicMode));
-	end;
+	end;]]
 }
 local baseZoom = 0.3
 local spacing = 29;
@@ -80,7 +80,7 @@ if basicMode then
 			LoadActor("_icon")..{
 				InitCommand=cmd(zoom,baseZoom-0.05;x,baseX+spacing*(i-1);y,baseY;animate,false);
 				OnCommand=function(self)
-					if i == 4 then
+					if i == 4 then --If doubles icon, make it green
 						self:setstate(6);
 					end;
 				end;
@@ -102,7 +102,7 @@ if basicMode then
 							8-99: Very hard, purple
 							Doubles is always green and the level doesn't matter.
 							]]
-							if i < 4 then
+							if i < 4 then --Ignore changing the doubles icon color
 								if steps:GetMeter() <= 3 then
 									self:setstate(1);
 								elseif steps:GetMeter() <= 7 then
@@ -246,7 +246,11 @@ else
 						if stepsArray[j] then
 							self:diffusealpha(1);
 							local steps = stepsArray[j];
-							self:settext(steps:GetMeter());
+							if steps:GetMeter() >= 99 then
+								self:settext("??");
+							else
+								self:settext(steps:GetMeter());
+							end
 						else
 							self:diffusealpha(0.3);
 							self:settext("--");

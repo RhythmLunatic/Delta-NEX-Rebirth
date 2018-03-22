@@ -54,42 +54,12 @@ if style == "Single" then
 			InitCommand=cmd(y,34);
 			OnCommand=function(self)
 				if pn == PLAYER_1 then
-					self:x(225);
+					self:x(SCREEN_WIDTH/4);
 					self:horizalign(left);
 				else
-					self:x(SCREEN_WIDTH-225);
+					self:x(SCREEN_WIDTH*.75);
 					self:horizalign(right);
 				end;
-			end;
-		};
-		
-		
-		--NAME
-		t[#t+1] = LoadFont("venacti/_venacti_outline 26px bold diffuse") .. {
-			InitCommand=cmd(maxwidth,300;y,SCREEN_TOP+14;zoom,0.45;shadowlength,1;uppercase,true);
-			OnCommand=function(self)
-				if pn == PLAYER_1 then
-					self:horizalign(left);
-					self:x(SCREEN_LEFT+30);
-				else
-					self:horizalign(right);
-					self:x(SCREEN_RIGHT-30);
-				end;
-			end;
-		
-			
-			BeginCommand=function(self)
-				local profile = PROFILEMAN:GetProfile(pn);
-				local name = profile:GetDisplayName();
-				
-				if GAMESTATE:IsHumanPlayer(pn) == true then
-					if name=="" and SCREENMAN:GetTopScreen():GetName() ~= "ScreenDemonstration" then
-						self:settext("Player");
-					else
-						self:settext( name );
-					end
-				end	
-				
 			end;
 		};
 	end;
@@ -167,9 +137,36 @@ else
 
 	};]]
 end
-
-
-
+for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+	--NAME
+	t[#t+1] = LoadFont("venacti/_venacti_outline 26px bold diffuse") .. {
+		InitCommand=cmd(maxwidth,300;y,SCREEN_TOP+14;zoom,0.45;shadowlength,1;uppercase,true);
+		OnCommand=function(self)
+			if pn == PLAYER_1 then
+				self:horizalign(left);
+				self:x(SCREEN_LEFT+30);
+			else
+				self:horizalign(right);
+				self:x(SCREEN_RIGHT-30);
+			end;
+		end;
+	
+		
+		BeginCommand=function(self)
+			local profile = PROFILEMAN:GetProfile(pn);
+			local name = profile:GetDisplayName();
+			
+			if GAMESTATE:IsHumanPlayer(pn) == true then
+				if name=="" and SCREENMAN:GetTopScreen():GetName() ~= "ScreenDemonstration" then
+					self:settext("Player");
+				else
+					self:settext( name );
+				end
+			end	
+			
+		end;
+	};
+end;
 
 -- Progress bar
 t[#t+1] = Def.ActorFrame{
