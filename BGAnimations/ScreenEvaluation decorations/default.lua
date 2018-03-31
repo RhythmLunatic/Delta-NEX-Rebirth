@@ -3,45 +3,6 @@ local t = Def.ActorFrame{
 }
 local song = GAMESTATE:GetCurrentSong();
 
-t[#t+1] = Def.ActorFrame {
-  FOV=90;
-  --InitCommand=cmd(Center);
---[[	Def.Quad {
-		InitCommand=cmd(scaletoclipped,SCREEN_WIDTH/2,SCREEN_HEIGHT;x,-SCREEN_WIDTH/4);
-		OnCommand=cmd(diffuse,color("#000000");diffuserightedge,color("#c71585"));
-	};
-	Def.Quad {
-		InitCommand=cmd(scaletoclipped,SCREEN_WIDTH/2,SCREEN_HEIGHT;x,SCREEN_CENTER_X-(SCREEN_WIDTH/4));
-		OnCommand=cmd(diffuse,color("#000000");diffuseleftedge,color("#c71585"));
-	};]]
-
-
-	LoadActor("../_backgroundRedir", "musicSelect") .. {
-		InitCommand=function(self)
-			self:visible(not GAMESTATE:GetCurrentSong():HasBackground());
-		end;
-	};
-
-	--Jacket BG
-	--[[Def.Sprite{
-		InitCommand=function(self)
-			self:addy(-20);
-			self:scaletoclipped(180,180);
-			self:diffuse(color(".5,.5,.5,.7"));
-			local path = GAMESTATE:GetCurrentSong():GetJacketPath();
-			if path then self:Load(path);
-			else
-				self:diffusealpha(0);
-			end;
-		end;
-		OnCommand=cmd(x,SCREEN_RIGHT-200;y,SCREEN_CENTER_Y;rotationx,-20;rotationy,15;rotationz,30;);
-	};]]
-
-	Def.Sprite{
-		InitCommand=cmd(Load,GetSongBackground();visible,GAMESTATE:GetCurrentSong():HasBackground();scaletocover,0,0,SCREEN_WIDTH,SCREEN_HEIGHT;diffuse,color(".2,.2,.2,1"));
-	};
-};
-
 
 --Seriously, why does this themer hate ActorFrames so much
 --Rewriting this stuff to be easier to position drives me up the wall
@@ -274,14 +235,21 @@ t[#t+1] = Def.ActorFrame{
 
 
 for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+	--Calculate positioning of items based on aspect ratio. (16:9 is the default.)
+	local numbers_xPos = 133*PREFSMAN:GetPreference("DisplayAspectRatio");
+	local grades_xPos = 180*PREFSMAN:GetPreference("DisplayAspectRatio");
 	-- position = pn==PLAYER_2 ? 1 : -1;
 	local position = (pn == "PlayerNumber_P2") and 1 or -1;
 	local sPosition = AllowSuperb and 154 or 123;
+	
 	t[#t+1] = LoadActor("PlayerNumbers", pn)..{
-		InitCommand=cmd(xy,SCREEN_CENTER_X+235*position,sPosition)
+		InitCommand=cmd(xy,SCREEN_CENTER_X+numbers_xPos*position,sPosition);
+		OnCommand=function(self)
+			--SCREENMAN:SystemMessage(numbers_xPos);
+		end;
 	};
 	t[#t+1] = LoadActor("PlayerGrade", pn)..{
-		InitCommand=cmd(xy,SCREEN_CENTER_X+300*position,SCREEN_CENTER_Y);
+		InitCommand=cmd(xy,SCREEN_CENTER_X+grades_xPos*position,SCREEN_CENTER_Y);
 	};
 end
 

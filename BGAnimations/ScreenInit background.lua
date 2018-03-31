@@ -1,5 +1,7 @@
 local t = Def.ActorFrame{
-	InitCommand=InitUserPrefs();
+	InitCommand=function(self)
+		inBasicMode = nil;
+	end;
 };
 
 return t
