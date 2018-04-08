@@ -11,18 +11,18 @@ local numChoices = 2;
 local placement = SCREEN_WIDTH/2*index - SCREEN_WIDTH/4
 return Def.ActorFrame{
 
-    LoadActor(name)..{
+    --[[LoadActor(name)..{
         InitCommand=cmd(x,placement);        
-    };
+    };]]
     
     LoadFont("Common Normal")..{
         Text=name;
-        InitCommand=cmd(diffuse,Color("Black");diffusealpha,0);
+        InitCommand=cmd(diffuse,Color("White");x,placement);
         OffCommand=cmd();
-        GainFocusCommand=cmd(stopeffect;accelerate,.2;diffusealpha,1;);
-        LoseFocusCommand=cmd(stopeffect;accelerate,.2;diffusealpha,0;);
+        GainFocusCommand=cmd(stopeffect;accelerate,.2;zoom,1);
+        LoseFocusCommand=cmd(stopeffect;accelerate,.2;zoom,.5;);
     };
-	LoadActor("subt_"..name)..{
+	--[[LoadActor("subt_"..name)..{
 		InitCommand=cmd(diffusealpha,0;x,SCREEN_CENTER_X;addy,180);
 		GainFocusCommand=cmd(linear,.1;diffusealpha,1);
 		LoseFocusCommand=cmd(linear,.2;diffusealpha,0);
@@ -33,7 +33,7 @@ return Def.ActorFrame{
 		GainFocusCommand=cmd(linear,.1;diffusealpha,1);
 		LoseFocusCommand=cmd(linear,.2;diffusealpha,0);
 	
-	};
+	};]]
 
 
 };

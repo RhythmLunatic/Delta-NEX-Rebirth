@@ -15,7 +15,7 @@
 	end
 end]]
 
-
+--Adds commas to your score, apparently
 function scorecap(n) -- credit http://richard.warburton.it
 	local left,num,right = string.match(n,'^([^%d]*%d)(%d*)(.-)$')
 	return left..(num:reverse():gsub('(%d%d%d)','%1.'):reverse())..right
@@ -50,11 +50,11 @@ end;]]
 
 
 function SetPrefBranch()
-		if GetUserPref("UserPrefSetPreferences") == "Yes" then
-			return "ScreenTitleMenu"
-		else
-			return "ScreenPrefPrompt"
-		end
+	if GetUserPref("UserPrefSetPreferences") == "Yes" then
+		return "ScreenTitleMenu"
+	else
+		return "ScreenPrefPrompt"
+	end
 end
 
 --foi uma merda pra entender isso, então pra não esquecer eu vou comentar esse lixo.

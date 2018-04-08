@@ -1022,49 +1022,6 @@ t[#t+1] = Def.ActorFrame{
 	};
 };
 
-local function increasePlayerSpeed(pn, amount)
-	--SCREENMAN:SystemMessage(playerState);
-	local playerState = GAMESTATE:GetPlayerState(pn);
-	--This returns an instance of playerOptions, you need to set it back to the original
-	local playerOptions = playerState:GetPlayerOptions("ModsLevel_Preferred")
-	--SCREENMAN:SystemMessage(PlayerState:GetPlayerOptionsString("ModsLevel_Current"));
-	--One of these will be valid, depending on the player's currently set speed mod.
-	local cmod = playerOptions:CMod();
-	local mmod = playerOptions:MMod();
-	local xmod = playerOptions:XMod();
-	if cmod then
-		if amount*100+playerOptions:CMod() < 100 then
-			playerOptions:CMod(800);
-		elseif amount*100+playerOptions:CMod() > 1000 then
-			playerOptions:CMod(100);
-		else
-			playerOptions:CMod(playerOptions:CMod()+amount*100);
-		end;
-	elseif mmod then
-		if amount*100+playerOptions:MMod() < 100 then
-			playerOptions:MMod(800);
-		elseif amount*100+playerOptions:MMod() > 1000 then
-			playerOptions:MMod(100);
-		else
-			playerOptions:MMod(playerOptions:MMod()+amount*100);
-		end;
-	elseif xmod then
-		--SCREENMAN:SystemMessage(playerOptions:XMod())
-		if amount+playerOptions:XMod() < .5 then
-			playerOptions:XMod(8);
-		elseif amount+playerOptions:XMod() > 8 then
-			playerOptions:XMod(.5);
-		else
-			playerOptions:XMod(playerOptions:XMod()+amount,true);
-		end;
-		--SCREENMAN:SystemMessage("Set speed to "..playerOptions:XMod().." ("..tostring(xmod).."+"..tostring(amount)..")");
-	else
-		SCREENMAN:SystemMessage("ERROR: Can't determine "..pn.."'s current speed mod!");
-	end;
-	GAMESTATE:GetPlayerState(pn):SetPlayerOptions('ModsLevel_Preferred', playerState:GetPlayerOptionsString("ModsLevel_Preferred"));
-	--SCREENMAN:SystemMessage(GAMESTATE:GetPlayerState(pn):GetPlayerOptionsString("ModsLevel_Current").." "..playerState:GetCurrentPlayerOptions():XMod());
-end
-
 --enabled again because noteskins aren't working
 --requires further testing
 
@@ -1236,108 +1193,6 @@ t[#t+1] = Def.Quad {
 }
 
 
-
--- noteskin
-
-t[#t+1] = LoadActor("optionIcon")..{
-	InitCommand=cmd(draworder,100;x,SCREEN_LEFT+50;y,SCREEN_CENTER_Y-22;zoomy,0.34;zoomx,0.425;horizalign,left;diffusealpha,0.75;visible,GAMESTATE:IsHumanPlayer(PLAYER_1));
-	PlayerJoinedMessageCommand=cmd(visible,GAMESTATE:IsHumanPlayer(PLAYER_1));
-	}
-t[#t+1] = LoadActor("optionIcon")..{
-	InitCommand=cmd(draworder,100;x,SCREEN_RIGHT-50;y,SCREEN_CENTER_Y-22;zoomy,0.34;zoomx,0.425;horizalign,right;diffusealpha,0.75;visible,GAMESTATE:IsHumanPlayer(PLAYER_2));
-	PlayerJoinedMessageCommand=cmd(visible,GAMESTATE:IsHumanPlayer(PLAYER_2));
-}
-
-
-local function CurrentNoteSkin(p)
-        local state = GAMESTATE:GetPlayerState(p)
-        local mods = state:GetPlayerOptionsArray( 'ModsLevel_Preferred' )
-        local skins = NOTESKIN:GetNoteSkinNames()
-
-        for i = 1, #mods do
-            for j = 1, #skins do
-                if string.lower( mods[i] ) == string.lower( skins[j] ) then
-                   return skins[j];
-                end
-            end
-        end
-
-end
-
-t[#t+1] = Def.Sprite{
-	InitCommand=cmd(draworder,100;);
-	OnCommand=function(self)
-		self:visible(GAMESTATE:IsHumanPlayer(PLAYER_1));
-		if CurrentNoteSkin(PLAYER_1) == "delta" then
-			self:Load(NOTESKIN:GetPathForNoteSkin("UpLeft", "Ready receptor", CurrentNoteSkin(PLAYER_1)));
-			self:croptop(0);
-			self:cropright(0);
-			self:x(SCREEN_LEFT+75-3);
-			self:y(SCREEN_CENTER_Y-22);
-			self:zoom(0.35);
-		else
-			self:Load(NOTESKIN:GetPathForNoteSkin("Upleft", "Tap note", CurrentNoteSkin(PLAYER_1)));
-			self:croptop(0);
-			self:cropright(0);
-			self:x(SCREEN_LEFT+75-3);
-			self:y(SCREEN_CENTER_Y-22);
-			self:zoom(0.35);
-		end
-	end;
-	OptionsListClosedMessageCommand=cmd(queuecommand,"On");
-	PlayerJoinedMessageCommand=cmd(queuecommand,"On");
-	PlayerUnjoinedMessageCommand=cmd(playcommand,"On");
-	CodeMessageCommand=cmd(playcommand,"On");
-}
-
-
-t[#t+1] = Def.Sprite{
-	--InitCommand=cmd(x,SCREEN_RIGHT-22;y,SCREEN_CENTER_Y-58+8;draworder,102;zoom,0.575);
-	InitCommand=cmd(draworder,100;);
-	OnCommand=function(self)
-		self:visible(GAMESTATE:IsHumanPlayer(PLAYER_2));
-		if CurrentNoteSkin(PLAYER_2) == "delta" then
-			self:Load(NOTESKIN:GetPathForNoteSkin("Upleft", "Ready receptor", CurrentNoteSkin(PLAYER_2)));
-			self:croptop(0);
-			self:cropright(0);
-			self:x(SCREEN_RIGHT-75+3);
-			self:y(SCREEN_CENTER_Y-22);
-			self:zoom(0.35);
-			self:zoomx(-0.35);
-		elseif CurrentNoteSkin(PLAYER_2) == "alisson" then
-			self:Load(NOTESKIN:GetPathForNoteSkin("Upright", "Tap note", CurrentNoteSkin(PLAYER_2)));
-			self:croptop(0);
-			self:cropright(0);
-			self:x(SCREEN_RIGHT-75+3);
-			self:y(SCREEN_CENTER_Y-22);
-			self:zoomy(0.35);
-			self:zoomx(-0.35);
-		else
-			self:Load(NOTESKIN:GetPathForNoteSkin("Upleft", "Tap note", CurrentNoteSkin(PLAYER_2)));
-			self:croptop(0);
-			self:cropright(0);
-			self:x(SCREEN_RIGHT-75+3);
-			self:y(SCREEN_CENTER_Y-22);
-			self:zoom(0.35);
-			self:zoomx(-0.35);
-		end
-	end;
-	OptionsListClosedMessageCommand=cmd(queuecommand,"On");
-	PlayerJoinedMessageCommand=cmd(queuecommand,"On");
-	PlayerUnjoinedMessageCommand=cmd(playcommand,"On");
-	CodeMessageCommand=cmd(playcommand,"On");
-};
-
---fonts--
-
-
-
---[[t[#t+1] = LoadActor(THEME:GetPathG("","light"))..{
-	InitCommand=cmd(draworder,104);
-}]]
-
-
-
 for pn in ivalues(PlayerNumber) do
 
 
@@ -1472,6 +1327,49 @@ t[#t+1] = Def.Quad {
 
 };]]
 
+local function increasePlayerSpeed(pn, amount)
+	--SCREENMAN:SystemMessage(playerState);
+	local playerState = GAMESTATE:GetPlayerState(pn);
+	--This returns an instance of playerOptions, you need to set it back to the original
+	local playerOptions = playerState:GetPlayerOptions("ModsLevel_Preferred")
+	--SCREENMAN:SystemMessage(PlayerState:GetPlayerOptionsString("ModsLevel_Current"));
+	--One of these will be valid, depending on the player's currently set speed mod.
+	local cmod = playerOptions:CMod();
+	local mmod = playerOptions:MMod();
+	local xmod = playerOptions:XMod();
+	if cmod then
+		if amount*100+playerOptions:CMod() < 100 then
+			playerOptions:CMod(800);
+		elseif amount*100+playerOptions:CMod() > 1000 then
+			playerOptions:CMod(100);
+		else
+			playerOptions:CMod(playerOptions:CMod()+amount*100);
+		end;
+	elseif mmod then
+		if amount*100+playerOptions:MMod() < 100 then
+			playerOptions:MMod(800);
+		elseif amount*100+playerOptions:MMod() > 1000 then
+			playerOptions:MMod(100);
+		else
+			playerOptions:MMod(playerOptions:MMod()+amount*100);
+		end;
+	elseif xmod then
+		--SCREENMAN:SystemMessage(playerOptions:XMod())
+		if amount+playerOptions:XMod() < .5 then
+			playerOptions:XMod(8);
+		elseif amount+playerOptions:XMod() > 8 then
+			playerOptions:XMod(.5);
+		else
+			playerOptions:XMod(playerOptions:XMod()+amount,true);
+		end;
+		--SCREENMAN:SystemMessage("Set speed to "..playerOptions:XMod().." ("..tostring(xmod).."+"..tostring(amount)..")");
+	else
+		SCREENMAN:SystemMessage("ERROR: Can't determine "..pn.."'s current speed mod!");
+	end;
+	GAMESTATE:GetPlayerState(pn):SetPlayerOptions('ModsLevel_Preferred', playerState:GetPlayerOptionsString("ModsLevel_Preferred"));
+	--SCREENMAN:SystemMessage(GAMESTATE:GetPlayerState(pn):GetPlayerOptionsString("ModsLevel_Current").." "..playerState:GetCurrentPlayerOptions():XMod());
+end
+
 for pn in ivalues(PlayerNumber) do
 	t[#t+1] = Def.ActorFrame{
 		InitCommand=function(self)
@@ -1523,7 +1421,7 @@ for pn in ivalues(PlayerNumber) do
 			InitCommand=cmd(draworder,100;zoomy,0.34;zoomx,0.425;diffusealpha,0.75;);
 		};
 		LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
-			InitCommand=cmd(draworder,100;zoomx,0.41;zoomy,0.38;diffusebottomedge,0.7,0.7,0.7,1;maxwidth,70;shadowlength,0.8);
+			InitCommand=cmd(draworder,100;zoom,.45;diffusebottomedge,0.7,0.7,0.7,1;maxwidth,70;shadowlength,0.8);
 			OnCommand=cmd(playcommand,"UpdateText");
 			--sleep,0.1;queuecommand,"On");
 			OptionsListClosedMessageCommand=cmd(playcommand,"UpdateText");
@@ -1547,7 +1445,7 @@ for pn in ivalues(PlayerNumber) do
 			end;
 		};
 		LoadActor("optionFlash")..{
-			InitCommand=cmd(draworder,100;x,-1;zoomy,0.34;zoomx,0.425;diffuse,1,1,1,0;visible,GAMESTATE:IsHumanPlayer(pn);sleep,0.1;blend,Blend.Add;queuecommand,"Init");
+			InitCommand=cmd(draworder,100;zoomy,0.34;zoomx,0.425;diffuse,1,1,1,0;visible,GAMESTATE:IsHumanPlayer(pn);sleep,0.1;blend,Blend.Add;queuecommand,"Init");
 			CodeMessageCommand=function(self,params)
 				if params.PlayerNumber == pn then
 					if params.Name == 'SpeedUp' or
@@ -1567,5 +1465,63 @@ for pn in ivalues(PlayerNumber) do
 		};
 	}
 end
+
+-- noteskin
+local function CurrentNoteSkin(p)
+        local state = GAMESTATE:GetPlayerState(p)
+        local mods = state:GetPlayerOptionsArray( 'ModsLevel_Preferred' )
+        local skins = NOTESKIN:GetNoteSkinNames()
+
+        for i = 1, #mods do
+            for j = 1, #skins do
+                if string.lower( mods[i] ) == string.lower( skins[j] ) then
+                   return skins[j];
+                end
+            end
+        end
+
+end
+
+for pn in ivalues(PlayerNumber) do
+	t[#t+1] = Def.ActorFrame{
+		InitCommand=function(self)
+			self:y(SCREEN_CENTER_Y-22):draworder(12);
+			if pn == PLAYER_1 then
+				self:x(SCREEN_LEFT+70);
+			else
+				self:x(SCREEN_RIGHT-70);
+			end;
+		end;
+		OnCommand=cmd(visible,GAMESTATE:IsHumanPlayer(pn));
+		PlayerJoinedMessageCommand=cmd(queuecommand,"On");
+		PlayerUnjoinedMessageCommand=cmd(playcommand,"On");
+		
+		LoadActor("optionIcon")..{
+			InitCommand=cmd(draworder,100;zoomy,0.34;zoomx,0.425;diffusealpha,.75);
+		};
+		
+		Def.Sprite{
+			InitCommand=cmd(x,1;draworder,100);
+			OnCommand=function(self)
+				local arrow = "UpLeft";
+				local name = "Tap note";
+				if CurrentNoteSkin(pn) == "delta" then
+					name = "Ready Receptor";
+				elseif CurrentNoteSkin(pn) == "delta-note" or CurrentNoteSkin(pn) == "rhythm" then
+					arrow = "_UpLeft";
+				end
+				local path = NOTESKIN:GetPathForNoteSkin(arrow, name, CurrentNoteSkin(pn));
+				
+				self:Load(path);
+				self:croptop(0);
+				self:cropright(0);
+				self:zoom(0.35);
+			end;
+			OptionsListClosedMessageCommand=cmd(queuecommand,"On");
+			CodeMessageCommand=cmd(playcommand,"On");
+		};
+
+	};
+end;
 
 return t;

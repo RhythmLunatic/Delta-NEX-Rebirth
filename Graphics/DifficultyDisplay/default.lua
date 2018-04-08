@@ -12,7 +12,7 @@ local spacing = 29;
 local delay = 2
 
 
-local baseX = ternary(basicMode,-spacing*1.5,-(spacing*5.5))
+local baseX = basicMode and -spacing*1.5 or -(spacing*5.5)
 local baseY = 80;
 
 local stepsArray;

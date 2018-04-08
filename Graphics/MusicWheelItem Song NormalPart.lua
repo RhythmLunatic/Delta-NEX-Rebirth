@@ -3,7 +3,7 @@ return Def.ActorFrame {
 	OnCommand=cmd(diffusealpha,0;zoom,1;linear,0;diffusealpha,1;zoom,1;);
 	PlayerJoinedMessageCommand=cmd(playcommand,"On");
 
--- banners
+	-- banners
 	Def.Banner {
 		Name="SongBanner";
 		InitCommand=cmd(diffusealpha,1);
