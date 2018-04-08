@@ -69,7 +69,7 @@ end;
 
 t[#t+1] = Def.ActorFrame {
 	InitCommand=cmd(draworder,4;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-100);
-	CurrentSongChangedMessageCommand=function(self)
+	--[[CurrentSongChangedMessageCommand=function(self)
 		local song = GAMESTATE:GetCurrentSong();
 		if song then
 			self:linear(0.2)
@@ -78,7 +78,7 @@ t[#t+1] = Def.ActorFrame {
 			self:linear(0.2)
 			self:diffusealpha(0);
 		end
-	end;
+	end;]]
 	Def.Quad {
 		InitCommand=cmd(diffuse,color("0,0,0,1");scaletoclipped,260+1,160;diffusealpha,0.7);
 	};
@@ -114,6 +114,27 @@ t[#t+1] = Def.ActorFrame {
 				self:diffusealpha(1);
 			end;
 		end;
+		--[[CurrentCourseChangedMessageCommand=function(self)
+			self:stoptweening();
+			if GAMESTATE:GetCurrentCourse() and SCREENMAN:GetTopScreen():GetName() == "ScreenSelectCourse" then
+				local bg = GAMESTATE:GetCurrentCourse():GetBackgroundPath();
+					if bg then
+					self:Load(bg);
+					self:scaletocover(-145,-80,145,80);
+					local tex = self:GetTexture();
+					if round(tex:GetImageWidth()/tex:GetImageHeight(), 1) == 1.3 then
+						self:croptop(.13);
+						self:cropbottom(.13);
+					else
+						self:croptop(0);
+						self:cropbottom(0);
+					end;
+					self:diffusealpha(0);
+					self:linear(0.5);
+					self:diffusealpha(1);
+				end;
+			end;
+		end;]]
 	};
 	Def.Sprite {
 		CurrentSongChangedMessageCommand=cmd(finishtweening;diffusealpha,0;queuecommand,"ModifySongBackground");
@@ -146,10 +167,20 @@ t[#t+1] = Def.ActorFrame {
 			local song = GAMESTATE:GetCurrentSong();
 			if song then
 				self:settext(song:GetDisplayFullTitle());
+			elseif GAMESTATE:GetCurrentCourse() then
+				self:settext(GAMESTATE:GetCurrentCourse():GetDisplayFullTitle());
 			else
 				self:settext("");
 			end;
 		end;
+		--[[CurrentCourseChangedMessageCommand=function(self)
+			local course = GAMESTATE:GetCurrentCourse();
+			if course then
+				self:settext(course:GetDisplayFullTitle());
+			else
+				self:settext("");
+			end;
+		end;]]
 	};
 	
 	LoadFont("venacti/_venacti 26px bold diffuse")..{
@@ -160,12 +191,22 @@ t[#t+1] = Def.ActorFrame {
 			if song then
 				self:settext(song:GetDisplayArtist());
 				self:diffusealpha(1);
+			elseif GAMESTATE:GetCurrentCourse() then
+				self:settext(GAMESTATE:GetCurrentCourse():GetGroupName())
 			else
-				self:settext("---")
+				self:settext("---");
 				self:diffusealpha(0.3);
 			end
-
 		end;
+		--[[CurrentCourseChangedMessageCommand=function(self)
+			local course = GAMESTATE:GetCurrentCourse();
+			if course then
+				self:settext(course:GetGroupName());
+				self:diffusealpha(1);
+			else
+				self:settext("");
+			end;
+		end;]]
 	};
 	
 	LoadActor("songback") .. {
@@ -248,27 +289,30 @@ t[#t+1] = LoadActor("marathon_add") .. {
 
 
 t[#t+1] = LoadActor("jacket_light") .. {
-	InitCommand=cmd(draworder,100;xy,SCREEN_CENTER_X,SCREEN_CENTER_Y+121;zoomx,.80;zoomy,.81;effectclock,"bgm";blend,Blend.Add);
+	InitCommand=cmd(draworder,100;xy,SCREEN_CENTER_X,SCREEN_CENTER_Y+121;zoomx,1.14;zoomy,.81;effectclock,"bgm";blend,Blend.Add);
 
 	CurrentSongChangedMessageCommand=function(self)
-		--local JacketOrBanner;
-		local song = GAMESTATE:GetCurrentSong();
-		self:finishtweening();
-		self:linear(.5);
-		if song then
-			if song:HasJacket() then
-				self:zoomx(.81);
-				self:diffusealpha(1);
-			elseif song:HasBanner() then
-				self:zoomx(1.14);
-				self:diffusealpha(1);
+		if GAMESTATE:GetPlayMode() ~= "PlayMode_Nonstop" then
+			--local JacketOrBanner;
+			local song = GAMESTATE:GetCurrentSong();
+			self:finishtweening();
+			self:linear(.5);
+			if song then
+				if song:HasJacket() then
+					self:zoomx(.81);
+					self:diffusealpha(1);
+				elseif song:HasBanner() then
+					self:zoomx(1.14);
+					self:diffusealpha(1);
+				end;
+				--SCREENMAN:SystemMessage(
+			else
+				self:diffusealpha(0);
 			end;
-			--SCREENMAN:SystemMessage(
-		else
-			self:diffusealpha(0);
+			self:playcommand("CheckSteps");
 		end;
-		self:playcommand("CheckSteps");
 	end;
+	
 	CurrentStepsP1ChangedMessageCommand=cmd(playcommand,"CheckSteps");
 	CurrentStepsP2ChangedMessageCommand=cmd(playcommand,"CheckSteps");
 
@@ -696,14 +740,9 @@ t[#t+1] = LoadActor("marathon_add") .. {
 t[#t+1] = Def.ActorFrame{
 
 	LoadActor(THEME:GetPathG("","DifficultyDisplay"))..{
-		--Old code from when the DifficultyDisplay was hidden
-		--[[InitCommand=cmd(draworder,8;vertalign,top;y,SCREEN_TOP-85;x,SCREEN_CENTER_X;visible,GAMESTATE:GetCurrentGame():GetName() == "pump");
-		SongChosenMessageCommand=cmd(stoptweening;decelerate,0.25;y,SCREEN_TOP+15);
-		TwoPartConfirmCanceledMessageCommand=cmd(stoptweening;decelerate,0.25;y,SCREEN_TOP-85);
-		SongUnchosenMessageCommand=cmd(stoptweening;decelerate,0.25;y,SCREEN_TOP-85);]]
 		InitCommand=cmd(xy,SCREEN_CENTER_X,165);
-		SelectingGroupMessageCommand=cmd(visible,false);
-		SelectingSongMessageCommand=cmd(visible,true);
+		--[[SelectingGroupMessageCommand=cmd(visible,false);
+		SelectingSongMessageCommand=cmd(visible,true);]]
 	};
 };
 
@@ -983,315 +1022,48 @@ t[#t+1] = Def.ActorFrame{
 	};
 };
 
-
-t[#t+1] = LoadActor(THEME:GetPathS("","EX_Confirm"))..{
-CodeMessageCommand = function(self, params)
-
-	if params.PlayerNumber == PLAYER_1 then
-		--=============================================================
-		if params.Name == 'SpeedUp' then
-			self:play()
-
-			local P1State = GAMESTATE:GetPlayerState(PLAYER_1);
-			local P1Options = P1State:GetPlayerOptionsString("ModsLevel_Preferred");
-			--local Speed = (P1State:GetCurrentPlayerOptions():XMod()+1).."x";
-
-
-			--[[if Speed == nil then
-				Speed = "1.5x";
-			end
-
-			local XMod = P1State:GetCurrentPlayerOptions():XMod()
-			if XMod >= 7.25 then
-				Speed = "1.5x";
-			end]]
-			local speed = P1State:GetCurrentPlayerOptions():XMod()[0];
-
-
-
-
-				--P1State:SetPlayerOptions("ModsLevel_Preferred", P1Options..","..Speed..","..FailMode());
-
-
-		end
-		--=============================================================
-		if params.Name == 'SpeedDown' then
-			self:play()
-
-			local P1State = GAMESTATE:GetPlayerState(PLAYER_1);
-			local P1Options = P1State:GetPlayerOptionsString("ModsLevel_Preferred");
-			local Speed = (P1State:GetCurrentPlayerOptions():XMod()-1).."x";
-
-			if Speed == nil then
-				Speed = "1.5x";
-			end
-
-			local XMod = P1State:GetCurrentPlayerOptions():XMod()
-			if XMod <= 2 then
-				Speed = "8x";
-			end
-
-
-
-				P1State:SetPlayerOptions("ModsLevel_Preferred", P1Options..","..Speed..","..FailMode());
-
-
-		end
-		--=============================================================
-		if params.Name == 'SpeedHalfUp' then
-			self:play()
-
-			local P1State = GAMESTATE:GetPlayerState(PLAYER_1);
-			local P1Options = P1State:GetPlayerOptionsString("ModsLevel_Preferred");
-			local Speed = (P1State:GetCurrentPlayerOptions():XMod()+0.5).."x";
-
-			if Speed == nil then
-				Speed = "1.5x";
-			end
-
-			local XMod = P1State:GetCurrentPlayerOptions():XMod()
-			if XMod >= 7.75 then
-				Speed = "1.5x";
-			end
-
-
-
-				P1State:SetPlayerOptions("ModsLevel_Preferred", P1Options..","..Speed..","..FailMode());
-
-
-		end
-		--=============================================================
-		if params.Name == 'SpeedHalfDown' then
-			self:play()
-
-			local P1State = GAMESTATE:GetPlayerState(PLAYER_1);
-			local P1Options = P1State:GetPlayerOptionsString("ModsLevel_Preferred");
-			local Speed = (P1State:GetCurrentPlayerOptions():XMod()-0.5).."x";
-
-			if Speed == nil then
-				Speed = "1.5x";
-			end
-
-			local XMod = P1State:GetCurrentPlayerOptions():XMod()
-			if XMod <= 1.5 then
-				Speed = "8x";
-			end
-
-
-
-				P1State:SetPlayerOptions("ModsLevel_Preferred", P1Options..","..Speed..","..FailMode());
-
-
-		end
-		--=============================================================
-		if params.Name == 'SpeedQuarterUp' then
-			self:play()
-
-			local P1State = GAMESTATE:GetPlayerState(PLAYER_1);
-			local P1Options = P1State:GetPlayerOptionsString("ModsLevel_Preferred");
-			local Speed = (P1State:GetCurrentPlayerOptions():XMod()+0.25).."x";
-
-			if Speed == nil then
-				Speed = "1.5x";
-			end
-
-			local XMod = P1State:GetCurrentPlayerOptions():XMod()
-			if XMod >= 8 then
-				Speed = "1.5x";
-			end
-
-
-
-				P1State:SetPlayerOptions("ModsLevel_Preferred", P1Options..","..Speed..","..FailMode());
-
-
-		end
-		--=============================================================
-		if params.Name == 'SpeedQuarterDown' then
-			self:play()
-
-			local P1State = GAMESTATE:GetPlayerState(PLAYER_1);
-			local P1Options = P1State:GetPlayerOptionsString("ModsLevel_Preferred");
-			local Speed = (P1State:GetCurrentPlayerOptions():XMod()-0.25).."x";
-
-			if Speed == nil then
-				Speed = "1.5x";
-			end
-
-			local XMod = P1State:GetCurrentPlayerOptions():XMod()
-			if XMod <= 1.5 then
-				Speed = "8x";
-			end
-
-
-
-				P1State:SetPlayerOptions("ModsLevel_Preferred", P1Options..","..Speed..","..FailMode());
-
-
-		end
-		--=============================================================
-
-
-
-		--SCREENMAN:SystemMessage(GAMESTATE:GetPlayerState(PLAYER_1):GetPlayerOptionsString("ModsLevel_Preferred"));
-
-	end
+local function increasePlayerSpeed(pn, amount)
+	--SCREENMAN:SystemMessage(playerState);
+	local playerState = GAMESTATE:GetPlayerState(pn);
+	--This returns an instance of playerOptions, you need to set it back to the original
+	local playerOptions = playerState:GetPlayerOptions("ModsLevel_Preferred")
+	--SCREENMAN:SystemMessage(PlayerState:GetPlayerOptionsString("ModsLevel_Current"));
+	--One of these will be valid, depending on the player's currently set speed mod.
+	local cmod = playerOptions:CMod();
+	local mmod = playerOptions:MMod();
+	local xmod = playerOptions:XMod();
+	if cmod then
+		if amount*100+playerOptions:CMod() < 100 then
+			playerOptions:CMod(800);
+		elseif amount*100+playerOptions:CMod() > 1000 then
+			playerOptions:CMod(100);
+		else
+			playerOptions:CMod(playerOptions:CMod()+amount*100);
+		end;
+	elseif mmod then
+		if amount*100+playerOptions:MMod() < 100 then
+			playerOptions:MMod(800);
+		elseif amount*100+playerOptions:MMod() > 1000 then
+			playerOptions:MMod(100);
+		else
+			playerOptions:MMod(playerOptions:MMod()+amount*100);
+		end;
+	elseif xmod then
+		--SCREENMAN:SystemMessage(playerOptions:XMod())
+		if amount+playerOptions:XMod() < .5 then
+			playerOptions:XMod(8);
+		elseif amount+playerOptions:XMod() > 8 then
+			playerOptions:XMod(.5);
+		else
+			playerOptions:XMod(playerOptions:XMod()+amount,true);
+		end;
+		--SCREENMAN:SystemMessage("Set speed to "..playerOptions:XMod().." ("..tostring(xmod).."+"..tostring(amount)..")");
+	else
+		SCREENMAN:SystemMessage("ERROR: Can't determine "..pn.."'s current speed mod!");
+	end;
+	GAMESTATE:GetPlayerState(pn):SetPlayerOptions('ModsLevel_Preferred', playerState:GetPlayerOptionsString("ModsLevel_Preferred"));
+	--SCREENMAN:SystemMessage(GAMESTATE:GetPlayerState(pn):GetPlayerOptionsString("ModsLevel_Current").." "..playerState:GetCurrentPlayerOptions():XMod());
 end
-}
-
-
-
-
-
-t[#t+1] = LoadActor(THEME:GetPathS("","EX_Confirm"))..{
-CodeMessageCommand = function(self, params)
-	if params.PlayerNumber == PLAYER_2 then
-		--SCREENMAN:SystemMessage(GAMESTATE:GetPlayerState(PLAYER_2):GetPlayerOptionsString("ModsLevel_Preferred"));
-		--SCREENMAN:SystemMessage(GAMESTATE:GetPlayerState(PLAYER_2):GetPlayerOptionsArray("ModsLevel_Preferred")[3]);
-		--=============================================================
-		if params.Name == 'SpeedUp' then
-			self:play()
-
-			local P2State = GAMESTATE:GetPlayerState(PLAYER_2);
-			local P2Options = P2State:GetPlayerOptionsString("ModsLevel_Preferred");
-			local Speed = (P2State:GetCurrentPlayerOptions():XMod()+1).."x";
-
-			if Speed == nil then
-				Speed = "1.5x";
-			end
-
-			local XMod = P2State:GetCurrentPlayerOptions():XMod()
-			if XMod >= 7.25 then
-				Speed = "1.5x";
-			end
-
-
-				P2State:SetPlayerOptions("ModsLevel_Preferred", P2Options..","..Speed..","..FailMode());
-
-
-		end
-		--=============================================================
-		if params.Name == 'SpeedDown' then
-			self:play()
-
-			local P2State = GAMESTATE:GetPlayerState(PLAYER_2);
-			local P2Options = P2State:GetPlayerOptionsString("ModsLevel_Preferred");
-			local Speed = (P2State:GetCurrentPlayerOptions():XMod()-1).."x";
-
-			if Speed == nil then
-				Speed = "1.5x";
-			end
-
-			local XMod = P2State:GetCurrentPlayerOptions():XMod()
-			if XMod <= 2 then
-				Speed = "8x";
-			end
-
-
-				P2State:SetPlayerOptions("ModsLevel_Preferred", P2Options..","..Speed..","..FailMode());
-
-
-		end
-		--=============================================================
-		if params.Name == 'SpeedHalfUp' then
-			self:play()
-
-			local P2State = GAMESTATE:GetPlayerState(PLAYER_2);
-			local P2Options = P2State:GetPlayerOptionsString("ModsLevel_Preferred");
-			local Speed = (P2State:GetCurrentPlayerOptions():XMod()+0.5).."x";
-
-			if Speed == nil then
-				Speed = "1.5x";
-			end
-
-			local XMod = P2State:GetCurrentPlayerOptions():XMod()
-			if XMod >= 7.75 then
-				Speed = "1.5x";
-			end
-
-
-				P2State:SetPlayerOptions("ModsLevel_Preferred", P2Options..","..Speed..","..FailMode());
-
-
-
-		end
-		--=============================================================
-		if params.Name == 'SpeedHalfDown' then
-			self:play()
-
-			local P2State = GAMESTATE:GetPlayerState(PLAYER_2);
-			local P2Options = P2State:GetPlayerOptionsString("ModsLevel_Preferred");
-			local Speed = (P2State:GetCurrentPlayerOptions():XMod()-0.5).."x";
-
-			if Speed == nil then
-				Speed = "1.5x";
-			end
-
-			local XMod = P2State:GetCurrentPlayerOptions():XMod()
-			if XMod <= 1.5 then
-				Speed = "8x";
-			end
-
-
-				P2State:SetPlayerOptions("ModsLevel_Preferred", P2Options..","..Speed..","..FailMode());
-
-
-		end
-		--=============================================================
-		if params.Name == 'SpeedQuarterUp' then
-			self:play()
-
-			local P2State = GAMESTATE:GetPlayerState(PLAYER_2);
-			local P2Options = P2State:GetPlayerOptionsString("ModsLevel_Preferred");
-			local Speed = (P2State:GetCurrentPlayerOptions():XMod()+0.25).."x";
-
-			if Speed == nil then
-				Speed = "1.5x";
-			end
-
-			local XMod = P2State:GetCurrentPlayerOptions():XMod()
-			if XMod >= 8 then
-				Speed = "1.5x";
-			end
-
-
-
-				P2State:SetPlayerOptions("ModsLevel_Preferred", P2Options..","..Speed..","..FailMode());
-
-
-		end
-		--=============================================================
-		if params.Name == 'SpeedQuarterDown' then
-			self:play()
-
-			local P2State = GAMESTATE:GetPlayerState(PLAYER_2);
-			local P2Options = P2State:GetPlayerOptionsString("ModsLevel_Preferred");
-			local Speed = (P2State:GetCurrentPlayerOptions():XMod()-0.25).."x";
-
-			if Speed == nil then
-				Speed = "1.5x";
-			end
-
-			local XMod = P2State:GetCurrentPlayerOptions():XMod()
-			if XMod <= 1.5 then
-				Speed = "8x";
-			end
-
-
-
-				P2State:SetPlayerOptions("ModsLevel_Preferred", P2Options..","..Speed..","..FailMode());
-
-
-		end
-		--=============================================================
-
-
-
-
-
-	end
-end
-}
 
 --enabled again because noteskins aren't working
 --requires further testing
@@ -1367,12 +1139,12 @@ t[#t+1] = LoadActor(THEME:GetPathS("","EX_Confirm"))..{
 
 
 t[#t+1] = LoadActor(THEME:GetPathS("","EX_Select"))..{
-CodeMessageCommand = function(self, params)
-	if params.Name == 'OpenOpList' then
-		--SCREENMAN:SystemMessage("OptionsList opened")
-		SCREENMAN:GetTopScreen():OpenOptionsList(params.PlayerNumber)
-	end
-end;
+	CodeMessageCommand = function(self, params)
+		if params.Name == 'OpenOpList' then
+			--SCREENMAN:SystemMessage("OptionsList opened")
+			SCREENMAN:GetTopScreen():OpenOptionsList(params.PlayerNumber)
+		end
+	end;
 };
 
 
@@ -1457,29 +1229,11 @@ t[#t+1] = LoadFont("venacti/_venacti_ 26px bold monospace numbers")..{
 
 --Wheel left/right shadow
 t[#t+1] = Def.Quad {
-	InitCommand=cmd(horizalign,right;draworder,100;faderight,1;;zoomto,120,SCREEN_HEIGHT;y,SCREEN_CENTER_Y;x,SCREEN_CENTER_X-320;diffuse,0,0,0,1);
+	InitCommand=cmd(horizalign,right;faderight,1;draworder,10;zoomto,120,SCREEN_HEIGHT;y,SCREEN_CENTER_Y;x,SCREEN_CENTER_X-320;diffuse,0,0,0,1);
 }
 t[#t+1] = Def.Quad {
-	InitCommand=cmd(horizalign,left;draworder,100;fadeleft,1;;zoomto,120,SCREEN_HEIGHT;y,SCREEN_CENTER_Y;x,SCREEN_CENTER_X+320;diffuse,0,0,0,1);
+	InitCommand=cmd(horizalign,left;fadeleft,1;draworder,10;zoomto,120,SCREEN_HEIGHT;y,SCREEN_CENTER_Y;x,SCREEN_CENTER_X+320;diffuse,0,0,0,1);
 }
-
-
-
-
-
-
-
-
---speedmods
-
-t[#t+1] = LoadActor("optionIcon")..{
-	InitCommand=cmd(draworder,100;x,SCREEN_LEFT+5;y,SCREEN_CENTER_Y-22;zoomy,0.34;zoomx,0.425;horizalign,left;diffusealpha,0.75;visible,GAMESTATE:IsHumanPlayer(PLAYER_1));
-	PlayerJoinedMessageCommand=cmd(visible,GAMESTATE:IsHumanPlayer(PLAYER_1));
-	}
-t[#t+1] = LoadActor("optionIcon")..{
-	InitCommand=cmd(draworder,100;x,SCREEN_RIGHT-5;y,SCREEN_CENTER_Y-22;zoomy,0.34;zoomx,0.425;horizalign,right;diffusealpha,0.75;visible,GAMESTATE:IsHumanPlayer(PLAYER_2));
-	PlayerJoinedMessageCommand=cmd(visible,GAMESTATE:IsHumanPlayer(PLAYER_2));
-	}
 
 
 
@@ -1575,73 +1329,6 @@ t[#t+1] = Def.Sprite{
 };
 
 --fonts--
---speed--
-
-t[#t+1] = LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
-	InitCommand=cmd(draworder,100;x,SCREEN_LEFT+27;y,SCREEN_CENTER_Y-22;zoomx,0.41;zoomy,0.38;diffusebottomedge,0.7,0.7,0.7,1;maxwidth,55;shadowlength,0.8);
-	--OnCommand=cmd(visible,GAMESTATE:IsHumanPlayer(PLAYER_1);settext,(math.ceil(GAMESTATE:GetPlayerState(PLAYER_1):GetCurrentPlayerOptions():XMod()*100)/100).."x");
-	--sleep,0.1;queuecommand,"On");
-	OptionsListClosedMessageCommand=cmd(settext,(math.ceil(GAMESTATE:GetPlayerState(PLAYER_1):GetCurrentPlayerOptions():XMod()*100)/100).."x");
-	PlayerJoinedMessageCommand=cmd(visible,GAMESTATE:IsHumanPlayer(PLAYER_1);settext,(math.ceil(GAMESTATE:GetPlayerState(PLAYER_1):GetCurrentPlayerOptions():XMod()*100)/100).."x");
-	CodeMessageCommand=function(self)
-		self:stoptweening()
-		self:visible(GAMESTATE:IsHumanPlayer(PLAYER_1));
-		self:settext((math.ceil(GAMESTATE:GetPlayerState(PLAYER_1):GetCurrentPlayerOptions():XMod()*100)/100).."x");
-	end;
-}
-t[#t+1] = LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
-	InitCommand=cmd(draworder,100;x,SCREEN_RIGHT-26;y,SCREEN_CENTER_Y-22;zoomx,0.41;zoomy,0.38;diffusebottomedge,0.7,0.7,0.7,1;maxwidth,55;shadowlength,0.8);
-	OnCommand=cmd(visible,GAMESTATE:IsHumanPlayer(PLAYER_2);settext,(math.ceil(GAMESTATE:GetPlayerState(PLAYER_2):GetCurrentPlayerOptions():XMod()*100)/100).."x");
-	--sleep,0.1;queuecommand,"On");
-	OptionsListClosedMessageCommand=cmd(settext,(math.ceil(GAMESTATE:GetPlayerState(PLAYER_2):GetCurrentPlayerOptions():XMod()*100)/100).."x");
-	PlayerJoinedMessageCommand=cmd(visible,GAMESTATE:IsHumanPlayer(PLAYER_2);settext,(math.ceil(GAMESTATE:GetPlayerState(PLAYER_2):GetCurrentPlayerOptions():XMod()*100)/100).."x");
-	CodeMessageCommand=function(self)
-		self:stoptweening()
-		self:visible(GAMESTATE:IsHumanPlayer(PLAYER_2));
-		self:settext((math.ceil(GAMESTATE:GetPlayerState(PLAYER_2):GetCurrentPlayerOptions():XMod()*100)/100).."x");
-	end;
-
-}
-
-
-t[#t+1] = LoadActor("optionFlash")..{
-	InitCommand=cmd(draworder,100;x,SCREEN_LEFT+26;y,SCREEN_CENTER_Y-22;zoomy,0.34;zoomx,0.425;diffuse,1,1,1,0;visible,GAMESTATE:IsHumanPlayer(PLAYER_1);sleep,0.1;blend,Blend.Add;queuecommand,"Init");
-	CodeMessageCommand=function(self,params)
-	if params.PlayerNumber == PLAYER_1 then
-		if params.Name == 'SpeedUp' or
-		params.Name == 'SpeedDown' or
-		params.Name == 'SpeedHalfUp' or
-		params.Name == 'SpeedHalfDown' or
-		params.Name == 'SpeedQuarterUp' or
-		params.Name == 'SpeedQuarterDown' then
-		self:stoptweening();
-		self:diffusealpha(1);
-		self:sleep(0.1);
-		self:linear(0.3)
-		self:diffusealpha(0);
-		end
-	end
-	end
-}
-t[#t+1] = LoadActor("optionFlash")..{
-	InitCommand=cmd(draworder,100;x,SCREEN_RIGHT-26;y,SCREEN_CENTER_Y-22;zoomy,0.34;zoomx,0.425;diffuse,1,1,1,0;visible,GAMESTATE:IsHumanPlayer(PLAYER_2);sleep,0.1;blend,Blend.Add;queuecommand,"Init");
-	CodeMessageCommand=function(self,params)
-	if params.PlayerNumber == PLAYER_2 then
-		if params.Name == 'SpeedUp' or
-		params.Name == 'SpeedDown' or
-		params.Name == 'SpeedHalfUp' or
-		params.Name == 'SpeedHalfDown' or
-		params.Name == 'SpeedQuarterUp' or
-		params.Name == 'SpeedQuarterDown' then
-		self:stoptweening();
-		self:diffusealpha(1);
-		self:sleep(0.1);
-		self:linear(0.3)
-		self:diffusealpha(0);
-		end
-	end
-	end
-}
 
 
 
@@ -1784,5 +1471,101 @@ t[#t+1] = Def.Quad {
 	InitCommand=cmd(x,SCREEN_CENTER_X-1;y,SCREEN_CENTER_Y;zoomy,0.675;zoomx,0.65);
 
 };]]
+
+for pn in ivalues(PlayerNumber) do
+	t[#t+1] = Def.ActorFrame{
+		InitCommand=function(self)
+			self:y(SCREEN_CENTER_Y-22);
+			self:draworder(11);
+			if pn == PLAYER_1 then
+				self:x(SCREEN_LEFT+27);
+			else
+				self:x(SCREEN_RIGHT-27);
+			end;
+		end;
+		OnCommand=cmd(visible,GAMESTATE:IsHumanPlayer(pn));
+		PlayerJoinedMessageCommand=cmd(visible,GAMESTATE:IsHumanPlayer(pn));
+		
+		LoadActor(THEME:GetPathS("","EX_Confirm"))..{
+			CodeMessageCommand = function(self, params)
+				local sTable = {
+					Quarter = .25,
+					Half = .5,
+					Full = 1
+				};
+
+				if params.PlayerNumber == pn then
+					if params.Name == 'SpeedQuarterUp' then
+						increasePlayerSpeed(pn,sTable['Quarter']);
+					end;
+					if params.Name == 'SpeedHalfUp' then
+						increasePlayerSpeed(pn,sTable['Half']);
+					end;
+					if params.Name == 'SpeedUp' then
+						increasePlayerSpeed(pn,sTable['Full']);
+					end;
+					
+					--Increasing... By a negative number
+					if params.Name == 'SpeedQuarterDown' then
+						increasePlayerSpeed(pn,sTable['Quarter']*-1);
+					end;
+					if params.Name == 'SpeedHalfDown' then
+						increasePlayerSpeed(pn,sTable['Half']*-1);
+					end;
+					if params.Name == 'SpeedDown' then
+						increasePlayerSpeed(pn,sTable['Full']*-1);
+					end;
+				end
+			end
+		};--speedmods
+
+		LoadActor("optionIcon")..{
+			InitCommand=cmd(draworder,100;zoomy,0.34;zoomx,0.425;diffusealpha,0.75;);
+		};
+		LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
+			InitCommand=cmd(draworder,100;zoomx,0.41;zoomy,0.38;diffusebottomedge,0.7,0.7,0.7,1;maxwidth,70;shadowlength,0.8);
+			OnCommand=cmd(playcommand,"UpdateText");
+			--sleep,0.1;queuecommand,"On");
+			OptionsListClosedMessageCommand=cmd(playcommand,"UpdateText");
+			CodeMessageCommand=function(self)
+				self:playcommand("UpdateText");
+			end;
+			UpdateTextCommand=function(self)
+				local playerOptions = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred")
+				local cmod = playerOptions:CMod();
+				local mmod = playerOptions:MMod();
+				local xmod = playerOptions:XMod();
+				if cmod then
+					self:settext("C"..cmod);
+				elseif mmod then
+					self:settext("AV"..mmod);
+				elseif xmod then
+					self:settext(xmod.."x");
+				else
+					self:settext("???");
+				end;
+			end;
+		};
+		LoadActor("optionFlash")..{
+			InitCommand=cmd(draworder,100;x,-1;zoomy,0.34;zoomx,0.425;diffuse,1,1,1,0;visible,GAMESTATE:IsHumanPlayer(pn);sleep,0.1;blend,Blend.Add;queuecommand,"Init");
+			CodeMessageCommand=function(self,params)
+				if params.PlayerNumber == pn then
+					if params.Name == 'SpeedUp' or
+						params.Name == 'SpeedDown' or
+						params.Name == 'SpeedHalfUp' or
+						params.Name == 'SpeedHalfDown' or
+						params.Name == 'SpeedQuarterUp' or
+						params.Name == 'SpeedQuarterDown' then
+						self:stoptweening();
+						self:diffusealpha(1);
+						self:sleep(0.1);
+						self:linear(0.3)
+						self:diffusealpha(0);
+					end
+				end
+			end
+		};
+	}
+end
 
 return t;

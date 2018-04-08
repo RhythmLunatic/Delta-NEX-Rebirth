@@ -68,7 +68,7 @@ local t = Def.ActorFrame {
 
 
 	 LoadFont("frutiger/frutiger 24px") .. {
-		Text="Powered by SSC - Spinal Shark Collective\nNEX is a mod by Schranz Conflict | Based on PIU Delta by Luizsan\nRebirth by RhythmLunatic, new graphics by Joao Almeida\n";
+		Text="Powered by SSC - Spinal Shark Collective\nNEX is a mod by Schranz Conflict | Based on PIU Delta by Luizsan\nRebirth by Rhythm Lunatic, new graphics by Joao Almeida\n";
 		InitCommand=cmd(horizalign,center;vertalign,top;zoom,0.4;x,SCREEN_CENTER_X;y,SCREEN_BOTTOM-35)
 	};
 

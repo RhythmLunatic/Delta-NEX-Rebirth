@@ -15,9 +15,9 @@ local function inputs(event)
 	--Keytester
 	--SCREENMAN:SystemMessage(button.." "..tostring(isSelectingDifficulty));
 	--I'm sorry, but this was the easiest way to get it to move the musicwheel when a folder was closed/opened...
-	if button == "Center" then
+	--[[if button == "Center" then
 		MESSAGEMAN:Broadcast("CurrentSongChanged");
-	end
+	end]]
 
 	--If basic mode, don't allow them to close the folder.
 	if ScreenSelectMusic:GetName() == "ScreenSelectMusic" then
@@ -75,7 +75,7 @@ local t = Def.ActorFrame{
 		ScreenSelectMusic = SCREENMAN:GetTopScreen();
 		--CurrentGroup comes from the group select overlay (It's a global variable hack!)
 		if currentGroup ~= nil then
-			--SCREENMAN:SystemMessage(currentGroup);
+			SCREENMAN:SystemMessage(currentGroup);
 			ScreenSelectMusic:GetChild('MusicWheel'):SetOpenSection(currentGroup);
 			ScreenSelectMusic:GetChild('MusicWheel'):Move(1);
 			ScreenSelectMusic:GetChild('MusicWheel'):Move(0);
@@ -109,7 +109,7 @@ local t = Def.ActorFrame{
 		InitCommand=cmd(Center;addy,150;--[[diffusebottomedge,Color("Red")]]);
 		
 		--Handle moving the MusicWheel;
-		CurrentSongChangedMessageCommand=function(self)
+		--[[CurrentSongChangedMessageCommand=function(self)
 			local MusicWheel = SCREENMAN:GetTopScreen():GetChild('MusicWheel');
 			local song = GAMESTATE:GetCurrentSong();
 			if song then
@@ -152,7 +152,10 @@ local t = Def.ActorFrame{
 					self:settext("");
 				end;
 			end
-		end;
+		end;]]
+		--[[CurrentCourseChangedMessageCommand=function(self)
+			SCREENMAN:SystemMessage("Hello World!");
+		end;]]
 	};
 	
 	
@@ -160,7 +163,7 @@ local t = Def.ActorFrame{
 	TwoPartConfirmCanceledMessageCommand=function(self)
 		local MusicWheel = SCREENMAN:GetTopScreen():GetChild('MusicWheel');
 		MusicWheel:accelerate(.2);
-		MusicWheel:y(SCREEN_CENTER_Y+120)
+		MusicWheel:addy(-300)
 		
 		self:sleep(.05);
 		self:queuecommand("DifficultySelectExited");
@@ -169,7 +172,7 @@ local t = Def.ActorFrame{
 	SongChosenMessageCommand=function(self)
 		local MusicWheel = SCREENMAN:GetTopScreen():GetChild('MusicWheel');
 		MusicWheel:accelerate(.2);
-		MusicWheel:y(SCREEN_BOTTOM+300);
+		MusicWheel:addy(300);
 		
 		isSelectingDifficulty = true;
 	end;
@@ -177,7 +180,7 @@ local t = Def.ActorFrame{
 	SongUnchosenMessageCommand=function(self)
 		local MusicWheel = SCREENMAN:GetTopScreen():GetChild('MusicWheel');
 		MusicWheel:accelerate(.2);
-		MusicWheel:y(SCREEN_CENTER_Y+120)
+		MusicWheel:addy(-300)
 		
 		self:sleep(.05);
 		self:queuecommand("DifficultySelectExited");
