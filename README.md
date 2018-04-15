@@ -44,7 +44,7 @@ A: Because StepF2 ignores difficulties and only uses meters, normal StepMania do
 
 Q: Why do some StepF2 created songs end instantly?
 
-A: I don't know.
+A: The song file only has EDIT difficulties, give it at least one real difficulty (Easy, Medium, Hard, Challenge).
 
 Q: Why are DP charts only playable in single player, and Co-op charts only playable in multiplayer?
 

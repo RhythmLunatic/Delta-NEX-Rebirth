@@ -86,6 +86,8 @@ t[#t+1] = Def.ActorFrame {
 	Def.Quad {
 		InitCommand=cmd(visible,true;diffuse,color("0,0,0,1");setsize,290,160;diffusealpha,1);
 	};
+	
+	--SONG BACKGROUND
 	Def.Sprite {
 		CurrentSongChangedMessageCommand=cmd(finishtweening;queuecommand,"ModifySongBackground");
 		ModifySongBackgroundCommand=function(self)
@@ -114,9 +116,9 @@ t[#t+1] = Def.ActorFrame {
 				self:diffusealpha(1);
 			end;
 		end;
-		--[[CurrentCourseChangedMessageCommand=function(self)
-			self:stoptweening();
+		CurrentCourseChangedMessageCommand=function(self)
 			if GAMESTATE:GetCurrentCourse() and SCREENMAN:GetTopScreen():GetName() == "ScreenSelectCourse" then
+				self:stoptweening();
 				local bg = GAMESTATE:GetCurrentCourse():GetBackgroundPath();
 					if bg then
 					self:Load(bg);
@@ -134,8 +136,10 @@ t[#t+1] = Def.ActorFrame {
 					self:diffusealpha(1);
 				end;
 			end;
-		end;]]
+		end;
 	};
+	
+	--SONG VIDEO
 	Def.Sprite {
 		CurrentSongChangedMessageCommand=cmd(finishtweening;diffusealpha,0;queuecommand,"ModifySongBackground");
 
@@ -157,34 +161,41 @@ t[#t+1] = Def.ActorFrame {
 			self:scaletoclipped(290,160);
 		end;
 	};
+	
+	--SONG TITLE SHADOW
 	Def.Quad{
 		InitCommand=cmd(setsize,284,35;vertalign,bottom;diffuse,color("0,0,0,.8");addy,80;fadetop,.2);
 	};
-
+	
+	--SONG TITLE
 	LoadFont("venacti/_venacti 26px bold diffuse")..{
-		InitCommand=cmd(addy,58;zoom,.5;maxwidth,530);
+		InitCommand=cmd(--[[addx,-50;]]addy,58;zoom,.5;maxwidth,530;faderight,1;fadeleft,1;diffusealpha,0);
+		OnCommand=cmd(linear,.8;faderight,0;fadeleft,0;diffusealpha,1);
 		CurrentSongChangedMessageCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong();
 			if song then
 				self:settext(song:GetDisplayFullTitle());
-			elseif GAMESTATE:GetCurrentCourse() then
-				self:settext(GAMESTATE:GetCurrentCourse():GetDisplayFullTitle());
+			--[[elseif GAMESTATE:GetCurrentCourse() then
+				self:settext(GAMESTATE:GetCurrentCourse():GetDisplayFullTitle());]]
 			else
 				self:settext("");
 			end;
 		end;
-		--[[CurrentCourseChangedMessageCommand=function(self)
-			local course = GAMESTATE:GetCurrentCourse();
-			if course then
-				self:settext(course:GetDisplayFullTitle());
-			else
-				self:settext("");
+		CurrentCourseChangedMessageCommand=function(self)
+			if GAMESTATE:GetCurrentCourse() and SCREENMAN:GetTopScreen():GetName() == "ScreenSelectCourse" then
+				local course = GAMESTATE:GetCurrentCourse();
+				if course then
+					self:settext(course:GetDisplayFullTitle());
+				else
+					self:settext("");
+				end;
 			end;
-		end;]]
+		end;
 	};
 	
+	--SONG ARTIST
 	LoadFont("venacti/_venacti 26px bold diffuse")..{
-		InitCommand=cmd(maxwidth,530;horizalign,center;addy,71;zoomx,0.385;zoomy,0.38;shadowlength,1);
+		InitCommand=cmd(maxwidth,530;horizalign,center;--[[addx,-50;]]addy,71;zoomx,0.385;zoomy,0.38;shadowlength,1);
 		OnCommand=cmd(diffusealpha,0;strokecolor,Color("Outline");shadowlength,1;sleep,0.3;linear,0.8;diffusealpha,1);
 		CurrentSongChangedMessageCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
@@ -209,6 +220,65 @@ t[#t+1] = Def.ActorFrame {
 		end;]]
 	};
 	
+	--BPM DISPLAY
+	--[[LoadFont("venacti/_venacti 26px bold diffuse")..{
+		InitCommand=cmd(addx,-50;addy,58;zoom,.5;maxwidth,530;);
+		CurrentSongChangedMessageCommand=function(self)
+			local song = GAMESTATE:GetCurrentSong();
+			if song then
+				self:settext(song:GetDisplayFullTitle());
+			else
+				self:settext("");
+			end;
+		end;
+		CurrentCourseChangedMessageCommand=function(self)
+			if GAMESTATE:GetCurrentCourse() and SCREENMAN:GetTopScreen():GetName() == "ScreenSelectCourse" then
+				local course = GAMESTATE:GetCurrentCourse();
+				if course then
+					self:settext(course:GetDisplayFullTitle());
+				else
+					self:settext("");
+				end;
+			end;
+		end;
+	};]]
+	
+	--LONG SONG WARNING
+	Def.Quad{
+		InitCommand=cmd(setsize,284,28;vertalign,top;fadebottom,.2;addy,-80;);
+		CurrentSongChangedMessageCommand=function(self)
+			--diffuse,Color("Red");
+			local song = GAMESTATE:GetCurrentSong();
+			if song and song:IsLong() then
+				self:visible(true)
+				self:diffuse(color("#eb9100CC"));
+			elseif song and song:IsMarathon() then
+				self:visible(true)
+				self:diffuse(color("#ff2424CC"));
+			else
+				self:visible(false)
+			end
+		end;
+	
+	};
+	LoadFont("venacti/_venacti 26px bold diffuse")..{
+		InitCommand=cmd(setsize,284,30;vertalign,top;addy,-75;zoom,.5;shadowlength,1;shadowcolor,color("#000000BB"));
+		--Text="FULL SONG: This song requires 2 stages.";
+		CurrentSongChangedMessageCommand=function(self)
+			local song = GAMESTATE:GetCurrentSong()
+			if song and song:IsLong() then
+				self:visible(true)
+				self:settext("FULL SONG: This song takes 2 stages.");
+			elseif song and song:IsMarathon() then
+				self:visible(true)
+				self:settext("MARATHON: This song takes 3 stages.");
+			else
+				self:visible(false)
+			end
+		end;
+	};
+	
+	
 	LoadActor("songback") .. {
 		InitCommand=cmd(draworder,6;addy,10;zoomy,0.675;zoomx,0.65);
 
@@ -216,8 +286,8 @@ t[#t+1] = Def.ActorFrame {
 };
 
 
--- LONG SONG
-t[#t+1] = LoadActor("long_normal") .. {
+-- LONG SONG (OLD)
+--[[t[#t+1] = LoadActor("long_normal") .. {
 	InitCommand=cmd(draworder,25;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-3;zoom,0.575);
 	SongChosenMessageCommand=cmd(diffusealpha,0);
 	TwoPartConfirmCanceledMessageCommand=cmd(diffusealpha,1);
@@ -233,6 +303,8 @@ t[#t+1] = LoadActor("long_normal") .. {
 	end;
 
 };
+
+
 
 t[#t+1] = LoadActor("long_add") .. {
 	InitCommand=cmd(draworder,25;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-3;zoom,0.575;blend,Blend.Add);
@@ -285,7 +357,7 @@ t[#t+1] = LoadActor("marathon_add") .. {
 		end
 	end;
 
-};
+};]]
 
 
 t[#t+1] = LoadActor("jacket_light") .. {
@@ -1327,6 +1399,8 @@ t[#t+1] = Def.Quad {
 
 };]]
 
+-- Speed
+
 local function increasePlayerSpeed(pn, amount)
 	--SCREENMAN:SystemMessage(playerState);
 	local playerState = GAMESTATE:GetPlayerState(pn);
@@ -1395,23 +1469,29 @@ for pn in ivalues(PlayerNumber) do
 				if params.PlayerNumber == pn then
 					if params.Name == 'SpeedQuarterUp' then
 						increasePlayerSpeed(pn,sTable['Quarter']);
+						self:play();
 					end;
 					if params.Name == 'SpeedHalfUp' then
 						increasePlayerSpeed(pn,sTable['Half']);
+						self:play();
 					end;
 					if params.Name == 'SpeedUp' then
 						increasePlayerSpeed(pn,sTable['Full']);
+						self:play();
 					end;
 					
 					--Increasing... By a negative number
 					if params.Name == 'SpeedQuarterDown' then
 						increasePlayerSpeed(pn,sTable['Quarter']*-1);
+						self:play();
 					end;
 					if params.Name == 'SpeedHalfDown' then
 						increasePlayerSpeed(pn,sTable['Half']*-1);
+						self:play();
 					end;
 					if params.Name == 'SpeedDown' then
 						increasePlayerSpeed(pn,sTable['Full']*-1);
+						self:play();
 					end;
 				end
 			end
@@ -1467,23 +1547,8 @@ for pn in ivalues(PlayerNumber) do
 end
 
 -- noteskin
-local function CurrentNoteSkin(p)
-        local state = GAMESTATE:GetPlayerState(p)
-        local mods = state:GetPlayerOptionsArray( 'ModsLevel_Preferred' )
-        local skins = NOTESKIN:GetNoteSkinNames()
-
-        for i = 1, #mods do
-            for j = 1, #skins do
-                if string.lower( mods[i] ) == string.lower( skins[j] ) then
-                   return skins[j];
-                end
-            end
-        end
-
-end
-
 for pn in ivalues(PlayerNumber) do
-	t[#t+1] = Def.ActorFrame{
+	t[#t+1] = LoadActor("NoteSkin Display", pn)..{
 		InitCommand=function(self)
 			self:y(SCREEN_CENTER_Y-22):draworder(12);
 			if pn == PLAYER_1 then
@@ -1492,35 +1557,6 @@ for pn in ivalues(PlayerNumber) do
 				self:x(SCREEN_RIGHT-70);
 			end;
 		end;
-		OnCommand=cmd(visible,GAMESTATE:IsHumanPlayer(pn));
-		PlayerJoinedMessageCommand=cmd(queuecommand,"On");
-		PlayerUnjoinedMessageCommand=cmd(playcommand,"On");
-		
-		LoadActor("optionIcon")..{
-			InitCommand=cmd(draworder,100;zoomy,0.34;zoomx,0.425;diffusealpha,.75);
-		};
-		
-		Def.Sprite{
-			InitCommand=cmd(x,1;draworder,100);
-			OnCommand=function(self)
-				local arrow = "UpLeft";
-				local name = "Tap note";
-				if CurrentNoteSkin(pn) == "delta" then
-					name = "Ready Receptor";
-				elseif CurrentNoteSkin(pn) == "delta-note" or CurrentNoteSkin(pn) == "rhythm" then
-					arrow = "_UpLeft";
-				end
-				local path = NOTESKIN:GetPathForNoteSkin(arrow, name, CurrentNoteSkin(pn));
-				
-				self:Load(path);
-				self:croptop(0);
-				self:cropright(0);
-				self:zoom(0.35);
-			end;
-			OptionsListClosedMessageCommand=cmd(queuecommand,"On");
-			CodeMessageCommand=cmd(playcommand,"On");
-		};
-
 	};
 end;
 

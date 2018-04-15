@@ -47,13 +47,16 @@ local function inputs(event)
 	
 	if button == "MenuUp" then
 		--SCREENMAN:SystemMessage(button.." "..tostring(isSelectingDifficulty));
-		local groupName = ScreenSelectMusic:GetChild('MusicWheel'):GetSelectedSection();
-		local jacket = GetSongGroupJacketPath(groupName)
+		--local MusicWheel = ScreenSelectMusic:GetChild('MusicWheel');
+		--local currentWheelItem = MusicWheel:GetWheelItem(MusicWheel:GetCurrentIndex());
+		--[[local jacket = GetSongGroupJacketPath(groupName)
 		if jacket then
 			SCREENMAN:SystemMessage(jacket);
 		else
-			SCREENMAN:SystemMessage("none");
-		end;
+			SCREENMAN:SystemMessage("no jacket");
+		end;]]
+		SCREENMAN:SystemMessage(GAMESTATE:GetCurrentCourse():GetDisplayFullTitle());
+		--	SCREENMAN:SystemMessage(currentWheelItem:GetChild("CourseNormalPart"):GetChild("SongBanner"):GetChildren())
 	elseif button == "MenuDown" then
 		--[[local groupName = ScreenSelectMusic:GetChild('MusicWheel'):GetSelectedSection();
 		local banner = SONGMAN:GetSongGroupBannerPath(groupName);

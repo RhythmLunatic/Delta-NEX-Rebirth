@@ -40,7 +40,7 @@ return Def.ActorFrame{
 		
 	Def.Quad{
 		InitCommand=function(self)
-			self:setsize(SCREEN_WIDTH,50):diffuse(Color("Black")):Center();
+			self:setsize(SCREEN_WIDTH,100):diffuse(Color("Black")):Center();
 			if PREFSMAN:GetPreference("MemoryCardProfiles") == true and PROFILEMAN:GetNumLocalProfiles() > 0 then
 			
 			else
@@ -54,6 +54,7 @@ return Def.ActorFrame{
 		Text="You have USB saving enabled, but you still have local profiles.\nYou need to delete all local profiles to use USB saving.";
 		InitCommand=function(self)
 			self:Center();
+			self:wrapwidthpixels(SCREEN_WIDTH);
 			--[[if PREFSMAN:PreferenceExists("MemoryCardProfiles") then
 				self:settext(tostring(PREFSMAN:GetPreference("MemoryCardProfiles")));
 			else

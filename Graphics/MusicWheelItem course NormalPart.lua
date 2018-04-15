@@ -9,12 +9,12 @@ return Def.ActorFrame {
 		InitCommand=cmd(diffusealpha,1;scaletoclipped,250,177;);
 		SetMessageCommand=function(self,params)
 			self:stoptweening();
-			local song = params.Course;
+			local course = params.Course;
 			local path;
-			if song then
-				path = song:GetBannerPath();
+			if course then
+				path = course:GetBannerPath();
 			end;
-			if not path then path = THEME:GetPathG("Common","fallback banner") end
+			if path == nil then path = THEME:GetPathG("Common","fallback banner") end
 			--SCREENMAN:SystemMessage(path);
 			self:Load(path);
 		end;
