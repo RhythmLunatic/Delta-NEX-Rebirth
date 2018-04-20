@@ -123,7 +123,7 @@ function BasicModeConfig()
 		SelectType = "SelectOne";
 		OneChoiceForAllPlayers = true;
 		ExportOnChange = true;
-		Choices = {"Enabled", "Disabled"};
+		Choices = {THEME:GetString("OptionNames","Enabled"), THEME:GetString("OptionNames","Disabled")};
 		--Values = { true, false };
 		LoadSelections = function(self, list, pn)
 			if ReadPrefFromFile("UserPrefBasicMode") == "Enabled" then
@@ -137,6 +137,34 @@ function BasicModeConfig()
 				WritePrefToFile("UserPrefBasicMode","Enabled");
 			else
 				WritePrefToFile("UserPrefBasicMode","Disabled");
+			end;
+		end;
+	};
+	setmetatable( t, t );
+	return t;
+end;
+
+function GuestSaveConfig()
+	local t = {
+		Name = "GuestSaveType";
+		LayoutType = "ShowAllInRow";
+		SelectType = "SelectOne";
+		OneChoiceForAllPlayers = true;
+		ExportOnChange = true;
+		Choices = {"USB", "RFID"};
+		--Values = { true, false };
+		LoadSelections = function(self, list, pn)
+			if ReadPrefFromFile("GuestSaveType") == "USB" then
+				list[1] = true;
+			else
+				list[2] = true;
+			end;
+		end;
+		SaveSelections = function(self, list, pn)
+			if list[1] then
+				WritePrefToFile("GuestSaveType","USB");
+			else
+				WritePrefToFile("UserPrefBasicMode","RFID");
 			end;
 		end;
 	};
@@ -431,11 +459,11 @@ function UserPrefSetPreferences()
 		ExportOnChange = true;
 		
 		-- escolhas em strings
-		Choices = { "Yes", "No"};
+		Choices = { THEME:GetString("OptionNames","Yes"), THEME:GetString("OptionNames","No")};
 		LoadSelections = function(self, list, pn)
 			if ReadPrefFromFile("UserPrefSetPreferences") == nil then
-				list[1] = true;
-				WritePrefToFile("UserPrefSetPreferences","Yes");
+				list[1] = false;
+				WritePrefToFile("UserPrefSetPreferences","No");
 			else
 				if GetUserPref("UserPrefSetPreferences") == "Yes" then
 					list[1] = true;
