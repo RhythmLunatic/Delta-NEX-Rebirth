@@ -13,6 +13,16 @@ function BasicOrFullMode()
 	end
 end
 
+function SelectMusicOrCourse()
+	if IsNetSMOnline() then
+		return "ScreenNetSelectMusic"
+	elseif GAMESTATE:IsCourseMode() then
+		return "ScreenSelectCourse"
+	else
+		return BasicOrFullMode();
+	end
+end
+
 function UseLoadingScreen()
 
 end
