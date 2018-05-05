@@ -262,16 +262,16 @@ t[#t+1] = Def.ActorFrame {
 	
 	};
 	LoadFont("venacti/_venacti 26px bold diffuse")..{
-		InitCommand=cmd(setsize,284,30;vertalign,top;addy,-75;zoom,.5;shadowlength,1;shadowcolor,color("#000000BB"));
+		InitCommand=cmd(maxwidth,525;vertalign,top;addy,-75;zoom,.5;shadowlength,1;shadowcolor,color("#000000BB"));
 		--Text="FULL SONG: This song requires 2 stages.";
 		CurrentSongChangedMessageCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			if song and song:IsLong() then
 				self:visible(true)
-				self:settext("FULL SONG: This song takes 2 stages.");
+				self:settext(THEME:GetString("ScreenSelectMusic","FullSongWarning"));
 			elseif song and song:IsMarathon() then
 				self:visible(true)
-				self:settext("MARATHON: This song takes 3 stages.");
+				self:settext(THEME:GetString("ScreenSelectMusic","MarathonWarning"));
 			else
 				self:visible(false)
 			end

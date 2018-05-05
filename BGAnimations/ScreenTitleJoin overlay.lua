@@ -50,11 +50,10 @@ return Def.ActorFrame{
 	};
 	
 	LoadFont("soms2/_soms2 techy")..{
-		--TODO: Localize this
-		Text="You have USB saving enabled, but you still have local profiles.\nYou need to delete all local profiles to use USB saving.";
+		Text=THEME:GetString("ScreenTitleJoin","USBSaveWarning");
 		InitCommand=function(self)
 			self:Center();
-			self:wrapwidthpixels(SCREEN_WIDTH);
+			self:wrapwidthpixels(SCREEN_WIDTH-10);
 			--[[if PREFSMAN:PreferenceExists("MemoryCardProfiles") then
 				self:settext(tostring(PREFSMAN:GetPreference("MemoryCardProfiles")));
 			else
@@ -70,7 +69,7 @@ return Def.ActorFrame{
 	};
 	
 	LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
-		Text="Insert a USB flash drive to save progress";
+		Text=THEME:GetString("ScreenTitleJoin","USBSaveInfo");
 		InitCommand=cmd(diffuseshift;effectperiod,2;effectcolor1,color("1,1,1,1");effectcolor2,color("1,1,1,0");xy,SCREEN_CENTER_X,SCREEN_BOTTOM-75;zoom,.75;visible,PREFSMAN:GetPreference("MemoryCardProfiles"));
 	};
 

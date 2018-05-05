@@ -21,12 +21,12 @@ t[#t+1] = Def.ActorFrame{
 		InitCommand=cmd(x,170;y,50;diffusealpha,0;zoom,0.65);
 		OnCommand=cmd(sleep,11;linear,0.5;diffusealpha,0.8;y,0;sleep,2;linear,0.5;y,-50;diffusealpha,0;);
 	};
-	LoadActor("author")..{
-		InitCommand=cmd(y,100;diffusealpha,0;zoom,0.4);
+	LoadActor("Schranz Conflict logo")..{
+		InitCommand=cmd(y,100;diffusealpha,0;zoom,.6);
 		OnCommand=cmd(sleep,14;linear,0.5;diffusealpha,0.8;y,50;sleep,2;linear,0.5;zoom,0.45;diffusealpha,0;);
 	};
 	LoadActor("RhythmLunatic logo")..{
-		InitCommand=cmd(y,-100;cropright,1;diffusealpha,0);
+		InitCommand=cmd(y,-100;cropright,1;diffusealpha,0;);
 		OnCommand=cmd(sleep,14;diffusealpha,1;decelerate,1;cropright,0;sleep,1.5;linear,0.5;diffusealpha,0;);
 	};
 };

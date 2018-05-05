@@ -23,12 +23,12 @@ local t = Def.ActorFrame {
 		OnCommand=cmd(diffusealpha,0;sleep,9.8;linear,.2;diffusealpha,1);
 	};]]
 	LoadFont("MyDefault")..{
-		InitCommand=cmd(Center;addy,-170);
-		Text="This theme is not sponsored, licensed, or endorsed by"
+		InitCommand=cmd(Center;addy,-170;maxwidth,SCREEN_WIDTH-10);
+		Text=THEME:GetString("ScreenInit","Warning1");
 	};
 	LoadFont("MyDefault")..{
 		InitCommand=cmd(Center;addy,170);
-		Text="Delta NEX Rebirth is free and open source.\nIf you paid for this, you have been scammed.";
+		Text=THEME:GetString("ScreenInit","Warning2");
 	};
 
 };

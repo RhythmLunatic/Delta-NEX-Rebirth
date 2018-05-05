@@ -8,7 +8,7 @@ return Def.ActorFrame{
 	end;
 
 	LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
-		Text="Demonstration";
+		Text=THEME:GetString("ScreenDemonstration","Demonstration");
 		InitCommand=cmd(draworder,900;xy,SCREEN_CENTER_X,SCREEN_BOTTOM-45;--[[diffuseshift;effectperiod,2;effectcolor1,color("1,1,1,1");effectcolor2,color("1,1,1,0")]]);
 	};
 	
@@ -17,20 +17,14 @@ return Def.ActorFrame{
 	};
 	]]
 	
-	Def.Quad{
-		InitCommand=cmd(setsize,290,40;diffuse,color("0,0,0,.8");xy,P1X,SCREEN_BOTTOM-130;fadeleft,.2;faderight,.2;draworder,900);
-	};
-	
-	LoadActor(THEME:GetPathG("", "JoinOverlay"))..{
+	LoadActor(THEME:GetPathG("", "JoinOverlay"), true)..{
 		Frames = Sprite.LinearFrames(10,.3);
 		InitCommand=cmd(xy,P1X,SCREEN_BOTTOM-130;draworder,900);
 	};
 	
-	Def.Quad{
-		InitCommand=cmd(setsize,290,40;diffuse,color("0,0,0,.8");xy,P2X,SCREEN_BOTTOM-130;fadeleft,.2;faderight,.2;draworder,900);
-	};
+
 	
-	LoadActor(THEME:GetPathG("", "JoinOverlay"))..{
+	LoadActor(THEME:GetPathG("", "JoinOverlay"), true)..{
 		Frames = Sprite.LinearFrames(10,.3);
 		InitCommand=cmd(xy,P2X,SCREEN_BOTTOM-130;draworder,900);
 	};

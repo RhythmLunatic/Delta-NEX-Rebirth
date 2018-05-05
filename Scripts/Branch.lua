@@ -19,7 +19,11 @@ function SelectMusicOrCourse()
 	elseif GAMESTATE:IsCourseMode() then
 		return "ScreenSelectCourse"
 	else
-		return BasicOrFullMode();
+		if inBasicMode then
+			return "ScreenSelectMusicBasic"
+		else
+			return "ScreenSelectMusic"
+		end;
 	end
 end
 
