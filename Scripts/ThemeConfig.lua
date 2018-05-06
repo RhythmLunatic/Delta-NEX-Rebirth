@@ -122,9 +122,12 @@ function BasicModeConfig()
 		LayoutType = "ShowAllInRow";
 		SelectType = "SelectOne";
 		OneChoiceForAllPlayers = true;
+		--Write preference immediately when changing. (I'm not sure if false makes it write when exiting)
 		ExportOnChange = true;
+		--Get the text for the choices from language files (en.ini, es.ini, etc)
 		Choices = {THEME:GetString("OptionNames","Enabled"), THEME:GetString("OptionNames","Disabled")};
-		--Values = { true, false };
+		
+		-- Used internally, this will set the selection on the screen when it is loaded.
 		LoadSelections = function(self, list, pn)
 			if ReadPrefFromFile("UserPrefBasicMode") == "Enabled" then
 				list[1] = true;
@@ -132,6 +135,8 @@ function BasicModeConfig()
 				list[2] = true;
 			end;
 		end;
+		
+		
 		SaveSelections = function(self, list, pn)
 			if list[1] then
 				WritePrefToFile("UserPrefBasicMode","Enabled");
@@ -504,8 +509,8 @@ end
 
 
 
-
-function Setup()
+--Rename back to Setup() to enable
+function Setup_DISABLED()
 
 		PREFSMAN:SetPreference("TimingWindowSecondsW2",0.045);
 		PREFSMAN:SetPreference("TimingWindowSecondsW3",0.09);
