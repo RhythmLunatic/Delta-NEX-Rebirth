@@ -4,25 +4,28 @@ if lightsEnabled == nil then
 end;
 
 local t = Def.ActorFrame{
+	InitCommand=cmd(zoom,.7;x,SCREEN_CENTER_X);
+
 	LoadActor("_header")..{
-		InitCommand=cmd(draworder,100;Center;zoomto,854,SCREEN_HEIGHT);
+		InitCommand=cmd(draworder,100;vertalign,top;);
 	};
 	
 	LoadActor("_hexes")..{
-		InitCommand=cmd(visible,lightsEnabled;draworder,100;Center;zoomto,854,SCREEN_HEIGHT);
+		InitCommand=cmd(visible,lightsEnabled;draworder,100;vertalign,top;);
+	};
+	--awesome light
+	LoadActor("_light")..{
+		InitCommand=cmd(draworder,800;vertalign,top;visible,lightsEnabled;);
+		OnCommand=cmd(blend,Blend.Add;effectclock,"bgm";diffuseshift;effectcolor1,color("#FFFFFF20");effectcolor2,color("#FFFFFFFF"));
+	};
+
+	Def.Quad{
+		InitCommand=cmd(draworder,800;vertalign,top;fadebottom,1;visible,lightsEnabled;);
+		OnCommand=cmd(blend,Blend.Add;effectclock,"bgm";diffuseshift;effectcolor1,color("#CCDFFF00");effectcolor2,color("#CCDFFF18"));
 	};
 };
 
---awesome light
-t[#t+1] = LoadActor("_light")..{
-	InitCommand=cmd(draworder,800;Center;zoomto,854,SCREEN_HEIGHT;visible,lightsEnabled);
-	OnCommand=cmd(blend,Blend.Add;effectclock,"bgm";diffuseshift;effectcolor1,color("#FFFFFF20");effectcolor2,color("#FFFFFFFF"));
-}
 
-t[#t+1] = Def.Quad{
-	InitCommand=cmd(draworder,800;Center;zoomto,854,SCREEN_HEIGHT;fadebottom,1;visible,lightsEnabled);
-	OnCommand=cmd(blend,Blend.Add;effectclock,"bgm";diffuseshift;effectcolor1,color("#CCDFFF00");effectcolor2,color("#CCDFFF18"));
-}
 
 --text
 --[[t[#t+1] = LoadFont("venacti/_venacti 26px bold diffuse")..{

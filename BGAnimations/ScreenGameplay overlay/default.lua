@@ -44,9 +44,14 @@ t[#t+1] = LoadActor("decoration_corner") .. {
 
 
 -- METERS ////////////////////////
-local style = (ToEnumShortString(GAMESTATE:GetCurrentStyle():GetStyleType()) == "OnePlayerTwoSides") and "Double" or "Single";
+local style = ToEnumShortString(GAMESTATE:GetCurrentStyle():GetStyleType())
 
-if style == "Single" then
+
+if style == "OnePlayerOneSide" and PREFSMAN:GetPreference("Center1Player") == true then
+	t[#t+1] = LoadActor("centered_lifebar",GAMESTATE:GetMasterPlayerNumber())..{
+		InitCommand=cmd(xy,SCREEN_CENTER_X,34);
+	};
+elseif style == "TwoPlayersTwoSides" or style == "OnePlayerOneSide" then
 	for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 		
 		--The good lifebar
@@ -64,7 +69,6 @@ if style == "Single" then
 		};
 	end;
 else
-
 	--DANGER double
 	t[#t+1] = LoadActor("danger") .. {
 		InitCommand=cmd(visible,false;horizalign,center;x,SCREEN_CENTER_X;vertalign,top;y,SCREEN_TOP+16;zoomtowidth,SCREEN_WIDTH-36;zoomy,0.5); 
@@ -137,6 +141,7 @@ else
 
 	};]]
 end
+
 for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 	--NAME
 	t[#t+1] = LoadFont("venacti/_venacti_outline 26px bold diffuse") .. {

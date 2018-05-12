@@ -103,7 +103,7 @@ return Def.ActorFrame{
 	
 	
 	-- Left Corner
-	LoadActor("corner") .. {
+	LoadActor("begin") .. {
 		InitCommand=cmd(x,-LIFEBAR_WIDTH/2;horizalign,right;zoom,0.75;);
 	};
 	
@@ -120,7 +120,7 @@ return Def.ActorFrame{
 	
 	
 	-- Right Corner
-	LoadActor("corner") .. {
+	LoadActor("end") .. {
 		InitCommand=cmd(x,LIFEBAR_WIDTH/2;horizalign,right;zoom,0.75;rotationy,180);
 	};
 	

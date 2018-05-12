@@ -8,7 +8,7 @@ return Def.ActorFrame{
 		InitCommand=cmd(vertalign,top;xy,SCREEN_CENTER_X,45);
 		OnCommand=function(self)
 			if ProductVersion() ~= "5.0.12" then
-				self:settext("WARNING: You are using StepMania version "..ProductVersion()..". Please update to 5.0.12.");
+				self:settextf(THEME:GetString("ScreenOptionsService","VersionWarning"),ProductVersion());
 				self:diffuse(Color("Red"));
 			else
     			self:settext("StepMania "..ProductVersion());

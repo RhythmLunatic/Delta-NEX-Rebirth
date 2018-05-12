@@ -4,7 +4,7 @@ local player = ...
 local LIFEBAR_WIDTH = SCREEN_WIDTH/2-130
 
 --Size of the actual lifebar. Yes I know this is terrible code I'll fix it later I swear
-local LIFEBAR_REALWIDTH = LIFEBAR_WIDTH+60
+local LIFEBAR_REALWIDTH = LIFEBAR_WIDTH+50
 
 
 
@@ -15,20 +15,13 @@ return Def.ActorFrame{
 	width (it's easy to debug)
 	]]
 	
-	InitCommand=function(self)
-		--It flips itself for player 2, because I'm a lazy coder
-		if player == PLAYER_2 then
-			self:zoomx(-1);
-		end;
-	end;
-	
 	--DANGER
 	LoadActor("danger") .. {
-		InitCommand=cmd(xy,-5,6;zoomtowidth,LIFEBAR_REALWIDTH;zoomy,0.5); 
+		InitCommand=cmd(y,6;zoomtowidth,LIFEBAR_REALWIDTH;zoomy,0.5); 
 		OnCommand=cmd(effectclock,"bgm";diffuseshift;effectcolor1,color("#FFFFFFFF");effectcolor2,color("#FFFFFF66"));
 		LifeChangedMessageCommand=function(self,params)		
 			if params.Player == player then
-			local lifeP1 = params.LifeMeter:GetLife();
+				local lifeP1 = params.LifeMeter:GetLife();
 				if lifeP1 <= THEME:GetMetric("LifeMeterBar", "DangerThreshold") then
 					self:diffusealpha(1);
 						
@@ -41,19 +34,15 @@ return Def.ActorFrame{
 	
 	--Wavy line
 	LoadActor("hot_lores") .. {
-		OnCommand=cmd(x,-3;zoomtowidth,LIFEBAR_REALWIDTH;texcoordvelocity,0.1,0;queuecommand,"Begin");
+		OnCommand=cmd(zoomtowidth,LIFEBAR_REALWIDTH;texcoordvelocity,0.1,0;queuecommand,"Begin");
 		BeginCommand=function(self)
-			if style == "Double" then
-				self:visible(false);
-			else
-				local move = GAMESTATE:GetSongBPS()/2
-				if GAMESTATE:GetSongFreeze() then 
-					move = 0; 
-				end
-					self:texcoordvelocity(move,0);
-					self:sleep(0.03);
-					self:queuecommand("Begin");
-			end;
+			local move = GAMESTATE:GetSongBPS()/2
+			if GAMESTATE:GetSongFreeze() then 
+				move = 0; 
+			end
+			self:texcoordvelocity(move,0);
+			self:sleep(0.03);
+			self:queuecommand("Begin");
 		end;
 		
 		
@@ -71,9 +60,10 @@ return Def.ActorFrame{
 	};
 	
 	---basemeter masked P1
-	LoadActor("basemeter") .. {	
-		InitCommand=cmd(valign,0.5;xy,-LIFEBAR_WIDTH/2-35,6;horizalign,left;zoomy,0.5;blend,Blend.Add); 
-		OnCommand=cmd(bounce;effectmagnitude,-40,0,0;effectclock,"bgm";effecttiming,1,0,0,0;);
+	LoadActor("basemeter") .. {
+		InitCommand=cmd(zoomy,.5;zoomtowidth,LIFEBAR_REALWIDTH;y,6;blend,Blend.Add;horizalign,left;x,-LIFEBAR_REALWIDTH/2);
+		--InitCommand=cmd(valign,0.5;xy,-LIFEBAR_REALWIDTH/2,6;horizalign,left;zoomy,0.5;blend,Blend.Add); 
+		OnCommand=cmd(--[[bounce;effectmagnitude,-40,0,0;effectclock,"bgm";effecttiming,1,0,0,0;]]);
 		LifeChangedMessageCommand=function(self,params)
 				if params.Player == player then	
 					local lifeP1 = params.LifeMeter:GetLife();
@@ -99,9 +89,17 @@ return Def.ActorFrame{
 	};
 	
 	-- Left Corner
-	LoadActor("mask") .. {
-		--Zoom 0.45 does strange things to positioning...
-		InitCommand=cmd(x,(-LIFEBAR_WIDTH/2)+80;horizalign,right;zoom,0.45;);
+	LoadActor("end") .. {
+		--horizalign right isn't a mistake, the graphic is flipped with zoomx
+		InitCommand=cmd(x,-LIFEBAR_WIDTH/2;horizalign,right;zoomx,0.75;zoomy,0.75;); 
+		
+		HealthStateChangedMessageCommand=function(self,params)
+			if params.Player == player then
+				if params.HealthState == 'HealthState_Dead' then
+				self:visible(false);
+				end;
+			end;
+		end;
 	};
 	
 	-- Center
@@ -121,11 +119,6 @@ return Def.ActorFrame{
 				end;
 			end;
 		end;
-	};
-	
-	-- Left Corner
-	LoadActor("begin") .. {
-		InitCommand=cmd(x,-LIFEBAR_WIDTH/2;horizalign,right;zoom,0.75;);
 	};
 	
 	--SCORE
@@ -149,7 +142,7 @@ return Def.ActorFrame{
 	};
 	
 	LoadActor("tip") .. {	
-		InitCommand=cmd(valign,0.5;y,6;zoom,0.5;blend,Blend.Add;);
+		InitCommand=cmd(zoom,0.5;y,6;blend,Blend.Add;);
 		LifeChangedMessageCommand=function(self,params)
 			if params.Player == player then	
 				local style = GAMESTATE:GetCurrentStyle();		
@@ -169,7 +162,7 @@ return Def.ActorFrame{
 					end
 				end
 				--Need to offset it by half the lifebar width since otherwise it would be starting at the lifebar's center and going way off
-				self:x(LIFEBAR_REALWIDTH*lifeP1-(LIFEBAR_REALWIDTH/2+5));	
+				self:x(LIFEBAR_REALWIDTH*lifeP1-(LIFEBAR_REALWIDTH/2));	
 
 					
 			end;

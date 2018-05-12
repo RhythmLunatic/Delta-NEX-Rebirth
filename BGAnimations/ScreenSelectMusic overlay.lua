@@ -24,6 +24,9 @@ local function inputs(event)
 		if button == "UpRight" or button == "UpLeft" then
 			if ScreenSelectMusic:CanOpenOptionsList(pn) then --If options list isn't currently open
 				--ScreenSelectMusic:StartTransitioningScreen("SM_GoToPrevScreen");
+				secondsLeft = ScreenSelectMusic:GetChild("Timer"):GetSeconds()
+				--Set a global variable so ScreenSelectGroup will jump to the group that was selected before.
+				initialGroup = ScreenSelectMusic:GetChild('MusicWheel'):GetSelectedSection()
 				SCREENMAN:SetNewScreen("ScreenSelectGroup");
 				
 				--Yes, this is actually how the StepMania source does it. It's pretty buggy.
@@ -61,8 +64,9 @@ local function inputs(event)
 		--[[local groupName = ScreenSelectMusic:GetChild('MusicWheel'):GetSelectedSection();
 		local banner = SONGMAN:GetSongGroupBannerPath(groupName);
 		SCREENMAN:SystemMessage(banner);]]
-		local MusicWheel = ScreenSelectMusic:GetChild('MusicWheel');
-		SCREENMAN:SystemMessage(MusicWheel:GetWheelItem(MusicWheel:GetCurrentIndex()):GetType());
+		--[[local MusicWheel = ScreenSelectMusic:GetChild('MusicWheel');
+		SCREENMAN:SystemMessage(MusicWheel:GetWheelItem(MusicWheel:GetCurrentIndex()):GetType());]]
+		SCREENMAN:SystemMessage(ScreenSelectMusic:GetChild("Timer"):GetSeconds());
 	end
 	
 end;
@@ -76,6 +80,14 @@ local t = Def.ActorFrame{
 		--SCREENMAN:set_input_redirected(PLAYER_1,false);
 		
 		ScreenSelectMusic = SCREENMAN:GetTopScreen();
+		
+		--Set timer if we came from ScreenSelectGroup
+		if secondsLeft ~= nil then
+			ScreenSelectMusic:GetChild("Timer"):SetSeconds(secondsLeft)
+			--Remove it so we start with 99 seconds if the player is returning from song results, or they reloaded the screen.
+			secondsLeft = nil
+		end;
+		
 		--CurrentGroup comes from the group select overlay (It's a global variable hack!)
 		if currentGroup ~= nil then
 			SCREENMAN:SystemMessage(currentGroup);

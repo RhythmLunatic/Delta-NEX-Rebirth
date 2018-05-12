@@ -1,3 +1,6 @@
+-- Get screen handle so we can adjust the timer.
+local MenuTimer;
+
 -- ITEM SCROLLER
 -- /////////////////////////////////
 local scroller = setmetatable({disable_wrapping= false}, item_scroller_mt)
@@ -77,6 +80,21 @@ local info_set = SONGMAN:GetSongGroupNames();
 
 -- INPUT HANDLER
 -- /////////////////////////
+local function GoToNextScreen()
+	--Has no effect.
+	--MenuTimer:pause()
+	--SCREENMAN:SystemMessage(scroller:get_info_at_focus_pos());
+	--IT'S A HACK! (if you don't put local it makes a global variable)
+	if initialGroup ~= scroller:get_info_at_focus_pos() then
+		currentGroup = scroller:get_info_at_focus_pos();
+	end;
+	local curItem = scroller:get_actor_item_at_focus_pos();
+	--SCREENMAN:SystemMessage(ListActorChildren(curItem.container));
+	curItem.container:GetChild("banner"):accelerate(.3):zoom(2);
+	secondsLeft = MenuTimer:GetSeconds();
+	SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen");
+end;
+
 local function inputs(event)
 	
 	local pn= event.PlayerNumber
@@ -89,13 +107,7 @@ local function inputs(event)
 	if event.type == "InputEventType_Release" then return end
 	
 	if button == "Center" then
-		--SCREENMAN:SystemMessage(scroller:get_info_at_focus_pos());
-		--IT'S A HACK! (if you don't put local it makes a global variable)
-		currentGroup = scroller:get_info_at_focus_pos();
-		local curItem = scroller:get_actor_item_at_focus_pos();
-		--SCREENMAN:SystemMessage(ListActorChildren(curItem.container));
-		curItem.container:GetChild("banner"):accelerate(.3):zoom(2);
-		SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen");
+		GoToNextScreen()
 	elseif button == "DownLeft" then
 		scroller:scroll_by_amount(-1);
 		SOUND:PlayOnce(THEME:GetPathS("MusicWheel", "change"));
@@ -119,11 +131,35 @@ end;
 
 -- ACTORFRAMES FOR BOTH
 -- ////////////////////////
+
 local t = Def.ActorFrame{
 	OnCommand=function(self)
 		scroller:set_info_set(info_set, 1);
+		for key,value in pairs(info_set) do
+			if initialGroup == value then
+				scroller:scroll_by_amount(key-1)
+			end
+		end;
+		
+		
 		SCREENMAN:GetTopScreen():AddInputCallback(inputs);
+		MenuTimer = SCREENMAN:GetTopScreen():GetChild("Timer");
+		--SecondsLeft is a global variable hack, brought over from ScreenSelectMusic overlay.
+		MenuTimer:SetSeconds(secondsLeft);
 		--SCREENMAN:SystemMessage(math.ceil(numWheelItems/2));
+		self:linear(5);
+		self:queuecommand("CheckTimer");
+	end;
+	--I think this is the only way to check the timer
+	CheckTimerCommand=function(self)
+		--For some reason it ends the timer instantly because it's at 0 (Maybe it's unitialized?) So just stop the timer at 1 second.
+		--Someone is going to see this and complain.
+		if MenuTimer:GetSeconds() > 0 and MenuTimer:GetSeconds() < 1 then
+			MenuTimer:SetSeconds(0.1);
+			GoToNextScreen()
+		else
+			self:linear(1):queuecommand("CheckTimer");
+		end;
 	end;
 	
 };
@@ -157,8 +193,8 @@ t[#t+1] = Def.ActorFrame{
 	};
 
 	LoadFont("venacti/_venacti 26px bold diffuse")..{
-			InitCommand=cmd(draworder,102;diffuse,0.6,0.6,0.6,0.6;shadowcolor,0,0,0,0.3;shadowlengthx,-0.8;shadowlength,-0.8;horizalign,left;x,SCREEN_CENTER_X+185 ;y,SCREEN_TOP+16;zoom,0.40);
-			Text="TIMER"
+		InitCommand=cmd(draworder,102;diffuse,0.6,0.6,0.6,0.6;shadowcolor,0,0,0,0.3;shadowlengthx,-0.8;shadowlength,-0.8;horizalign,left;x,SCREEN_CENTER_X+185 ;y,SCREEN_TOP+16;zoom,0.40);
+		Text="TIMER"
 	};
 
 	--STAGE
@@ -197,44 +233,44 @@ t[#t+1] = Def.ActorFrame{
 };
 
 t[#t+1] = LoadFont("frutiger/frutiger 24px")..{
-		--Text="Insert Text Here";
-		InitCommand=cmd(Center;addy,150;);
-		PreviousGroupMessageCommand=cmd(playcommand,"UpdateText");
-		NextGroupMessageCommand=cmd(playcommand,"UpdateText");
-		TestCommand=function(self)
-			SCREENMAN:SystemMessage("passed");
-		end;
-		UpdateTextCommand=function(self)
-			local groupName = scroller:get_info_at_focus_pos()
-			if groupName then
-				local fir = SONGMAN:GetSongGroupBannerPath(groupName);
-				if not fir then 
-					self:settext("Need banner!");
-					return;
-				end;
-				local dir = gisub(fir,'banner.png','info/text.ini');
-				--SCREENMAN:SystemMessage(dir);
-				if FILEMAN:DoesFileExist(dir) then
-					local tt = lua.ReadFile(dir);
-					self:settext(tt);
-					(cmd(stoptweening;zoom,.7;shadowlength,0;wrapwidthpixels,420/1;))(self);
-				else
-					self:settext("Need /info/text.ini!");
-				end;
-				--TODO: This should be a theme setting for sound priority.
-				--Right now it's Announcer -> info folder but some people might like info folder -> announcer
-				--Or possibly even info only?
-				if not ANNOUNCER_PlaySound("Song Category Names", groupName) then
-					--If ANNOUNCER_PlaySound() didn't find a sound or there isn't an announcer enabled, it will return false.
-					local snd = string.gsub(dir, "text.ini", "sound")
-					--SCREENMAN:SystemMessage(snd);
-					PlaySound(snd)
-				end;
-			else
-				self:settext("");
+	--Text="Insert Text Here";
+	InitCommand=cmd(Center;addy,150;);
+	PreviousGroupMessageCommand=cmd(playcommand,"UpdateText");
+	NextGroupMessageCommand=cmd(playcommand,"UpdateText");
+	TestCommand=function(self)
+		SCREENMAN:SystemMessage("passed");
+	end;
+	UpdateTextCommand=function(self)
+		local groupName = scroller:get_info_at_focus_pos()
+		if groupName then
+			local fir = SONGMAN:GetSongGroupBannerPath(groupName);
+			if not fir then 
+				self:settext("Need banner!");
+				return;
 			end;
+			local dir = gisub(fir,'banner.png','info/text.ini');
+			--SCREENMAN:SystemMessage(dir);
+			if FILEMAN:DoesFileExist(dir) then
+				local tt = lua.ReadFile(dir);
+				self:settext(tt);
+				(cmd(stoptweening;zoom,.7;shadowlength,0;wrapwidthpixels,420/1;))(self);
+			else
+				self:settext("Need /info/text.ini!");
+			end;
+			--TODO: This should be a theme setting for sound priority.
+			--Right now it's Announcer -> info folder but some people might like info folder -> announcer
+			--Or possibly even info only?
+			if not ANNOUNCER_PlaySound("Song Category Names", groupName) then
+				--If ANNOUNCER_PlaySound() didn't find a sound or there isn't an announcer enabled, it will return false.
+				local snd = string.gsub(dir, "text.ini", "sound")
+				--SCREENMAN:SystemMessage(snd);
+				PlaySound(snd)
+			end;
+		else
+			self:settext("");
 		end;
-	};
+	end;
+};
 	
 t[#t+1] = LoadActor(THEME:GetPathG("","footer"), true)..{
 	InitCommand=cmd(draworder,130);
@@ -247,6 +283,7 @@ t[#t+1] = Def.Quad {
 t[#t+1] = Def.Quad {
 	InitCommand=cmd(horizalign,left;draworder,100;fadeleft,1;;zoomto,120,SCREEN_HEIGHT;y,SCREEN_CENTER_Y;x,SCREEN_CENTER_X+320;diffuse,0,0,0,1);
 }
+
 --next/prev indicator
 --I like it in dance, but people will probably complain...
 if GAMESTATE:GetCurrentGame():GetName() == "pump" then

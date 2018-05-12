@@ -1258,10 +1258,10 @@ t[#t+1] = LoadFont("venacti/_venacti_ 26px bold monospace numbers")..{
 
 --Wheel left/right shadow
 t[#t+1] = Def.Quad {
-	InitCommand=cmd(horizalign,right;faderight,1;draworder,10;zoomto,120,SCREEN_HEIGHT;y,SCREEN_CENTER_Y;x,SCREEN_CENTER_X-320;diffuse,0,0,0,1);
+	InitCommand=cmd(horizalign,left;faderight,1;draworder,10;zoomto,120,SCREEN_HEIGHT;xy,SCREEN_LEFT,SCREEN_CENTER_Y;diffuse,0,0,0,1);
 }
 t[#t+1] = Def.Quad {
-	InitCommand=cmd(horizalign,left;fadeleft,1;draworder,10;zoomto,120,SCREEN_HEIGHT;y,SCREEN_CENTER_Y;x,SCREEN_CENTER_X+320;diffuse,0,0,0,1);
+	InitCommand=cmd(horizalign,right;fadeleft,1;draworder,10;zoomto,120,SCREEN_HEIGHT;xy,SCREEN_RIGHT,SCREEN_CENTER_Y;diffuse,0,0,0,1);
 }
 
 
@@ -1599,7 +1599,7 @@ for pn in ivalues(PlayerNumber) do
 			};
 			LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
 				Name="Text";
-				InitCommand=cmd(draworder,100;zoom,.45;diffusebottomedge,0.7,0.7,0.7,1;maxwidth,70;shadowlength,0.8);
+				InitCommand=cmd(draworder,100;zoom,.6;diffusebottomedge,0.7,0.7,0.7,1;maxwidth,70;shadowlength,0.8);
 			};
 			--[[LoadActor("optionFlash")..{
 				Name="Animation";
@@ -1646,7 +1646,7 @@ for pn in ivalues(PlayerNumber) do
 			LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
 				Name="Text";
 				Text="???";
-				InitCommand=cmd(draworder,100;zoom,.45;diffusebottomedge,0.7,0.7,0.7,1;maxwidth,70;shadowlength,0.8);
+				InitCommand=cmd(draworder,100;zoom,.6;diffusebottomedge,0.7,0.7,0.7,1;maxwidth,70;shadowlength,0.8);
 			};
 		};
 		
@@ -1687,7 +1687,7 @@ for pn in ivalues(PlayerNumber) do
 			LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
 				Name="Text";
 				Text="???";
-				InitCommand=cmd(draworder,100;zoom,.45;diffusebottomedge,0.7,0.7,0.7,1;maxwidth,70;shadowlength,0.8);
+				InitCommand=cmd(draworder,100;zoom,.6;diffusebottomedge,0.7,0.7,0.7,1;maxwidth,70;shadowlength,0.8);
 			};
 		};
 		-- Alternate modifiers: Mirror (M), Shuffle (RS), SuperShuffle (SRS), Backwards (BK), Left (L), Right, (R), Soft Shuffle (SFS)
