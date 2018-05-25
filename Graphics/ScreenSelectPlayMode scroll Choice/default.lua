@@ -19,8 +19,8 @@ return Def.ActorFrame{
         Text=name;
         InitCommand=cmd(diffuse,Color("White");x,placement);
         OffCommand=cmd();
-        GainFocusCommand=cmd(stopeffect;accelerate,.2;zoom,1);
-        LoseFocusCommand=cmd(stopeffect;accelerate,.2;zoom,.5;);
+        GainFocusCommand=cmd(stoptweening;accelerate,.2;zoom,1);
+        LoseFocusCommand=cmd(stoptweening;accelerate,.2;zoom,.5;);
     };
 	--[[LoadActor("subt_"..name)..{
 		InitCommand=cmd(diffusealpha,0;x,SCREEN_CENTER_X;addy,180);

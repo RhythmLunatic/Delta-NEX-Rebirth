@@ -111,8 +111,10 @@ local t = Def.ActorFrame{
 			--ScreenSelectMusic:StartTransitioningScreen("SM_GoToPrevScreen");
 			SOUND:PlayOnce(THEME:GetPathS("", "FULL_SOUND"));
 			SOUND:PlayOnce(THEME:GetPathS("", "FULL_VOICE"));
+			initialGroup = nil; --It can be left over from a previous session
 			inBasicMode = false;
-			SCREENMAN:SetNewScreen("ScreenSelectMusic");
+			secondsLeft = ScreenSelectMusic:GetChild("Timer"):GetSeconds()
+			SCREENMAN:SetNewScreen("ScreenSelectGroup");
 		else
 			--SCREENMAN:SystemMessage("WTF? "..params.Name);
 		end;
@@ -207,8 +209,8 @@ local t = Def.ActorFrame{
 
 }
 
-
-t[#t+1] = LoadActor(THEME:GetPathS("","EX_Move"))..{
+--WTF is this doing here?
+--[[t[#t+1] = LoadActor(THEME:GetPathS("","EX_Move"))..{
 	OptionsListOpenedMessageCommand=cmd(play);
 	OptionsListClosedMessageCommand=cmd(play);	
 	OptionsListRightMessageCommand=cmd(play);
@@ -226,7 +228,7 @@ t[#t+1] = LoadActor(THEME:GetPathS("","EX_Select"))..{
 }
 t[#t+1] = LoadActor(THEME:GetPathS("","Common Cancel"))..{
 	SongUnchosenMessageCommand=cmd(play);
-}
+}]]
 
 
 return t

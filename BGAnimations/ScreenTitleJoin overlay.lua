@@ -41,7 +41,7 @@ return Def.ActorFrame{
 	Def.Quad{
 		InitCommand=function(self)
 			self:setsize(SCREEN_WIDTH,100):diffuse(Color("Black")):Center();
-			if PREFSMAN:GetPreference("MemoryCardProfiles") == true and PROFILEMAN:GetNumLocalProfiles() > 0 then
+			if PREFSMAN:GetPreference("MemoryCards") == true and PROFILEMAN:GetNumLocalProfiles() > 0 then
 			
 			else
 				self:visible(false);
@@ -60,7 +60,7 @@ return Def.ActorFrame{
 				self:settext("false");
 			end;]]
 			--Although it's 1 or 0 in the preferences.ini, it's a boolean when ingame.
-			if PREFSMAN:GetPreference("MemoryCardProfiles") == true and PROFILEMAN:GetNumLocalProfiles() > 0 then
+			if PREFSMAN:GetPreference("MemoryCards") == true and PROFILEMAN:GetNumLocalProfiles() > 0 then
 				--Do nothing
 			else
 				self:visible(false);

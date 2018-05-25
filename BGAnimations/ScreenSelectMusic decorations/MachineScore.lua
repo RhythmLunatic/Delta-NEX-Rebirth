@@ -1,5 +1,6 @@
 local player = ...
 assert(player, "SSM PlayerScore: Need a player, dingus");
+
 return Def.ActorFrame{
 	--[[
 	InitCommand=cmd(visible,false);
@@ -13,7 +14,7 @@ return Def.ActorFrame{
 		InitCommand=cmd(diffuse,color("0,0,0,.8");setsize,110,15;fadeleft,.1;faderight,.1;y,-26);
 	};
 	LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
-		Text="Your Best";
+		Text="Machine Best";
 		InitCommand=cmd(shadowlength,0.8;y,-27;zoom,.45);
 	};
 	
@@ -27,7 +28,7 @@ return Def.ActorFrame{
 			local song = GAMESTATE:GetCurrentSong();
 			if song then
 				self:diffusealpha(1);
-				profile = PROFILEMAN:GetProfile(player);
+				profile = PROFILEMAN:GetMachineProfile();
 				steps = GAMESTATE:GetCurrentSteps(player);
 				if not steps then return end;
 				scorelist = profile:GetHighScoreList(GAMESTATE:GetCurrentSong(),steps);
@@ -60,15 +61,46 @@ return Def.ActorFrame{
 		InitCommand=cmd(diffuse,color("1,1,1,0.2");zoomto,110,1;y,20);
 	};
 
+	--(((math.floor(topscore:GetPercentDP()*100000))/1000).."%");
+
+		LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
+			InitCommand=cmd(shadowlength,0.8;horizalign,right;x,50;y,-12;zoomx,0.39;zoomy,0.37;queuecommand,"Set");
+			CurrentSongChangedMessageCommand=cmd(queuecommand,"Set");
+			['CurrentSteps'..ToEnumShortString(player)..'ChangedMessageCommand']=cmd(playcommand,"Set");
+			PlayerJoinedMessageCommand=cmd(queuecommand,"Set");
+			SetCommand=function(self)
+				local song = GAMESTATE:GetCurrentSong();
+				if song and GAMESTATE:GetCurrentSteps(player) then
+					self:diffusealpha(1);
+					profile = PROFILEMAN:GetMachineProfile();
+					scorelist = profile:GetHighScoreListIfExists(song,GAMESTATE:GetCurrentSteps(player));
+					if scorelist and #scorelist:GetHighScores() > 0 then
+						local text = scorelist:GetHighScores()[1]:GetName();
+						if text=="EVNT" or text == "" then
+							self:settext("No Profile");
+						else
+							self:settext(text);
+						end
+					else
+						self:settext("No Score");
+					end;
+				else
+					self:settext("---");
+					self:diffusealpha(0.4);
+				end
+
+			end
+		};
+
 	LoadFont("venacti/_venacti_outline 26px bold monospace numbers")..{
-		InitCommand=cmd(shadowlength,0.8;horizalign,right;x,50;y,-8;zoom,.4;queuecommand,"Set");
+		InitCommand=cmd(shadowlength,0.8;horizalign,right;x,50;y,0;zoomx,0.375;zoomy,0.36;queuecommand,"Set");
 		CurrentSongChangedMessageCommand=cmd(queuecommand,"Set");
 		['CurrentSteps'..ToEnumShortString(player)..'ChangedMessageCommand']=cmd(playcommand,"Set");
 		PlayerJoinedMessageCommand=cmd(queuecommand,"Set");
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong();
 			if song and GAMESTATE:GetCurrentSteps(player) then
-				profile = PROFILEMAN:GetProfile(player);
+				profile = PROFILEMAN:GetMachineProfile();
 				scorelist = profile:GetHighScoreList(song,GAMESTATE:GetCurrentSteps(player));
 				assert(scorelist);
 				local scores = scorelist:GetHighScores();
@@ -93,25 +125,21 @@ return Def.ActorFrame{
 	};
 
 	LoadFont("venacti/_venacti_outline 26px bold monospace numbers")..{
-		InitCommand=cmd(shadowlength,0.8;horizalign,right;x,50;y,8;zoom,.4;queuecommand,"Set");
+		InitCommand=cmd(shadowlength,0.8;horizalign,right;x,50;y,12;zoomx,0.375;zoomy,0.36;queuecommand,"Set");
 		CurrentSongChangedMessageCommand=cmd(queuecommand,"Set");
 		['CurrentSteps'..ToEnumShortString(player)..'ChangedMessageCommand']=cmd(playcommand,"Set");
 		PlayerJoinedMessageCommand=cmd(queuecommand,"Set");
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong();
 			if song and GAMESTATE:GetCurrentSteps(player) then
-				profile = PROFILEMAN:GetProfile(player);
+				profile = PROFILEMAN:GetMachineProfile();
 				scorelist = profile:GetHighScoreList(song,GAMESTATE:GetCurrentSteps(player));
 				assert(scorelist);
 				local scores = scorelist:GetHighScores();
 				local topscore = scores[1];
-
+				local text = "";
 				if topscore then
-					if string.find(PREFSMAN:GetPreference("VideoRenderers"), "d3d,") then
-						text = math.floor(topscore:GetPercentDP()*100).."%"
-					else
-						text = (((math.floor(topscore:GetPercentDP()*100000))/1000).."%");
-					end
+					text = math.floor(topscore:GetPercentDP()*100).."%"
 				else
 					text = "0%";
 				end;

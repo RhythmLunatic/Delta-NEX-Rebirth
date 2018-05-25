@@ -24,7 +24,7 @@ local t = Def.ActorFrame{
 
 	}; 
 
-	LoadFont("venacti/_venacti 26px bold diffuse")..{
+	LoadFont("venacti/_venacti 13px bold diffuse")..{
 			InitCommand=cmd(draworder,102;diffuse,0.6,0.6,0.6,0.6;shadowcolor,0,0,0,0.3;shadowlengthx,-0.8;shadowlength,-0.8;horizalign,left;x,SCREEN_CENTER_X+185 ;y,SCREEN_TOP+16;zoom,0.40);
 			Text="TIMER"
 	}

@@ -149,6 +149,39 @@ function BasicModeConfig()
 	return t;
 end;
 
+function HiddenChannelsConfig()
+	local t = {
+		Name = "GroupSelectHiddenChannels";
+		LayoutType = "ShowAllInRow";
+		SelectType = "SelectOne";
+		OneChoiceForAllPlayers = true;
+		--Write preference immediately when changing. (I'm not sure if false makes it write when exiting)
+		ExportOnChange = true;
+		--Get the text for the choices from language files (en.ini, es.ini, etc)
+		Choices = {THEME:GetString("OptionNames","Enabled"), THEME:GetString("OptionNames","Disabled")};
+		
+		-- Used internally, this will set the selection on the screen when it is loaded.
+		LoadSelections = function(self, list, pn)
+			if ReadPrefFromFile("UserPrefHiddenChannels") == "Enabled" then
+				list[1] = true;
+			else
+				list[2] = true;
+			end;
+		end;
+		
+		
+		SaveSelections = function(self, list, pn)
+			if list[1] then
+				WritePrefToFile("UserPrefHiddenChannels","Enabled");
+			else
+				WritePrefToFile("UserPrefHiddenChannels","Disabled");
+			end;
+		end;
+	};
+	setmetatable( t, t );
+	return t;
+end;
+
 function GuestSaveConfig()
 	local t = {
 		Name = "GuestSaveType";
@@ -169,7 +202,7 @@ function GuestSaveConfig()
 			if list[1] then
 				WritePrefToFile("GuestSaveType","USB");
 			else
-				WritePrefToFile("UserPrefBasicMode","RFID");
+				WritePrefToFile("GuestSaveType","RFID");
 			end;
 		end;
 	};

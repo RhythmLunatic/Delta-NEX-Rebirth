@@ -1,10 +1,35 @@
 -- Get screen handle so we can adjust the timer.
 local MenuTimer;
 
+-- SONG GROUPS
+-- This is inside the overlay instead of GroupWheelUtil because as it turns out, SONGMAN:GetGroupNames isn't available on init
+-- ////////////////////////////
+local song_groups = SONGMAN:GetSongGroupNames();
+--Remove the BasicModeGroup channel from the array, since we don't want anyone to be able to access it normally.
+for k,v in pairs(song_groups) do
+	if v == "BasicModeGroup" then
+		table.remove(song_groups, k)
+	end
+end
+
+function getVisibleSongGroups()
+	if ReadPrefFromFile("UserPrefHiddenChannels") == "Enabled" then --If this is true, the group select will only display the groups you specify and you can access the hidden channel list.
+		if all_channels_unlocked then --After they've entered the hidden channels code.
+			return song_groups; --Return all the channels.
+		else
+			return _G.predefined_group_list; --Return the predefined channels.
+		end;
+	else
+		return song_groups; --If false, all channels are unlocked.
+	end;
+end
+
+local info_set = getVisibleSongGroups();
+
 -- ITEM SCROLLER
 -- /////////////////////////////////
 local scroller = setmetatable({disable_wrapping= false}, item_scroller_mt)
-local numWheelItems = 11 --THEME:GetMetric("ScreenSelectGroup", "NumWheelItems")
+local numWheelItems = THEME:GetMetric("ScreenSelectGroup", "NumWheelItems")
 
 --Item scroller starts at 0, duh.
 local currentItemIndex = 0;
@@ -21,7 +46,7 @@ local item_mt= {
 				-- handle for manipulating the actor.
 		  		self.container= subself
 		  		subself:SetDrawByZPosition(true);
-		  		subself:zoom(.75);
+		  		--subself:zoom(.75);
 			end;
 				
 			Def.BitmapText{
@@ -42,7 +67,7 @@ local item_mt= {
 		local offsetFromCenter = item_index-math.floor(numWheelItems/2)
 		--PrimeWheel(self.container,offsetFromCenter,item_index,numWheelItems)
 		self.container:stoptweening();
-		if math.abs(offsetFromCenter) < 3 then
+		if math.abs(offsetFromCenter) < 4 then
 			self.container:decelerate(.5);
 			self.container:visible(true);
 		else
@@ -50,7 +75,7 @@ local item_mt= {
 		end;
 		self.container:x(offsetFromCenter*350)
 		self.container:rotationy(offsetFromCenter*-45);
-		--self.container:zoom(math.abs(offsetFromCenter)+1/2)
+		self.container:zoom(math.cos(offsetFromCenter*math.pi/6)*.8)
 		
 		--[[if offsetFromCenter == 0 then
 			self.container:diffuse(Color("Red"));
@@ -75,7 +100,6 @@ local item_mt= {
 	end,
 }}
 --local info_set= {"fin", "tail", "gorg", "lilk", "zos", "mink", "aaa"}
-local info_set = SONGMAN:GetSongGroupNames();
 
 
 -- INPUT HANDLER
@@ -106,13 +130,13 @@ local function inputs(event)
 	-- If it's a release, ignore it.
 	if event.type == "InputEventType_Release" then return end
 	
-	if button == "Center" then
+	if button == "Center" or button == "Start" then
 		GoToNextScreen()
-	elseif button == "DownLeft" then
+	elseif button == "DownLeft" or button == "Left" then
 		scroller:scroll_by_amount(-1);
 		SOUND:PlayOnce(THEME:GetPathS("MusicWheel", "change"));
 		MESSAGEMAN:Broadcast("PreviousGroup");
-	elseif button == "DownRight" then
+	elseif button == "DownRight" or button == "Right" then
 		scroller:scroll_by_amount(1);
 		SOUND:PlayOnce(THEME:GetPathS("MusicWheel", "change"));
 		MESSAGEMAN:Broadcast("NextGroup");
@@ -124,7 +148,16 @@ local function inputs(event)
 	
 	if button == "MenuDown" then
 		local groupName = scroller:get_info_at_focus_pos()
-		SCREENMAN:SystemMessage(groupName.." | "..SONGMAN:GetSongGroupBannerPath(groupName));
+		if initialGroup then
+			SCREENMAN:SystemMessage(groupName.." | "..initialGroup);
+		else
+			SCREENMAN:SystemMessage(groupName.." | No initial group.");
+		end;
+		--SCREENMAN:SystemMessage(groupName.." | "..SONGMAN:GetSongGroupBannerPath(groupName));
+	end;
+	
+	if button == "MenuUp" then
+		SCREENMAN:SystemMessage(tostring(ReadPrefFromFile("UserPrefHiddenChannels") == "Enabled"));
 	end;
 	
 end;
@@ -159,6 +192,23 @@ local t = Def.ActorFrame{
 			GoToNextScreen()
 		else
 			self:linear(1):queuecommand("CheckTimer");
+		end;
+	end;
+	
+	--Handle the hidden channels code
+	CodeMessageCommand=function(self, params)
+		if params.Name == "SecretGroup" then
+			if all_channels_unlocked == true then
+				SCREENMAN:SystemMessage("You've already entered the hidden channels code!")
+			else
+				SCREENMAN:GetTopScreen():lockinput(3);
+				all_channels_unlocked = true;
+				SOUND:PlayOnce(THEME:GetPathS("", "FULL_SOUND"));
+				SOUND:PlayOnce(THEME:GetPathS("", "FULL_VOICE"));
+				SCREENMAN:SetNewScreen("ScreenSelectGroup");
+			end;
+		else
+			--SCREENMAN:SystemMessage("WTF? "..params.Name);
 		end;
 	end;
 	

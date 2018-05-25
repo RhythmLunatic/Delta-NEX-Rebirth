@@ -12,35 +12,7 @@ local misses = 	STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetTapNo
 
 --local grade = ToEnumShortString(STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetGrade());
 
-local grade;
-
-if STATSMAN:GetCurStageStats():AllFailed() then
-	grade = "Failed";
-else
-	if dancepoints >= 50 then
-		grade = "Tier06";
-		if dancepoints >= 60 then
-			grade = "Tier05";
-			if dancepoints >= 70 then
-				grade = "Tier04";
-				if dancepoints >= 80 then
-					grade = "Tier03";
-					if misses==0 then
-						grade = "Tier02";
-						if dancepoints >= 99 then
-							grade = "Tier01";
-							if dancepoints == 100 then
-								grade = "Tier00";
-							end
-						end
-					end
-				end
-			end
-		end
-	else
-		grade = "Tier07";
-	end
-end
+local grade = GetGradeFromDancePoints(dancepoints);
 
 return Def.ActorFrame{
 
@@ -65,7 +37,7 @@ return Def.ActorFrame{
 	};
 
 	--%
-	LoadFont("venacti/_venacti 26px bold diffuse")..{
+	LoadFont("venacti/_venacti 13px bold diffuse")..{
 		InitCommand=cmd(horizalign,center;zoomx,0.375;zoomy,0.35);
 		--OnCommand=cmd(x,-75;y,110;diffusealpha,0;sleep,1+delay*9;decelerate,0.3;diffusealpha,1);
 		OnCommand=cmd(y,55;diffusealpha,0;decelerate,0.3;diffusealpha,1;playcommand,"SetText");

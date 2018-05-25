@@ -1,8 +1,8 @@
 local player = ...;
 local t = Def.ActorFrame{}
 
---diff
-t[#t+1] = LoadFont("venacti/_venacti 26px bold diffuse") .. {
+--difficulty name
+t[#t+1] = LoadFont("venacti/_venacti 13px bold diffuse") .. {
 	InitCommand=cmd(maxwidth,300;x,30;zoom,0.5;y,2;vertalign,top;horizalign,right;shadowlengthy,1.2;shadowlengthx,0.8;shadowcolor,color("0,0,0,0.6");diffuse,color("1,1,1,1");diffusebottomedge,color("0.75,0.75,0.75,1");queuecommand,"Set");
 
 	NormalColorCommand=cmd(diffuse,color("1,1,1,1");diffusebottomedge,color("0.75,0.75,0.75,1"));
@@ -56,7 +56,7 @@ t[#t+1] = LoadFont("venacti/_venacti 26px bold diffuse") .. {
 	end
 };
 
---meter
+--meter/level
 t[#t+1] = LoadFont("venacti/_venacti_ 26px bold monospace numbers") .. {
 	InitCommand=cmd(zoom,0.85;x,34;y,3;maxwidth,45;vertalign,top;horizalign,left;shadowlengthy,1.2;shadowlengthx,0.8;shadowcolor,color("0,0,0,0.6");glowshift;queuecommand,"Set");
 	
@@ -114,7 +114,7 @@ t[#t+1] = LoadFont("venacti/_venacti_ 26px bold monospace numbers") .. {
 	end
 };
 
-t[#t+1] = LoadFont("venacti/_venacti 26px bold diffuse") .. {
+t[#t+1] = LoadFont("venacti/_venacti 13px bold diffuse") .. {
 	Text="Lv.";
 	InitCommand=cmd(zoom,0.3;y,14;x,26;vertalign,top;shadowlengthy,1.2;shadowlengthx,0.8;shadowcolor,color("0,0,0,0.6");diffusebottomedge,color("0.8,0.8,0.8,1");queuecommand,"Set");
 	CurrentSongChangedMessageCommand=cmd(queuecommand,"Set");

@@ -1,5 +1,5 @@
 return Def.ActorFrame{
-	LoadFont("Common Normal")..{
+	LoadFont("venacti/_venacti 26px bold diffuse")..{
 		Text="THANK YOU FOR PLAYING";
 		InitCommand=cmd(Center;zoom,2;diffusebottomedge,Color("HoloGreen"));
 	};

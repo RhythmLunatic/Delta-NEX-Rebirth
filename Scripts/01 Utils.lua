@@ -1,4 +1,4 @@
-themeVersion = 0.9;
+themeVersion = 0.95;
 
 --Because it's useful
 function Actor:Cover()
@@ -13,9 +13,43 @@ function string.ends(String,End)
    return End=='' or string.sub(String,-string.len(End))==End
 end
 
+--Called from ScreenInit background
+function resetGame()
+	inBasicMode = nil;
+	all_channels_unlocked = nil;
+end;
+
 function ternary(cond, T, F)
     if cond then return T else return F end
 end
+
+function GetGradeFromDancePoints(dancepoints)
+	 --SS aka perfect score
+	if dancepoints == 100 then
+		return "Tier00";
+	--S
+	elseif dancepoints >= 99 then
+		return "Tier01";
+	--Silver S
+	elseif misses==0 then
+		return "Tier02";
+	--A
+	elseif dancepoints >= 80 then
+		return "Tier03";
+	--B
+	elseif dancepoints >= 70 then
+		return "Tier04";
+	--C
+	elseif dancepoints >= 60 then
+		return "Tier05";
+	--D
+	elseif dancepoints >= 50 then
+		return "Tier06";
+	--F
+	else
+		return "Tier07";
+	end
+end;
 
 
 function ListActorChildren(frame)

@@ -56,9 +56,14 @@ end;
 
 
 --Player score thingy
---TODO: Add a more descriptive comment.
+--Spaced 55px apart.
 for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-	t[#t+1] = LoadActor("PlayerScore", pn);
+	t[#t+1] = LoadActor("MachineScore", pn)..{
+		InitCommand=cmd(xy,150,120);
+	}
+	t[#t+1] = LoadActor("PlayerScore", pn)..{
+		InitCommand=cmd(xy,150,175);
+	}
 end;
 --[[t[#t+1] = Def.Quad {
 	InitCommand=cmd(draworder,2;visible,true;diffuse,color("1,0,0.2,0");x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-100;scaletoclipped,262,130;diffusealpha,0.4;fadetop,0.4;fadebottom,0.4);
@@ -69,6 +74,7 @@ end;
 
 t[#t+1] = Def.ActorFrame {
 	InitCommand=cmd(draworder,4;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-100);
+	OnCommand=cmd(visible,SCREENMAN:GetTopScreen():GetName() ~= "ScreenSelectCourse");
 	--[[CurrentSongChangedMessageCommand=function(self)
 		local song = GAMESTATE:GetCurrentSong();
 		if song then
@@ -116,7 +122,7 @@ t[#t+1] = Def.ActorFrame {
 				self:diffusealpha(1);
 			end;
 		end;
-		CurrentCourseChangedMessageCommand=function(self)
+		--[[CurrentCourseChangedMessageCommand=function(self)
 			if GAMESTATE:GetCurrentCourse() and SCREENMAN:GetTopScreen():GetName() == "ScreenSelectCourse" then
 				self:stoptweening();
 				local bg = GAMESTATE:GetCurrentCourse():GetBackgroundPath();
@@ -136,7 +142,7 @@ t[#t+1] = Def.ActorFrame {
 					self:diffusealpha(1);
 				end;
 			end;
-		end;
+		end;]]
 	};
 	
 	--SONG VIDEO
@@ -168,7 +174,7 @@ t[#t+1] = Def.ActorFrame {
 	};
 	
 	--SONG TITLE
-	LoadFont("venacti/_venacti 26px bold diffuse")..{
+	LoadFont("venacti/_venacti 13px bold diffuse")..{
 		InitCommand=cmd(--[[addx,-50;]]addy,58;zoom,.5;maxwidth,530;faderight,1;fadeleft,1;diffusealpha,0);
 		OnCommand=cmd(linear,.8;faderight,0;fadeleft,0;diffusealpha,1);
 		CurrentSongChangedMessageCommand=function(self)
@@ -181,7 +187,7 @@ t[#t+1] = Def.ActorFrame {
 				self:settext("");
 			end;
 		end;
-		CurrentCourseChangedMessageCommand=function(self)
+		--[[CurrentCourseChangedMessageCommand=function(self)
 			if GAMESTATE:GetCurrentCourse() and SCREENMAN:GetTopScreen():GetName() == "ScreenSelectCourse" then
 				local course = GAMESTATE:GetCurrentCourse();
 				if course then
@@ -190,11 +196,11 @@ t[#t+1] = Def.ActorFrame {
 					self:settext("");
 				end;
 			end;
-		end;
+		end;]]
 	};
 	
 	--SONG ARTIST
-	LoadFont("venacti/_venacti 26px bold diffuse")..{
+	LoadFont("venacti/_venacti 13px bold diffuse")..{
 		InitCommand=cmd(maxwidth,530;horizalign,center;--[[addx,-50;]]addy,71;zoomx,0.385;zoomy,0.38;shadowlength,1);
 		OnCommand=cmd(diffusealpha,0;strokecolor,Color("Outline");shadowlength,1;sleep,0.3;linear,0.8;diffusealpha,1);
 		CurrentSongChangedMessageCommand=function(self)
@@ -261,7 +267,7 @@ t[#t+1] = Def.ActorFrame {
 		end;
 	
 	};
-	LoadFont("venacti/_venacti 26px bold diffuse")..{
+	LoadFont("venacti/_venacti 13px bold diffuse")..{
 		InitCommand=cmd(maxwidth,525;vertalign,top;addy,-75;zoom,.5;shadowlength,1;shadowcolor,color("#000000BB"));
 		--Text="FULL SONG: This song requires 2 stages.";
 		CurrentSongChangedMessageCommand=function(self)
@@ -858,13 +864,13 @@ t[#t+1] = Def.ActorFrame{
 	};
 
 
-	LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
+	--[[LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
 		InitCommand=cmd(y,-20;zoom,0.35;zoomy,0.325;shadowlengthy,0.8;draworder,100;diffuse,0.65,0.65,0.65,0;diffusetopedge,0.8,0.8,0.8,0);
 		SongChosenMessageCommand=cmd(stoptweening;linear,0.15;y,SCREEN_CENTER_Y-18;diffusealpha,1);
 		TwoPartConfirmCanceledMessageCommand=cmd(stoptweening;linear,0.15;y,SCREEN_CENTER_Y+16;diffusealpha,0);
 		SongUnchosenMessageCommand=cmd(stoptweening;linear,0.15;y,SCREEN_CENTER_Y+18;diffusealpha,0);
 		Text=" - PRESS CENTER STEP TO START - "
-	};
+	};]]
 	
 	LoadActor(THEME:GetPathG("", "_press "..GAMESTATE:GetCurrentGame():GetName().. " 5x2"))..{
 		Frames = Sprite.LinearFrames(10,.3);
@@ -1000,7 +1006,7 @@ t[#t+1] = LoadFont("venacti/_venacti 26px bold diffuse")..{
 }]]
 
 
-t[#t+1] = LoadFont("venacti/_venacti 26px bold diffuse")..{
+t[#t+1] = LoadFont("venacti/_venacti 13px bold diffuse")..{
 	InitCommand=cmd(maxwidth,450;diffusetopedge,0.5,0.88,0.95,1;diffusebottomedge,1,1,1,1;uppercase,true;draworder,110;horizalign,center;x,SCREEN_WIDTH*.1;y,23;zoomx,0.385;zoomy,0.38;shadowlength,1);
 	CurrentSongChangedMessageCommand=function(self)
 		local song = GAMESTATE:GetCurrentSong()
@@ -1022,13 +1028,13 @@ t[#t+1] = LoadFont("venacti/_venacti 26px bold diffuse")..{
 	end;
 }
 
-t[#t+1] = LoadFont("venacti/_venacti 26px bold diffuse")..{
+t[#t+1] = LoadFont("venacti/_venacti 13px bold diffuse")..{
 	Text="GENRE";
 	InitCommand=cmd(xy,SCREEN_WIDTH*.9,10;uppercase,true;draworder,101;strokecolor,Color("Outline");zoom,0.45;shadowlength,1);
 
 };
 
-t[#t+1] = LoadFont("venacti/_venacti 26px bold diffuse")..{
+t[#t+1] = LoadFont("venacti/_venacti 13px bold diffuse")..{
 	InitCommand=cmd(diffusetopedge,0.5,0.88,0.95,1;diffusebottomedge,1,1,1,1;uppercase,true;draworder,110;horizalign,center;x,SCREEN_WIDTH*.9;y,23;zoomx,0.385;zoomy,0.38;shadowlength,1);
 	CurrentSongChangedMessageCommand=function(self)
 		local song = GAMESTATE:GetCurrentSong();
@@ -1167,14 +1173,7 @@ t[#t+1] = LoadActor(THEME:GetPathS("","EX_Confirm"))..{
 
 
 
-t[#t+1] = LoadActor(THEME:GetPathS("","EX_Select"))..{
-	CodeMessageCommand = function(self, params)
-		if params.Name == 'OpenOpList' then
-			--SCREENMAN:SystemMessage("OptionsList opened")
-			SCREENMAN:GetTopScreen():OpenOptionsList(params.PlayerNumber)
-		end
-	end;
-};
+
 
 
 --[[t[#t+1] = LoadActor("light_mid") .. {
@@ -1215,7 +1214,7 @@ t[#t+1] = LoadActor("B2") .. {
 
 };
 
-t[#t+1] = LoadFont("venacti/_venacti 26px bold diffuse")..{
+t[#t+1] = LoadFont("venacti/_venacti 13px bold diffuse")..{
 		InitCommand=cmd(draworder,102;diffuse,0.6,0.6,0.6,0.6;shadowcolor,0,0,0,0.3;shadowlengthx,-0.8;shadowlength,-0.8;horizalign,left;x,SCREEN_CENTER_X+185 ;y,SCREEN_TOP+16;zoom,0.40);
 		Text="TIMER"
 }
@@ -1237,7 +1236,7 @@ t[#t+1] = LoadActor("B2") .. {
 
 };
 
-t[#t+1] = LoadFont("venacti/_venacti 26px bold diffuse")..{
+t[#t+1] = LoadFont("venacti/_venacti 13px bold diffuse")..{
 		InitCommand=cmd(draworder,102;diffuse,0.6,0.6,0.6,0.6;shadowcolor,0,0,0,0.3;shadowlengthx,0.8;shadowlengthy,-0.8;horizalign,right;x,SCREEN_CENTER_X-185;y,SCREEN_TOP+16;zoom,0.40);
 		Text="STAGE"
 }
@@ -1264,78 +1263,10 @@ t[#t+1] = Def.Quad {
 	InitCommand=cmd(horizalign,right;fadeleft,1;draworder,10;zoomto,120,SCREEN_HEIGHT;xy,SCREEN_RIGHT,SCREEN_CENTER_Y;diffuse,0,0,0,1);
 }
 
-
-for pn in ivalues(PlayerNumber) do
-
-
-t[#t+1] = LoadActor("oplist") ..{
-InitCommand=cmd(draworder,100;diffuse,color("1,0.95,0.9,0");zoom,0.675;Center;diffusealpha,0;blend,Blend.Add);
-
-		OptionsListOpenedMessageCommand=function(self,params)
-			if params.Player == pn then
-				if pn == PLAYER_1 then
-					self:zoomx(0.675);
-
-				elseif pn == PLAYER_2 then
-					self:zoomx(-0.675);
-
-				end
-
-				self:playcommand("Open");
-			end
-		end;
-
-
-		OpenCommand=cmd(stoptweening;decelerate,0.3;diffusealpha,1;);
-		OptionsListClosedMessageCommand=function(self,params)
-			if params.Player == pn then
-
-				self:stoptweening();
-				self:accelerate(0.3);
-				self:diffusealpha(0);
-
-			end
-		end;
-
-}
-
-
-
-
-t[#t+1] = LoadActor("oplist") ..{
-InitCommand=cmd(draworder,100;diffuse,color("0.3,0.3,0.3,0");zoom,0.675;Center;diffusealpha,0;);
-
-		OptionsListOpenedMessageCommand=function(self,params)
-			if params.Player == pn then
-				if pn == PLAYER_1 then
-					self:zoomx(0.775);
-
-				elseif pn == PLAYER_2 then
-					self:zoomx(-0.775);
-
-				end
-
-				self:playcommand("Open");
-			end
-		end;
-
-
-		OpenCommand=cmd(stoptweening;decelerate,0.3;diffusealpha,0.95;);
-		OptionsListClosedMessageCommand=function(self,params)
-			if params.Player == pn then
-
-				self:stoptweening();
-				self:accelerate(0.3);
-				self:diffusealpha(0);
-
-			end
-		end;
-
-}
-
-end
-
-
+--Command Window
+t[#t+1] = LoadActor("Command Window")..{
+	InitCommand=cmd(draworder,100);	
+};
 
 
 
@@ -1353,36 +1284,6 @@ if GAMESTATE:GetCurrentGame():GetName() == "pump" then
 		};
 end;
 --t[#t+1] = LoadActor("_arrows")..{InitCommand=cmd(draworder,131);};
-
-t[#t+1] = LoadActor(THEME:GetPathS("","EX_Move"))..{
-	PreviousGroupMessageCommand=cmd(play);
-	NextGroupMessageCommand=cmd(play);
-	OptionsListOpenedMessageCommand=cmd(play);
-	OptionsListClosedMessageCommand=cmd(play);
-	OptionsListRightMessageCommand=cmd(play);
-	OptionsListLeftMessageCommand=cmd(play);
-	OptionsListQuickChangeMessageCommand=cmd(play);
-}
-t[#t+1] = LoadActor(THEME:GetPathS("","EX_Confirm"))..{
-	OptionsListClosedMessageCommand=cmd(play);
-	OptionsListStartMessageCommand=cmd(play);
-	OptionsListResetMessageCommand=cmd(play);
-}
-t[#t+1] = LoadActor(THEME:GetPathS("","EX_Select"))..{
-	OptionsListPopMessageCommand=cmd(play);
-	OptionsListPushMessageCommand=cmd(play);
-}
-t[#t+1] = LoadActor(THEME:GetPathS("","Common Cancel"))..{
-	SongUnchosenMessageCommand=cmd(play);
-}
-
-t[#t+1] = LoadActor(THEME:GetPathS("","SSM_Select"))..{
-	SongChosenMessageCommand=cmd(play);
-	StepsChosenMessageCommand=cmd(play);
-}
-t[#t+1] = LoadActor(THEME:GetPathS("","SSM_Confirm"))..{
-	OffCommand=cmd(play);
-}
 
 
 --I don't know what this is for?
@@ -1402,342 +1303,9 @@ t[#t+1] = Def.Quad {
 -- ================
 -- Modifier display
 -- ================
-local function increasePlayerSpeed(pn, amount)
-	--SCREENMAN:SystemMessage(playerState);
-	local playerState = GAMESTATE:GetPlayerState(pn);
-	--This returns an instance of playerOptions, you need to set it back to the original
-	local playerOptions = playerState:GetPlayerOptions("ModsLevel_Preferred")
-	--SCREENMAN:SystemMessage(PlayerState:GetPlayerOptionsString("ModsLevel_Current"));
-	--One of these will be valid, depending on the player's currently set speed mod.
-	local cmod = playerOptions:CMod();
-	local mmod = playerOptions:MMod();
-	local xmod = playerOptions:XMod();
-	if cmod then
-		if amount*100+playerOptions:CMod() < 100 then
-			playerOptions:CMod(800);
-		elseif amount*100+playerOptions:CMod() > 1000 then
-			playerOptions:CMod(100);
-		else
-			playerOptions:CMod(playerOptions:CMod()+amount*100);
-		end;
-	elseif mmod then
-		if amount*100+playerOptions:MMod() < 100 then
-			playerOptions:MMod(800);
-		elseif amount*100+playerOptions:MMod() > 1000 then
-			playerOptions:MMod(100);
-		else
-			playerOptions:MMod(playerOptions:MMod()+amount*100);
-		end;
-	elseif xmod then
-		--SCREENMAN:SystemMessage(playerOptions:XMod())
-		if amount+playerOptions:XMod() < .5 then
-			playerOptions:XMod(8);
-		elseif amount+playerOptions:XMod() > 8 then
-			playerOptions:XMod(.5);
-		else
-			playerOptions:XMod(playerOptions:XMod()+amount,true);
-		end;
-		--SCREENMAN:SystemMessage("Set speed to "..playerOptions:XMod().." ("..tostring(xmod).."+"..tostring(amount)..")");
-	else
-		SCREENMAN:SystemMessage("ERROR: Can't determine "..pn.."'s current speed mod!");
-	end;
-	GAMESTATE:GetPlayerState(pn):SetPlayerOptions('ModsLevel_Preferred', playerState:GetPlayerOptionsString("ModsLevel_Preferred"));
-	--SCREENMAN:SystemMessage(GAMESTATE:GetPlayerState(pn):GetPlayerOptionsString("ModsLevel_Current").." "..playerState:GetCurrentPlayerOptions():XMod());
-end
 
-local step = 35;
 for pn in ivalues(PlayerNumber) do
-
-	t[#t+1] = Def.ActorFrame{
-		InitCommand=function(self)
-			self:y(60);
-			self:draworder(11);
-			if pn == PLAYER_1 then
-				self:x(SCREEN_LEFT+27);
-			else
-				self:x(SCREEN_RIGHT-27);
-			end;
-		end;
-		
-		--Speed modifier
-		Def.ActorFrame{
-			InitCommand=cmd(y,step*5);
-			OnCommand=cmd(visible,GAMESTATE:IsHumanPlayer(pn));
-			PlayerJoinedMessageCommand=cmd(visible,GAMESTATE:IsHumanPlayer(pn));
-			
-			LoadActor(THEME:GetPathS("","EX_Confirm"))..{
-				CodeMessageCommand = function(self, params)
-					local sTable = {
-						Quarter = .25,
-						Half = .5,
-						Full = 1
-					};
-
-					if params.PlayerNumber == pn then
-						if params.Name == 'SpeedQuarterUp' then
-							increasePlayerSpeed(pn,sTable['Quarter']);
-							self:play();
-						end;
-						if params.Name == 'SpeedHalfUp' then
-							increasePlayerSpeed(pn,sTable['Half']);
-							self:play();
-						end;
-						if params.Name == 'SpeedUp' then
-							increasePlayerSpeed(pn,sTable['Full']);
-							self:play();
-						end;
-						
-						--Increasing... By a negative number
-						if params.Name == 'SpeedQuarterDown' then
-							increasePlayerSpeed(pn,sTable['Quarter']*-1);
-							self:play();
-						end;
-						if params.Name == 'SpeedHalfDown' then
-							increasePlayerSpeed(pn,sTable['Half']*-1);
-							self:play();
-						end;
-						if params.Name == 'SpeedDown' then
-							increasePlayerSpeed(pn,sTable['Full']*-1);
-							self:play();
-						end;
-					end
-				end
-			};--speedmods
-
-			LoadActor("optionIcon")..{
-				InitCommand=cmd(draworder,100;zoomy,0.34;zoomx,0.425;diffusealpha,0.75;);
-			};
-			LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
-				InitCommand=cmd(draworder,100;zoom,.45;diffusebottomedge,0.7,0.7,0.7,1;maxwidth,70;shadowlength,0.8);
-				OnCommand=cmd(playcommand,"UpdateText");
-				--sleep,0.1;queuecommand,"On");
-				OptionsListClosedMessageCommand=cmd(playcommand,"UpdateText");
-				CodeMessageCommand=function(self)
-					self:playcommand("UpdateText");
-				end;
-				UpdateTextCommand=function(self)
-					local playerOptions = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred")
-					local cmod = playerOptions:CMod();
-					local mmod = playerOptions:MMod();
-					local xmod = playerOptions:XMod();
-					if cmod then
-						self:settext("C"..cmod);
-					elseif mmod then
-						self:settext("AV"..mmod);
-					elseif xmod then
-						self:settext(xmod.."x");
-					else
-						self:settext("???");
-					end;
-				end;
-			};
-			LoadActor("optionFlash")..{
-				InitCommand=cmd(draworder,100;zoomy,0.34;zoomx,0.425;diffuse,1,1,1,0;visible,GAMESTATE:IsHumanPlayer(pn);sleep,0.1;blend,Blend.Add;queuecommand,"Init");
-				CodeMessageCommand=function(self,params)
-					if params.PlayerNumber == pn then
-						if params.Name == 'SpeedUp' or
-							params.Name == 'SpeedDown' or
-							params.Name == 'SpeedHalfUp' or
-							params.Name == 'SpeedHalfDown' or
-							params.Name == 'SpeedQuarterUp' or
-							params.Name == 'SpeedQuarterDown' then
-							self:stoptweening();
-							self:diffusealpha(1);
-							self:sleep(0.1);
-							self:linear(0.3)
-							self:diffusealpha(0);
-						end
-					end
-				end
-			};
-		};
-		
-		-- Noteskin modifier
-		LoadActor("NoteSkin Display", pn)..{
-			InitCommand=function(self)
-				self:y(step*4);
-				self:draworder(11);
-			end;
-		};
-		
-		-- Perspective modifiers: NX (Space), HW/Hallway, DS/Distant, IN/Incoming.
-		Def.ActorFrame{
-			InitCommand=function(self)
-				self:y(step*2);
-				self:draworder(11);
-			end;
-			OnCommand=cmd(visible,GAMESTATE:IsHumanPlayer(pn);playcommand,"UpdateText");
-			PlayerJoinedMessageCommand=cmd(visible,GAMESTATE:IsHumanPlayer(pn));
-			OptionsListClosedMessageCommand=cmd(playcommand,"UpdateText");
-			UpdateTextCommand=function(self)
-				local playerOptions = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred")
-				local text = self:GetChild("Text");
-				--local anim = self:GetChild("Animation");
-				if playerOptions:Space() then
-					self:visible(true);
-					--anim:playcommand("Play");
-					text:settext("NX");
-				elseif playerOptions:Hallway() then
-					self:visible(true);
-					--anim:queuecommand("Play");
-					text:settext("HW");
-				elseif playerOptions:Distant() then
-					self:visible(true);
-					--anim:queuecommand("Play");
-					text:settext("DS");
-				elseif playerOptions:Incoming() then
-					self:visible(true);
-					--anim:queuecommand("Play");
-					text:settext("IN");
-				else
-					self:visible(false);
-				end;
-			end;
-			
-			LoadActor("optionIcon")..{
-				InitCommand=cmd(draworder,100;zoomy,0.34;zoomx,0.425;diffusealpha,0.75;);
-			};
-			LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
-				Name="Text";
-				InitCommand=cmd(draworder,100;zoom,.6;diffusebottomedge,0.7,0.7,0.7,1;maxwidth,70;shadowlength,0.8);
-			};
-			--[[LoadActor("optionFlash")..{
-				Name="Animation";
-				InitCommand=cmd(draworder,100;zoomy,0.34;zoomx,0.425;diffuse,1,1,1,0;sleep,0.1;blend,Blend.Add;);
-				PlayCommand=cmd(stoptweening;diffusealpha,1;sleep,0.1;linear,0.3;diffusealpha,0;);
-			};]]
-		};
-		
-		-- Acceleration modifiers: AC (Boost), DC (Brake), EW (Expand), WV/Wave, BM/Boomerang
-		Def.ActorFrame{
-			InitCommand=function(self)
-				self:y(step*3);
-				self:draworder(11);
-			end;
-			OnCommand=cmd(visible,GAMESTATE:IsHumanPlayer(pn);playcommand,"UpdateText");
-			PlayerJoinedMessageCommand=cmd(visible,GAMESTATE:IsHumanPlayer(pn));
-			OptionsListClosedMessageCommand=cmd(playcommand,"UpdateText");
-			UpdateTextCommand=function(self)
-				local playerOptions = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred");
-				local text2 = self:GetChild("Text");
-				if playerOptions:Boost() ~= 0 then
-					self:visible(true);
-					text2:settext("AC");
-				elseif playerOptions:Brake() ~= 0 then
-					self:visible(true);
-					text2:settext("DC");
-				elseif playerOptions:Expand() ~= 0 then
-					self:visible(true);
-					text2:settext("EW");
-				elseif playerOptions:Wave() ~= 0 then
-					self:visible(true);
-					text2:settext("WV");
-				elseif playerOptions:Boomerang() ~= 0 then
-					self:visible(true);
-					text2:settext("BM");
-				else
-					self:visible(false);
-				end;
-			end;
-			
-			LoadActor("optionIcon")..{
-				InitCommand=cmd(draworder,100;zoomy,0.34;zoomx,0.425;diffusealpha,0.75;);
-			};
-			LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
-				Name="Text";
-				Text="???";
-				InitCommand=cmd(draworder,100;zoom,.6;diffusebottomedge,0.7,0.7,0.7,1;maxwidth,70;shadowlength,0.8);
-			};
-		};
-		
-		-- Appearance modifiers: Hidden (V), Sudden (AP), Stealth (NS), Blink (FL)
-		Def.ActorFrame{
-			InitCommand=function(self)
-				self:y(step*0);
-				self:draworder(11);
-			end;
-			OnCommand=cmd(visible,GAMESTATE:IsHumanPlayer(pn);playcommand,"UpdateText");
-			PlayerJoinedMessageCommand=cmd(visible,GAMESTATE:IsHumanPlayer(pn));
-			OptionsListClosedMessageCommand=cmd(playcommand,"UpdateText");
-			UpdateTextCommand=function(self)
-				local playerOptions = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred");
-				local text = self:GetChild("Text");
-				if playerOptions:Hidden() ~= 0 then
-					self:visible(true);
-					text:settext("V");
-					--SCREENMAN:SystemMessage(playerOptions:Hidden());
-				elseif playerOptions:Sudden() ~= 0 then
-					self:visible(true);
-					text:settext("AP");
-				elseif playerOptions:Stealth() ~= 0 then
-					self:visible(true);
-					text:settext("NS");
-					--SCREENMAN:SystemMessage(playerOptions:Stealth());
-				elseif playerOptions:Blink() ~= 0 then
-					self:visible(true);
-					text:settext("FL");
-				else
-					self:visible(false);
-				end;
-			end;
-			
-			LoadActor("optionIcon")..{
-				InitCommand=cmd(draworder,100;zoomy,0.34;zoomx,0.425;diffusealpha,0.75;);
-			};
-			LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
-				Name="Text";
-				Text="???";
-				InitCommand=cmd(draworder,100;zoom,.6;diffusebottomedge,0.7,0.7,0.7,1;maxwidth,70;shadowlength,0.8);
-			};
-		};
-		-- Alternate modifiers: Mirror (M), Shuffle (RS), SuperShuffle (SRS), Backwards (BK), Left (L), Right, (R), Soft Shuffle (SFS)
-		Def.ActorFrame{
-			InitCommand=function(self)
-				self:y(step*1);
-				self:draworder(11);
-			end;
-			OnCommand=cmd(visible,GAMESTATE:IsHumanPlayer(pn);playcommand,"UpdateText");
-			PlayerJoinedMessageCommand=cmd(visible,GAMESTATE:IsHumanPlayer(pn));
-			OptionsListClosedMessageCommand=cmd(playcommand,"UpdateText");
-			UpdateTextCommand=function(self)
-				local playerOptions = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred");
-				local text = self:GetChild("Text");
-				if playerOptions:Mirror() then
-					self:visible(true);
-					text:settext("M");
-				elseif playerOptions:Shuffle() then
-					self:visible(true);
-					text:settext("RS");
-				elseif playerOptions:SuperShuffle() then
-					self:visible(true);
-					text:settext("SRS");
-				elseif playerOptions:Backwards() then
-					self:visible(true);
-					text:settext("BK");
-				elseif playerOptions:Left() then
-					self:visible(true);
-					text:settext("L");
-				elseif playerOptions:Right() then
-					self:visible(true);
-					text:settext("R");
-				elseif playerOptions:SoftShuffle() then
-					self:visible(true);
-					text:settext("SFS");
-				else
-					self:visible(false);
-				end;
-			end;
-			
-			LoadActor("optionIcon")..{
-				InitCommand=cmd(draworder,100;zoomy,0.34;zoomx,0.425;diffusealpha,0.75;);
-			};
-			LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
-				Name="Text";
-				Text="???";
-				InitCommand=cmd(draworder,100;zoom,.45;diffusebottomedge,0.7,0.7,0.7,1;maxwidth,70;shadowlength,0.8);
-			};
-		};
-	};
+	t[#t+1] = LoadActor("mods display", pn);
 end;
 
 return t;
