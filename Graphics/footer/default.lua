@@ -35,7 +35,7 @@ local t = Def.ActorFrame {
 	
 	--P2 NAME	
 	LoadFont("venacti/_venacti 13px bold diffuse") .. {
-		InitCommand=cmd(maxwidth,320;draworder,110;horizalign,left;horizalign,right;xy,250,50;zoom,.7;shadowlength,1;uppercase,true;queuecommand,"Set");
+		InitCommand=cmd(maxwidth,320;draworder,110;horizalign,left;xy,250,-50;zoom,.7;shadowlength,1;uppercase,true;queuecommand,"Set");
 		OnCommand=cmd(queuecommand,"Set");
 		PlayerJoinedMessageCommand=cmd(queuecommand,"Set");
 		PlayerUnjoinedMessageCommand=cmd(queuecommand,"Set");

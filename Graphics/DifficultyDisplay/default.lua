@@ -154,7 +154,22 @@ if basicMode then
 			CurrentSongChangedMessageCommand=cmd(playcommand,"Set");
 			NextSongMessageCommand=cmd(playcommand,"Set");
 			PreviousSongMessageCommand=cmd(playcommand,"Set");
-
+			
+			--Hide cursors until they're selecting a song
+			--If in dance mode, make the cursor always visible. If in pump mode, make it only visible when in the two part select.
+			--Dance doesn't use the two part select.
+			OnCommand=cmd(visible,GAMESTATE:GetCurrentGame():GetName() == "dance");
+			
+			SongChosenMessageCommand=function(self)
+				self:visible(GAMESTATE:IsSideJoined(pn));
+			end;
+			SongUnchosenMessageCommand=function(self)
+				self:visible(false);
+			end;
+			TwoPartConfirmCanceledMessageCommand=function(self)
+				self:visible(false);
+			end;
+			
 			--I know this looks moronic, but I don't think there's any other way to do it...
 			SetCommand=function(self)
 				if stepsArray then
@@ -264,15 +279,31 @@ else
 
 
 	end
-
-	for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+	
+	--Needs to have both in case of late join
+	for pn in ivalues(PlayerNumber) do
 		t[#t+1] = LoadActor("UnifiedCursor", pn)..{
-			InitCommand=cmd(zoom,baseZoom-0.05;x,baseX;y,baseY;rotationx,180;rotationz,180;spin;playcommand,"Set";visible,GAMESTATE:IsSideJoined(pn));
-			CurrentStepsP1ChangedMessageCommand=cmd(playcommand,"Set");
-			CurrentStepsP2ChangedMessageCommand=cmd(playcommand,"Set");
+			InitCommand=cmd(zoom,baseZoom-0.05;x,baseX;y,baseY;rotationx,180;spin;playcommand,"Set";);
+			PlayerJoinedMessageCommand=cmd(visible,GAMESTATE:IsHumanPlayer(pn));
+			['CurrentSteps'..ToEnumShortString(pn)..'ChangedMessageCommand']=cmd(playcommand,"Set");
 			CurrentSongChangedMessageCommand=cmd(playcommand,"Set");
 			NextSongMessageCommand=cmd(playcommand,"Set");
 			PreviousSongMessageCommand=cmd(playcommand,"Set");
+			
+			--Hide cursors until they're selecting a song
+			--If in dance mode, make the cursor always visible. If in pump mode, make it only visible when in the two part select.
+			--Dance doesn't use the two part select.
+			OnCommand=cmd(visible,GAMESTATE:GetCurrentGame():GetName() == "dance");
+			
+			SongChosenMessageCommand=function(self)
+				self:visible(GAMESTATE:IsSideJoined(pn));
+			end;
+			SongUnchosenMessageCommand=function(self)
+				self:visible(false);
+			end;
+			TwoPartConfirmCanceledMessageCommand=function(self)
+				self:visible(false);
+			end;
 
 			--I know this looks moronic, but I don't think there's any other way to do it...
 			SetCommand=function(self)

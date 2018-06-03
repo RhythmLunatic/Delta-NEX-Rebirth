@@ -1,20 +1,13 @@
 local player = ...
-assert(player, "SSM PlayerScore: Need a player, dingus");
+assert(player, "SSM MachineScore: Need a player, dingus");
 
 return Def.ActorFrame{
-	--[[
-	InitCommand=cmd(visible,false);
-	SongChosenMessageCommand=cmd(visible,true);
-	TwoPartConfirmCanceledMessageCommand=cmd(visible,false);
-	SongUnchosenMessageCommand=cmd(visible,false);]]
-	InitCommand=cmd(visible,GAMESTATE:IsHumanPlayer(player));
-	PlayerJoinedMessageCommand=cmd(visible,GAMESTATE:IsHumanPlayer(player));
 
 	Def.Quad{
 		InitCommand=cmd(diffuse,color("0,0,0,.8");setsize,110,15;fadeleft,.1;faderight,.1;y,-26);
 	};
 	LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
-		Text="Machine Best";
+		Text=THEME:GetString("ScreenSelectMusic","MachineBest");
 		InitCommand=cmd(shadowlength,0.8;y,-27;zoom,.45);
 	};
 	

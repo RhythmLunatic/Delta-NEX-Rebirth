@@ -24,7 +24,7 @@ t[#t+1] = LoadActor(THEME:GetPathB("ScreenWithMenuElements","background")) .. {
 t[#t+1] = LoadActor("decoration_corner") .. {
 	InitCommand=cmd(visible,(GAMESTATE:IsHumanPlayer(PLAYER_1) or ToEnumShortString(GAMESTATE:GetCurrentStyle():GetStyleType()) == "OnePlayerTwoSides"));
 	OnCommand=cmd(horizalign,left;x,SCREEN_LEFT;vertalign,top;y,SCREEN_TOP;zoomy,0.4;zoomx,0.6;diffusealpha,0.3;blend,Blend.Add); 
-}; 
+};
 
 -- Right Hex Corner Decoration
 t[#t+1] = LoadActor("decoration_corner") .. {
@@ -190,26 +190,27 @@ t[#t+1] = Def.ActorFrame{
 };
 
 --The current stage
---TODO: Some kind of cool graphic under the text
-t[#t+1] = Def.ActorFrame{
-
-	--[[InitCommand=cmd(xy,SCREEN_CENTER_X,11;);
-	Def.Quad{
-		InitCommand=cmd(setsize,250,20;fadeleft,.3;faderight,.3;diffuse,Color("Black"));
+--[[t[#t+1] = Def.ActorFrame{
+	InitCommand=cmd(y,34;zoom,0.8);
+	OnCommand=function(self)
+		if style == "OnePlayerOneSide" and PREFSMAN:GetPreference("Center1Player") == true then
+			self:x(SCREEN_CENTER_X-210);
+		else
+			self:x(SCREEN_CENTER_X);
+		end;
+	end;
 	
+	LoadActor(THEME:GetPathG("ScreenGameplay", "stage icon"))..{
 	};
-	LoadFont("venacti/_venacti 15px bold") .. {
-		InitCommand=cmd(addy,-2);
+	
+	LoadFont("combo/_handelgothic bt 70px") .. {
+		InitCommand=cmd(addy,5;zoom,.5);
 		--Text="Hello World";
 		OnCommand=function(self)
-			if not GAMESTATE:IsEventMode() then
-				self:settext("STAGE "..GAMESTATE:GetCurrentStage());
-			else
-				self:settext("EVENT STAGE");
-			end;
+			self:settextf("%02d",GAMESTATE:GetCurrentStageIndex()+1);
 		end;
-	}]]
-}
+	};
+}]]
 
 			
 --[[ MISC ///////////////////////////////////

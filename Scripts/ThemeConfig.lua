@@ -125,11 +125,11 @@ function BasicModeConfig()
 		--Write preference immediately when changing. (I'm not sure if false makes it write when exiting)
 		ExportOnChange = true;
 		--Get the text for the choices from language files (en.ini, es.ini, etc)
-		Choices = {THEME:GetString("OptionNames","Enabled"), THEME:GetString("OptionNames","Disabled")};
+		Choices = {THEME:GetString("OptionNames","Disabled"), THEME:GetString("OptionNames","Enabled")};
 		
 		-- Used internally, this will set the selection on the screen when it is loaded.
 		LoadSelections = function(self, list, pn)
-			if ReadPrefFromFile("UserPrefBasicMode") == "Enabled" then
+			if ReadPrefFromFile("UserPrefBasicMode") == "Disabled" then
 				list[1] = true;
 			else
 				list[2] = true;
@@ -138,7 +138,7 @@ function BasicModeConfig()
 		
 		
 		SaveSelections = function(self, list, pn)
-			if list[1] then
+			if list[2] then
 				WritePrefToFile("UserPrefBasicMode","Enabled");
 			else
 				WritePrefToFile("UserPrefBasicMode","Disabled");
@@ -158,11 +158,11 @@ function HiddenChannelsConfig()
 		--Write preference immediately when changing. (I'm not sure if false makes it write when exiting)
 		ExportOnChange = true;
 		--Get the text for the choices from language files (en.ini, es.ini, etc)
-		Choices = {THEME:GetString("OptionNames","Enabled"), THEME:GetString("OptionNames","Disabled")};
+		Choices = {THEME:GetString("OptionNames","Disabled"), THEME:GetString("OptionNames","Enabled")};
 		
 		-- Used internally, this will set the selection on the screen when it is loaded.
 		LoadSelections = function(self, list, pn)
-			if ReadPrefFromFile("UserPrefHiddenChannels") == "Enabled" then
+			if ReadPrefFromFile("UserPrefHiddenChannels") == "Disabled" then
 				list[1] = true;
 			else
 				list[2] = true;
@@ -171,7 +171,7 @@ function HiddenChannelsConfig()
 		
 		
 		SaveSelections = function(self, list, pn)
-			if list[1] then
+			if list[2] then
 				WritePrefToFile("UserPrefHiddenChannels","Enabled");
 			else
 				WritePrefToFile("UserPrefHiddenChannels","Disabled");

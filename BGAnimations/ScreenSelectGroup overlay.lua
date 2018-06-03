@@ -200,6 +200,8 @@ local t = Def.ActorFrame{
 		if params.Name == "SecretGroup" then
 			if all_channels_unlocked == true then
 				SCREENMAN:SystemMessage("You've already entered the hidden channels code!")
+			elseif ReadPrefFromFile("UserPrefHiddenChannels") ~= "Enabled" then
+				SCREENMAN:SystemMessage("The hidden channels option isn't enabled, there's no need!");
 			else
 				SCREENMAN:GetTopScreen():lockinput(3);
 				all_channels_unlocked = true;

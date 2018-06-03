@@ -1,9 +1,0 @@
-1.0 Changelog
-- Superb Scoring
-- Various bugfixes
-- Basic Mode
-- New song pack
-- Multiplayer fixes
-- USB support
-- Free Play additions
-- Course Mode
