@@ -297,7 +297,7 @@ t[#t+1] = LoadFont("frutiger/frutiger 24px")..{
 		if groupName then
 			local fir = SONGMAN:GetSongGroupBannerPath(groupName);
 			if not fir then 
-				self:settext("Need banner!");
+				self:settext(THEME:GetString("ScreenSelectGroup","MissingBannerWarning"));
 				return;
 			end;
 			local dir = gisub(fir,'banner.png','info/text.ini');
@@ -307,7 +307,7 @@ t[#t+1] = LoadFont("frutiger/frutiger 24px")..{
 				self:settext(tt);
 				(cmd(stoptweening;zoom,.7;shadowlength,0;wrapwidthpixels,420/1;))(self);
 			else
-				self:settext("Need /info/text.ini!");
+				self:settext(THEME:GetString("ScreenSelectGroup","MissingInfoWarning"));
 			end;
 			--TODO: This should be a theme setting for sound priority.
 			--Right now it's Announcer -> info folder but some people might like info folder -> announcer
