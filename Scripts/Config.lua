@@ -71,7 +71,7 @@ end;
 
 --//================================================================
 
-function ApplyThemeSettings()
+--[[function ApplyThemeSettings()
     local tconf = THEMECONFIG:get_data("ProfileSlot_Invalid");
 
     tconf.BGBrightness      = clamp(tconf.BGBrightness,0,100);
@@ -92,7 +92,6 @@ function ApplyThemeSettings()
     PREFSMAN:SetPreference("Center1Player",         tconf.CenterPlayer);
     PREFSMAN:SetPreference("TimingWindowScale",     timing_mapping[tconf.TimingDifficulty] );
     PREFSMAN:SetPreference("LifeDifficultyScale",   life_mapping[tconf.LifeDifficulty] );
-    --PREFSMAN:SetPreference("AllowW1",               tconf.AllowW1 and "AllowW1_Everywhere" or "AllowW1_Never" );
 
     -------------------------------------------------------------------------------------------------------
     local sops= GAMESTATE:GetSongOptionsObject("ModsLevel_Preferred");
@@ -114,7 +113,7 @@ function ApplyThemeSettings()
         pstate:ApplyPreferredOptionsToOtherLevels();
     end;
 
-end;
+end;]]
 
 --//================================================================
 

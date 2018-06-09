@@ -120,7 +120,7 @@ return Def.ActorFrame{
 					if cmod then
 						self:settext("C"..cmod);
 					elseif mmod then
-						self:settext("AV"..mmod);
+						self:settext("AV\n"..mmod);
 					elseif xmod then
 						self:settext(xmod.."x");
 					else

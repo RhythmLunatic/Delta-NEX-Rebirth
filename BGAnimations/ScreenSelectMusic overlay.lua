@@ -209,6 +209,26 @@ local t = Def.ActorFrame{
 
 }
 
+t[#t+1] = Def.ActorFrame{
+	LoadActor(THEME:GetPathG("","JoinOverlay"))..{
+		InitCommand=cmd(xy,SCREEN_WIDTH*.145,SCREEN_CENTER_Y-90;zoom,.9;visible,THEME:GetMetric("GameState", "AllowLateJoin");playcommand,"RefreshPlayer");
+		PlayerJoinedMessageCommand=cmd(playcommand,"RefreshPlayer");
+		CoinModeChangedMessageCommand=cmd(playcommand,"RefreshPlayer");
+		CoinInsertedMessageCommand=cmd(playcommand,"RefreshPlayer");
+		RefreshPlayerCommand=function(self)
+			self:visible(not GAMESTATE:IsHumanPlayer(PLAYER_1))
+		end;
+	};
+	LoadActor(THEME:GetPathG("","JoinOverlay"))..{
+		InitCommand=cmd(xy,SCREEN_WIDTH*.855,SCREEN_CENTER_Y-90;zoom,.9;visible,THEME:GetMetric("GameState", "AllowLateJoin");playcommand,"RefreshPlayer");
+		PlayerJoinedMessageCommand=cmd(playcommand,"RefreshPlayer");
+		CoinModeChangedMessageCommand=cmd(playcommand,"RefreshPlayer");
+		CoinInsertedMessageCommand=cmd(playcommand,"RefreshPlayer");
+		RefreshPlayerCommand=function(self)
+			self:visible(not GAMESTATE:IsHumanPlayer(PLAYER_2))
+		end;
+	};
+};
 --WTF is this doing here?
 --[[t[#t+1] = LoadActor(THEME:GetPathS("","EX_Move"))..{
 	OptionsListOpenedMessageCommand=cmd(play);

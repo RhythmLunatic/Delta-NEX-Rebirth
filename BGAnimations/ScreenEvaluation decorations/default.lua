@@ -44,7 +44,7 @@ t[#t+1] = Def.ActorFrame{
 
 	LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
 		InitCommand=cmd(addy,8;zoom,0.4;diffuse,color("#fffFFF");diffusebottomedge,color("#CCCCCC");shadowlength,0.8);
-		Text=""..string.upper(song:GetGroupName());
+		Text=string.upper(string.gsub(song:GetGroupName(),"^%d%d? ?%- ?", ""));
 	};
 
 };
@@ -102,10 +102,10 @@ t[#t+1] = Def.ActorFrame{
 	};
 };
 
-t[#t+1] = LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
+--[[t[#t+1] = LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
 	InitCommand=cmd(visible,GetUserPref("UserPrefSetPreferences") == "No";maxwidth,1020;zoomy,0.55;zoomx,0.58;x,SCREEN_CENTER_X;y,SCREEN_BOTTOM-70;shadowlength,0.8);
 	Text="NO GAME LEVEL"
-}
+}]]
 
 
 

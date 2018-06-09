@@ -19,9 +19,9 @@ function resetGame()
 	all_channels_unlocked = nil;
 end;
 
-function ternary(cond, T, F)
+--[[function ternary(cond, T, F)
     if cond then return T else return F end
-end
+end]]
 
 function GetGradeFromDancePoints(dancepoints)
 	 --SS aka perfect score

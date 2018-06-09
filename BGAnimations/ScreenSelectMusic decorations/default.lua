@@ -1249,39 +1249,6 @@ t[#t+1] = Def.Quad {
 	InitCommand=cmd(horizalign,right;vertalign,bottom;fadeleft,1;draworder,10;zoomto,120,SCREEN_HEIGHT;xy,SCREEN_RIGHT,SCREEN_HEIGHT;diffuse,0,0,0,1);
 }
 
---[[
-Use an ActorFrame, there should be no reason to copy and paste
-the same code twice and have all this extra logic. And there should be no need
-to position the graphic inside the Actor!!
-In fact, why was the join checking code inside the actor in the first place?
-You could have just put it outside the actor and added it here!!
-Even if you didn't know how to use args in LoadActor, you still
-would know how to do this!!
-]]
---[[t[#t+1] = LoadActor("JoinOverlay")..{
-	InitCommand=cmd(draworder,110;visible,THEME:GetMetric("GameState", "AllowLateJoin"));
-}]]
-t[#t+1] = Def.ActorFrame{
-	LoadActor(THEME:GetPathG("","JoinOverlay"))..{
-		InitCommand=cmd(xy,SCREEN_WIDTH*.15,SCREEN_CENTER_Y-90;zoom,.9;visible,THEME:GetMetric("GameState", "AllowLateJoin");playcommand,"RefreshPlayer");
-		PlayerJoinedMessageCommand=cmd(playcommand,"RefreshPlayer");
-		CoinModeChangedMessageCommand=cmd(playcommand,"RefreshPlayer");
-		CoinInsertedMessageCommand=cmd(playcommand,"RefreshPlayer");
-		RefreshPlayerCommand=function(self)
-			self:visible(not GAMESTATE:IsHumanPlayer(PLAYER_1))
-		end;
-	};
-	LoadActor(THEME:GetPathG("","JoinOverlay"))..{
-		InitCommand=cmd(xy,SCREEN_WIDTH*.85,SCREEN_CENTER_Y-90;zoom,.9;visible,THEME:GetMetric("GameState", "AllowLateJoin");playcommand,"RefreshPlayer");
-		PlayerJoinedMessageCommand=cmd(playcommand,"RefreshPlayer");
-		CoinModeChangedMessageCommand=cmd(playcommand,"RefreshPlayer");
-		CoinInsertedMessageCommand=cmd(playcommand,"RefreshPlayer");
-		RefreshPlayerCommand=function(self)
-			self:visible(not GAMESTATE:IsHumanPlayer(PLAYER_2))
-		end;
-	};
-};
-
 --Command Window
 t[#t+1] = LoadActor("Command Window")..{
 	InitCommand=cmd(draworder,100);	

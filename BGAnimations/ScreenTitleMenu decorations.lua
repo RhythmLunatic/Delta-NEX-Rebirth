@@ -62,9 +62,9 @@ local t = Def.ActorFrame {
 	};]]
 
 
-	 LoadActor(THEME:GetPathG("","gl"))..{
+	 --[[LoadActor(THEME:GetPathG("","gl"))..{
 		InitCommand=cmd(horizalign,right;x,SCREEN_RIGHT-60;y,SCREEN_TOP+18;zoom,0.75)
-	};
+	};]]
 
 
 	 LoadFont("frutiger/frutiger 24px") .. {
@@ -78,8 +78,13 @@ local t = Def.ActorFrame {
 	};
 
 	 LoadFont("Common normal") .. {
-		Text=SONGMAN:GetNumAdditionalSongs()+SONGMAN:GetNumSongs().." Songs on "..SONGMAN:GetNumSongGroups().." folders.";
+		Text=SONGMAN:GetNumAdditionalSongs()+SONGMAN:GetNumSongs().." songs in "..SONGMAN:GetNumSongGroups().." groups.";
 		InitCommand=cmd(horizalign,left;x,SCREEN_LEFT+15;y,SCREEN_TOP+28;zoom,0.35)
+	};
+	
+ 	LoadFont("Common normal") .. {
+		Text=ProductFamily().." "..ProductVersion();
+		InitCommand=cmd(horizalign,right;x,SCREEN_RIGHT-15;y,SCREEN_TOP+15;zoom,0.45)
 	};
 
 	LoadActor(THEME:GetPathS("ScreenTitleMenu", "music"))..{

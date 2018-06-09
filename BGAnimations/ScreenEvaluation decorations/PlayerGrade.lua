@@ -49,5 +49,16 @@ return Def.ActorFrame{
 		OnCommand=cmd(y,65;diffusealpha,0;decelerate,0.3;diffusealpha,1);
 		Text=dancepoints.."%";
 	};
+	
+	--Best score thingy
+	--[[LoadFont("venacti/_venacti 13px bold diffuse")..{
+		InitCommand=function(self)
+			self:horizalign(center):zoomx(0.375):zoomy(0.35);
+			local scorelist = PROFILEMAN:GetProfile(player):GetHighScoreList(GAMESTATE:GetCurrentSong(),GAMESTATE:GetCurrentSteps(player));
+			
+		end;
+		OnCommand=cmd(y,55;diffusealpha,0;decelerate,0.3;diffusealpha,1;playcommand,"SetText");
+		Text="ACCURACY";
+	};]]
 
 }
