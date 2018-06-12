@@ -182,6 +182,8 @@ function HiddenChannelsConfig()
 	return t;
 end;
 
+
+--This should probably be changed to true/false, with true being RFID and false/nil being USB
 function GuestSaveConfig()
 	local t = {
 		Name = "GuestSaveType";
