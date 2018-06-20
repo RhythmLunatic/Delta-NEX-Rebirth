@@ -124,17 +124,30 @@ t[#t+1] = Def.ActorFrame {
 				--self:customtexturerect(100,100,100,100);
 				--self:zoomto(290,160);
 				--self:setsize(290,160);
+				--self:cropto(290,160);
 				--self:SetWidth(290);
 				self:scaletocover(-145,-80,145,80);
 				local tex = self:GetTexture();
-				if round(tex:GetImageWidth()/tex:GetImageHeight(), 1) == 1.3 then
+				local ratio_16by9 = round(16/9, 2);
+				local ratio_image = round(tex:GetImageWidth()/tex:GetImageHeight(), 2);
+				if ratio_16by9 == ratio_image then
+					self:cropbottom(0);
+					self:croptop(0);
+					--SCREENMAN:SystemMessage(ratio_16by9.." "..ratio_image);
+				else
+					--It works and I don't know why. It's probably also very demanding on the CPU.
+					local cropRatio = math.abs((ratio_16by9 - ratio_image)/3.5)
+					self:croptop(cropRatio)
+					self:cropbottom(cropRatio)
+					--SCREENMAN:SystemMessage(ratio_16by9.." "..ratio_image.." "..cropRatio);
+				end;
+				--[[if round(tex:GetImageWidth()/tex:GetImageHeight(), 1) == 1.3 then
 					self:croptop(.13);
 					self:cropbottom(.13);
 				else
 					self:croptop(0);
 					self:cropbottom(0);
-				end;
-				--SCREENMAN:SystemMessage(tostring(tex:GetImageWidth()).." / "..tostring(tex:GetImageHeight()).." = "..tostring(tex:GetImageWidth()/tex:GetImageHeight()));
+				end;]]
 
 				self:diffusealpha(0);
 				self:linear(0.5);
@@ -311,80 +324,6 @@ t[#t+1] = Def.ActorFrame {
 };
 
 
--- LONG SONG (OLD)
---[[t[#t+1] = LoadActor("long_normal") .. {
-	InitCommand=cmd(draworder,25;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-3;zoom,0.575);
-	SongChosenMessageCommand=cmd(diffusealpha,0);
-	TwoPartConfirmCanceledMessageCommand=cmd(diffusealpha,1);
-	SongUnchosenMessageCommand=cmd(diffusealpha,1);
-	--PlayerJoinedMessageCommand=cmd(playcommand,"Init");
-	CurrentSongChangedMessageCommand=function(self)
-		local song = GAMESTATE:GetCurrentSong()
-		if song then
-		self:visible(song:IsLong());
-		else
-		self:visible(false)
-		end
-	end;
-
-};
-
-
-
-t[#t+1] = LoadActor("long_add") .. {
-	InitCommand=cmd(draworder,25;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-3;zoom,0.575;blend,Blend.Add);
-	SongChosenMessageCommand=cmd(diffusealpha,0);
-	TwoPartConfirmCanceledMessageCommand=cmd(diffusealpha,1);
-	SongUnchosenMessageCommand=cmd(diffusealpha,1);
-	--PlayerJoinedMessageCommand=cmd(playcommand,"Init");
-	OnCommand=cmd(diffuseshift;effectcolor1,color("#FFFFFFD0");effectcolor2,color("#FFFFFF00"));
-	CurrentSongChangedMessageCommand=function(self)
-		local song = GAMESTATE:GetCurrentSong()
-		if song then
-		self:visible(song:IsLong());
-		else
-		self:visible(false)
-		end
-	end;
-
-};
-
-t[#t+1] = LoadActor("marathon_normal") .. {
-	InitCommand=cmd(draworder,25;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-3;zoom,0.575);
-	SongChosenMessageCommand=cmd(diffusealpha,0);
-	TwoPartConfirmCanceledMessageCommand=cmd(diffusealpha,1);
-	SongUnchosenMessageCommand=cmd(diffusealpha,1);
-	--PlayerJoinedMessageCommand=cmd(playcommand,"Init");
-	CurrentSongChangedMessageCommand=function(self)
-		local song = GAMESTATE:GetCurrentSong()
-		if song then
-		self:visible(song:IsMarathon());
-		else
-		self:visible(false)
-		end
-	end;
-
-};
-
-t[#t+1] = LoadActor("marathon_add") .. {
-	InitCommand=cmd(draworder,25;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-3;zoom,0.575;blend,Blend.Add);
-	SongChosenMessageCommand=cmd(diffusealpha,0);
-	TwoPartConfirmCanceledMessageCommand=cmd(diffusealpha,1);
-	SongUnchosenMessageCommand=cmd(diffusealpha,1);
-	--PlayerJoinedMessageCommand=cmd(playcommand,"Init");
-	OnCommand=cmd(diffuseshift;effectcolor1,color("#FFFFFFD0");effectcolor2,color("#FFFFFF00"));
-	CurrentSongChangedMessageCommand=function(self)
-		local song = GAMESTATE:GetCurrentSong()
-		if song then
-		self:visible(song:IsMarathon());
-		else
-		self:visible(false)
-		end
-	end;
-
-};]]
-
-
 t[#t+1] = LoadActor("jacket_light") .. {
 	InitCommand=cmd(draworder,100;xy,SCREEN_CENTER_X,SCREEN_CENTER_Y+121;zoomx,1.14;zoomy,.81;effectclock,"bgm";blend,Blend.Add);
 
@@ -494,17 +433,18 @@ if GAMESTATE:GetCurrentGame():GetName() == "dance" then
 		SongUnchosenMessageCommand=cmd(diffusealpha,0);
 		ChangeStepsMessageCommand=function(self, params)
 			if  params.Direction == 1 then
+			
 			elseif params.Direction == -1 then
-			self:stoptweening();
-			self:horizalign(right);
-			self:diffusealpha(0.7);
-			self:zoomy(0.5);
-			self:zoomx(0.5);
-			self:linear(0.2);
-			self:zoomx(0.2);
-			self:diffusealpha(0);
+				self:stoptweening();
+				self:horizalign(right);
+				self:diffusealpha(0.7);
+				self:zoomy(0.5);
+				self:zoomx(0.5);
+				self:linear(0.2);
+				self:zoomx(0.2);
+				self:diffusealpha(0);
 			end;
-			end;
+		end;
 
 	}
 
@@ -753,84 +693,6 @@ t[#t+1] = LoadActor("rightpress") .. {
 	InitCommand=cmd(draworder,100;x,SCREEN_CENTER_X;vertalign,top;diffusealpha,0;zoom,0.675;blend,Blend.Add);
 	NextSongMessageCommand=cmd(stoptweening;diffusealpha,1;sleep,0.15;linear,0.3;diffusealpha,0);
 }
---[[
-
-
-t[#t+1] = LoadActor("long_normal") .. {
-	InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+3;zoom,0.675);
-	SongChosenMessageCommand=cmd(diffusealpha,0);
-	TwoPartConfirmCanceledMessageCommand=cmd(diffusealpha,1);
-	SongUnchosenMessageCommand=cmd(diffusealpha,1);
-	CurrentSongChangedMessageCommand=function(self)
-		local song = GAMESTATE:GetCurrentSong()
-		if song then
-		self:visible(song:IsLong());
-		else
-		self:visible(false)
-		end
-	end;
-
-};
-
-t[#t+1] = LoadActor("long_add") .. {
-	InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+3;zoom,0.675;blend,Blend.Add);
-	SongChosenMessageCommand=cmd(diffusealpha,0);
-	TwoPartConfirmCanceledMessageCommand=cmd(diffusealpha,1);
-	SongUnchosenMessageCommand=cmd(diffusealpha,1);
-	OnCommand=cmd(diffuseshift;effectcolor1,color("#FFFFFFD0");effectcolor2,color("#FFFFFF00"));
-	CurrentSongChangedMessageCommand=function(self)
-		local song = GAMESTATE:GetCurrentSong()
-		if song then
-		self:visible(song:IsLong());
-		else
-		self:visible(false)
-		end
-	end;
-
-};
-
-
-t[#t+1] = LoadActor("marathon_normal") .. {
-	InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+3;zoom,0.675);
-	SongChosenMessageCommand=cmd(diffusealpha,0);
-	TwoPartConfirmCanceledMessageCommand=cmd(diffusealpha,1);
-	SongUnchosenMessageCommand=cmd(diffusealpha,1);
-	CurrentSongChangedMessageCommand=function(self)
-		local song = GAMESTATE:GetCurrentSong()
-		if song then
-		self:visible(song:IsMarathon());
-		else
-		self:visible(false)
-		end
-	end;
-
-};
-
-t[#t+1] = LoadActor("marathon_add") .. {
-	InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+3;zoom,0.675;blend,Blend.Add);
-	SongChosenMessageCommand=cmd(diffusealpha,0);
-	TwoPartConfirmCanceledMessageCommand=cmd(diffusealpha,1);
-	SongUnchosenMessageCommand=cmd(diffusealpha,1);
-	OnCommand=cmd(diffuseshift;effectcolor1,color("#FFFFFFD0");effectcolor2,color("#FFFFFF00"));
-	CurrentSongChangedMessageCommand=function(self)
-		local song = GAMESTATE:GetCurrentSong()
-		if song then
-		self:visible(song:IsMarathon());
-		else
-		self:visible(false)
-		end
-	end;
-
-};
-
-
-
-]]--
-
-
-
-
-
 
 --DIFFICULTY BAR
 
@@ -881,15 +743,6 @@ t[#t+1] = Def.ActorFrame{
 		TwoPartConfirmCanceledMessageCommand=cmd(stoptweening;linear,0.2;diffusealpha,0;);
 		SongUnchosenMessageCommand=cmd(stoptweening;linear,0.2;diffusealpha,0;);
 	};
-
-
-	--[[LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
-		InitCommand=cmd(y,-20;zoom,0.35;zoomy,0.325;shadowlengthy,0.8;draworder,100;diffuse,0.65,0.65,0.65,0;diffusetopedge,0.8,0.8,0.8,0);
-		SongChosenMessageCommand=cmd(stoptweening;linear,0.15;y,SCREEN_CENTER_Y-18;diffusealpha,1);
-		TwoPartConfirmCanceledMessageCommand=cmd(stoptweening;linear,0.15;y,SCREEN_CENTER_Y+16;diffusealpha,0);
-		SongUnchosenMessageCommand=cmd(stoptweening;linear,0.15;y,SCREEN_CENTER_Y+18;diffusealpha,0);
-		Text=" - PRESS CENTER STEP TO START - "
-	};]]
 	
 	LoadActor(THEME:GetPathG("", "_press "..GAMESTATE:GetCurrentGame():GetName().. " 5x2"))..{
 		Frames = Sprite.LinearFrames(10,.3);
@@ -1231,11 +1084,7 @@ t[#t+1] = LoadFont("venacti/_venacti_ 26px bold monospace numbers")..{
 	InitCommand=cmd(draworder,102;diffuse,0.9,0.9,0.9,0.9;uppercase,true;horizalign,center;x,SCREEN_CENTER_X-160;maxwidth,45;zoomx,0.58;zoomy,0.58;y,SCREEN_TOP+25;shadowlengthx,1;shadowlengthy,-1);
 	OnCommand=function(self)
 		local stageNum=GAMESTATE:GetCurrentStageIndex()+1
-		if stageNum < 10 then
-			self:settext("0"..stageNum);
-		else
-			self:settext(stageNum);
-		end
+		self:settextf("%02d",stageNum);
 	end;
 }
 

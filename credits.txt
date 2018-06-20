@@ -1,7 +1,7 @@
 Delta NEX Rebirth is by Rhythm Lunatic, with new graphics by Joao Almeida.
 Created with permission from Luizsan.
 Special thanks to the DDR SN3 team for Basic Mode implementation.
-Special thanks to Jakub Throo Prymus for advertising the theme!
+Special thanks to Jakub Throo Prymus.
 
 Delta Credits:
 

@@ -275,11 +275,7 @@ t[#t+1] = Def.ActorFrame{
 		InitCommand=cmd(draworder,102;diffuse,0.9,0.9,0.9,0.9;uppercase,true;horizalign,center;x,SCREEN_CENTER_X-160;maxwidth,45;zoomx,0.58;zoomy,0.58;y,SCREEN_TOP+25;shadowlengthx,1;shadowlengthy,-1);
 		OnCommand=function(self)
 			local stageNum=GAMESTATE:GetCurrentStageIndex()+1
-			if stageNum < 10 then
-				self:settext("0"..stageNum);
-			else
-				self:settext(stageNum);
-			end
+			self:settextf("%02d",stageNum);
 		end;
 	}
 };

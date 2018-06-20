@@ -69,11 +69,7 @@ t[#t+1] = LoadFont("venacti/_venacti_ 26px bold monospace numbers") .. {
 				self:playcommand("NormalColor");
 			end
 		end
-		if meter < 10 then
-			self:settext("0"..meter)
-		else
-			self:settext(meter);					
-		end
+		self:settextf("%02d",meter);
 	end
 };
 

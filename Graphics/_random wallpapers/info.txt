@@ -1,0 +1,5 @@
+Images here will show up in the loading screen.
+Make sure they're .jpg!
+Las imágenes en este directorio se mostrarán durante la pantalla de carga.
+¡Asegúrate de que sean .jpg!
+https://www.freepik.com/free-vector/abstract-shiny-glitter-blue-background_1579041.htm

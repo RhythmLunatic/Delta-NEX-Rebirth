@@ -69,41 +69,22 @@ t[#t+1] = LoadFont("venacti/_venacti_ 26px bold monospace numbers") .. {
 	CurrentStepsP2ChangedMessageCommand=cmd(queuecommand,"Set");
 	SetCommand=function(self)
 		local song = GAMESTATE:GetCurrentSong();
-
 		if song then
-		
-		
 			self:diffusealpha(1);
 			local meter = GAMESTATE:GetCurrentSteps(player):GetMeter()
 			local threshold = THEME:GetMetric("SongManager","ExtraColorMeter");
-
-
-					
-					
-				
-
-					
-					if GAMESTATE:GetCurrentSteps(player):IsAutogen() then
-							self:playcommand("AutogenColor");
-					else
-						if meter>=threshold then
-							self:playcommand("ExtraColor");
-						else
-							self:playcommand("NormalColor");
-						end
-					end
-
-				
-				
-					if meter < 10 then
-						self:settext("0"..meter)
-					else
-						self:settext(meter);					
-					end
-				
-
-						
-
+			
+			if GAMESTATE:GetCurrentSteps(player):IsAutogen() then
+					self:playcommand("AutogenColor");
+			else
+				if meter>=threshold then
+					self:playcommand("ExtraColor");
+				else
+					self:playcommand("NormalColor");
+				end
+			end
+			
+			self:settextf("%02d",meter);
 		else
 			self:playcommand("NormalColor");
 			self:settext("00");

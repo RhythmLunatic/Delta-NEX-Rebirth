@@ -14,6 +14,8 @@ To add descriptions to your song groups, add a folder named info inside your son
 
 The theme will automatically hide group numbers if you have them (Such as 15-PRIME -> PRIME, 05-SKILLUP ZONE -> SKILLUP ZONE)
 
+You can also hide groups by editing /Scripts/PRESET_GROUPS.lua and enabling Hidden Channels in settings.
+
 ## Announcers
 
 To add announcers, make an announcer with a folder named Song Category Names and then put in the sound that matches your groups.
@@ -40,7 +42,7 @@ When not in game the theme will cycle through the Attract, logo, and title scree
 
 Q: Why is the difficulty select broken when I put in a file made in StepF2?
 
-A: Because StepF2 ignores difficulties and only uses meters, normal StepMania doesn't. Either make all your difficulties "Edit" or pray for a fix.
+A: Because StepF2 ignores difficulties and only uses meters, normal StepMania doesn't. You need to go into the .ssc and actually move around the charts so they're in the order of increasing difficulty.
 
 Q: Why do some StepF2 created songs end instantly?
 
@@ -56,4 +58,4 @@ A: Your StepMania is out of date. Update to 5.0.12 or higher.
 
 Q: Your theme lags when I scroll through songs.
 
-A: Can't be fixed without editing the StepMania source. It runs at full speed on Linux, though. (ProTip: Use a lowlatency kernel if you're putting this on your arcade cabinet!)
+A: Can't be fixed without editing the StepMania source. It runs at full speed on Linux, though. (ProTip: Use a lowlatency kernel if you're putting this on your arcade cabinet)

@@ -86,6 +86,11 @@ local t = Def.ActorFrame {
 		Text=ProductFamily().." "..ProductVersion();
 		InitCommand=cmd(horizalign,right;x,SCREEN_RIGHT-15;y,SCREEN_TOP+15;zoom,0.45)
 	};
+	
+	LoadFont("soms2/_soms2 techy")..{
+		Text="EVENT MODE";
+		InitCommand=cmd(visible,GAMESTATE:IsEventMode();xy,SCREEN_CENTER_X,SCREEN_BOTTOM-50;diffusebottomedge,Color("HoloBlue"));
+	};
 
 	LoadActor(THEME:GetPathS("ScreenTitleMenu", "music"))..{
 		OnCommand=function(self)
