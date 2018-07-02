@@ -4,11 +4,12 @@ local index = gc:GetIndex()+1;
 
 --[[
 Either StepMania doesn't have any way of telling how many choices there are
-or I just haven't found it yet. Anyway, use this variable for now.
+or I just haven't found it yet. So of course the hack is to read metrics.ini
+directly and count the commas in the string.
 ]]
-
-local numChoices = 2;
-local placement = SCREEN_WIDTH/2*index - SCREEN_WIDTH/4
+--local numChoices = select(2,string.gsub(THEME:GetMetric("ScreenSelectPlayMode","ChoiceNames"), ",", ""))+1
+local numChoices = THEME:GetMetric("ScreenSelectPlayMode","ScrollerNumItemsToDraw")
+local placement = SCREEN_WIDTH/(numChoices)*index-(SCREEN_WIDTH/numChoices/2)
 return Def.ActorFrame{
 
     --[[LoadActor(name)..{
@@ -18,7 +19,10 @@ return Def.ActorFrame{
     LoadFont("Common Normal")..{
         Text=name;
         InitCommand=cmd(diffuse,Color("White");x,placement);
-        OffCommand=cmd();
+        --[[OnCommand=function(self)
+        	SCREENMAN:SystemMessage(numChoices)
+    	end;]]
+        --OffCommand=cmd();
         GainFocusCommand=cmd(stoptweening;accelerate,.2;zoom,1);
         LoseFocusCommand=cmd(stoptweening;accelerate,.2;zoom,.5;);
     };

@@ -1,4 +1,4 @@
---Apparently Condition will treat nil as true. Which is bad.
+--Apparently Condition (The StepMania thing, not lua conditions) will treat nil as true. Which is bad.
 local dimText = (... == true)
 
 return Def.ActorFrame{
