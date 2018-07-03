@@ -23,6 +23,7 @@ function ANNOUNCER_PlaySound(category, name)
 	end;
 end;
 
+--This function should probably be removed
 function PlaySound(fullpath)
 	local wav = fullpath..".wav"
 	local ogg = fullpath..".ogg"
@@ -36,4 +37,17 @@ function PlaySound(fullpath)
 	end;
 		
 	SOUND:PlayOnce(file);
+end;
+
+function GetSound(fullpath)
+	local wav = fullpath..".wav"
+	local ogg = fullpath..".ogg"
+	local mp3 = fullpath..".mp3"
+	
+	if (FILEMAN:DoesFileExist(ogg)) then return ogg;
+	elseif (FILEMAN:DoesFileExist(mp3)) then return mp3;
+	elseif (FILEMAN:DoesFileExist(wav)) then return wav;
+	else
+		return false;
+	end;
 end;

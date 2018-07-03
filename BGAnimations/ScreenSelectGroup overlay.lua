@@ -134,11 +134,11 @@ local function inputs(event)
 		GoToNextScreen()
 	elseif button == "DownLeft" or button == "Left" then
 		scroller:scroll_by_amount(-1);
-		SOUND:PlayOnce(THEME:GetPathS("MusicWheel", "change"));
+		SOUND:PlayOnce(THEME:GetPathS("MusicWheel", "change"), true);
 		MESSAGEMAN:Broadcast("PreviousGroup");
 	elseif button == "DownRight" or button == "Right" then
 		scroller:scroll_by_amount(1);
-		SOUND:PlayOnce(THEME:GetPathS("MusicWheel", "change"));
+		SOUND:PlayOnce(THEME:GetPathS("MusicWheel", "change"), true);
 		MESSAGEMAN:Broadcast("NextGroup");
 	elseif button == "Back" then
 		SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToPrevScreen");
@@ -205,7 +205,7 @@ local t = Def.ActorFrame{
 			else
 				SCREENMAN:GetTopScreen():lockinput(3);
 				all_channels_unlocked = true;
-				SOUND:PlayOnce(THEME:GetPathS("", "FULL_SOUND"));
+				SOUND:PlayOnce(THEME:GetPathS("", "FULL_SOUND"), true);
 				SOUND:PlayOnce(THEME:GetPathS("", "FULL_VOICE"));
 				SCREENMAN:SetNewScreen("ScreenSelectGroup");
 			end;
@@ -280,44 +280,84 @@ t[#t+1] = Def.ActorFrame{
 	}
 };
 
-t[#t+1] = LoadFont("frutiger/frutiger 24px")..{
-	--Text="Insert Text Here";
-	InitCommand=cmd(Center;addy,150;);
-	PreviousGroupMessageCommand=cmd(playcommand,"UpdateText");
-	NextGroupMessageCommand=cmd(playcommand,"UpdateText");
+t[#t+1] = Def.ActorFrame{
+
+	PreviousGroupMessageCommand=cmd(playcommand,"Update");
+	NextGroupMessageCommand=cmd(playcommand,"Update");
+	UpdateCommand=function(self)
+		self:GetChild("Description"):playcommand("UpdateText");
+		self:GetChild("AnnouncerSound"):playcommand("PlaySound");
+	end;
 	TestCommand=function(self)
 		SCREENMAN:SystemMessage("passed");
 	end;
-	UpdateTextCommand=function(self)
-		local groupName = scroller:get_info_at_focus_pos()
-		if groupName then
-			local fir = SONGMAN:GetSongGroupBannerPath(groupName);
-			if not fir then 
-				self:settext(THEME:GetString("ScreenSelectGroup","MissingBannerWarning"));
-				return;
-			end;
-			local dir = gisub(fir,'banner.png','info/text.ini');
-			--SCREENMAN:SystemMessage(dir);
-			if FILEMAN:DoesFileExist(dir) then
-				local tt = lua.ReadFile(dir);
-				self:settext(tt);
-				(cmd(stoptweening;zoom,.7;shadowlength,0;wrapwidthpixels,420/1;))(self);
+
+	LoadFont("frutiger/frutiger 24px")..{
+		Name="Description";
+		--Text="Insert Text Here";
+		InitCommand=cmd(Center;addy,150;);
+		UpdateTextCommand=function(self)
+			local groupName = scroller:get_info_at_focus_pos()
+			if groupName then
+				local fir = SONGMAN:GetSongGroupBannerPath(groupName);
+				if not fir then 
+					self:settext(THEME:GetString("ScreenSelectGroup","MissingBannerWarning"));
+					return;
+				end;
+				local dir = gisub(fir,'banner.png','info/text.ini');
+				--SCREENMAN:SystemMessage(dir);
+				if FILEMAN:DoesFileExist(dir) then
+					local tt = lua.ReadFile(dir);
+					self:settext(tt);
+					(cmd(stoptweening;zoom,.7;shadowlength,0;wrapwidthpixels,420/1;))(self);
+				else
+					self:settext(THEME:GetString("ScreenSelectGroup","MissingInfoWarning"));
+				end;
+				--TODO: This should be a theme setting for sound priority.
+				--Right now it's Announcer -> info folder but some people might like info folder -> announcer
+				--Or possibly even info only?
+				--[[if not ANNOUNCER_PlaySound("Song Category Names", groupName) then
+					--If ANNOUNCER_PlaySound() didn't find a sound or there isn't an announcer enabled, it will return false.
+					local snd = string.gsub(dir, "text.ini", "sound")
+					--SCREENMAN:SystemMessage(snd);
+					--PlaySound is in AnnouncerUtils for some reason
+					PlaySound(snd)
+				end;]]
 			else
-				self:settext(THEME:GetString("ScreenSelectGroup","MissingInfoWarning"));
+				self:settext("");
 			end;
-			--TODO: This should be a theme setting for sound priority.
-			--Right now it's Announcer -> info folder but some people might like info folder -> announcer
-			--Or possibly even info only?
-			if not ANNOUNCER_PlaySound("Song Category Names", groupName) then
-				--If ANNOUNCER_PlaySound() didn't find a sound or there isn't an announcer enabled, it will return false.
-				local snd = string.gsub(dir, "text.ini", "sound")
-				--SCREENMAN:SystemMessage(snd);
-				PlaySound(snd)
-			end;
-		else
-			self:settext("");
 		end;
-	end;
+	};
+	
+	
+	Def.Sound{
+		Name="AnnouncerSound";
+		PlaySoundCommand=function(self)
+			local groupName = scroller:get_info_at_focus_pos()
+			if groupName then
+				local fir = SONGMAN:GetSongGroupBannerPath(groupName);
+				if not fir then
+					return;
+				end;
+				local dir = gisub(fir,'banner.png','info/text.ini');
+				--TODO: This should be a theme setting for sound priority.
+				--Right now it's Announcer -> info folder but some people might like info folder -> announcer
+				--Or possibly even info only?
+				if not ANNOUNCER_PlaySound("Song Category Names", groupName) then
+					--If ANNOUNCER_PlaySound() didn't find a sound or there isn't an announcer enabled, it will return false.
+					local snd = string.gsub(dir, "text.ini", "sound")
+					--SCREENMAN:SystemMessage(snd);
+					--GetSound is in AnnouncerUtils for some reason
+					snd = GetSound(snd)
+					if snd ~= false then
+						self:stop();
+						self:load(snd);
+						self:play();
+					end;
+				end;
+			end;
+		end;
+	};
 };
 	
 t[#t+1] = LoadActor(THEME:GetPathG("","footer"), true)..{
