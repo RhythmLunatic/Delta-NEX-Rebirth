@@ -3,8 +3,7 @@ local function inputs(event)
 	local pn= event.PlayerNumber
 	local button = event.button
 	-- If the PlayerNumber isn't set, the button isn't mapped.  Ignore it.
-	-- ...Unless it's the mouse.
-	if not pn and event.DeviceInput.is_mouse == false then return end
+	if not pn then return end
 	--Ignore unjoined players
 	if not GAMESTATE:IsSideJoined(pn) then return end
 	

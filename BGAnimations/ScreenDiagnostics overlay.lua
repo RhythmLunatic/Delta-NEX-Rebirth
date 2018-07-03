@@ -56,8 +56,34 @@ local t = Def.ActorFrame{
 		InitCommand=cmd(xy,20,150;horizalign,left)
 	};
 	LoadFont("Common Normal")..{
-		Text="Profiles: "..PROFILEMAN:GetNumLocalProfiles().." ("..join(", ",PROFILEMAN:GetLocalProfileDisplayNames())..")";
+		OnCommand=cmd(settext,"Player 1 Memory Card Status: "..ToEnumShortString(MEMCARDMAN:GetCardState(PLAYER_1))..MEMCARDMAN:GetName(PLAYER_1));
+		StorageDevicesChangedMessageCommand=function(self)
+			self:playcommand("On");
+			SCREENMAN:SystemMessage("Memory card state was changed");
+		end;
 		InitCommand=cmd(xy,20,175;horizalign,left)
+	
+	};
+	LoadFont("Common Normal")..{
+		OnCommand=cmd(settext,"Player 2 Memory Card Status: "..ToEnumShortString(MEMCARDMAN:GetCardState(PLAYER_2))..MEMCARDMAN:GetName(PLAYER_2));
+		StorageDevicesChangedMessageCommand=function(self)
+			self:playcommand("On");
+			SCREENMAN:SystemMessage("Memory card state was changed");
+		end;
+		InitCommand=cmd(xy,20,200;horizalign,left)
+	
+	};
+	LoadFont("Common Normal")..{
+		Text="Profiles: "..PROFILEMAN:GetNumLocalProfiles().." ("..join(", ",PROFILEMAN:GetLocalProfileDisplayNames())..")";
+		InitCommand=cmd(xy,20,225;horizalign,left);
+		OnCommand=function(self)
+			if PREFSMAN:GetPreference("MemoryCardProfiles") == true and PROFILEMAN:GetNumLocalProfiles() == 0 then
+				self:diffuse(Color("Green"));
+				self:settext("Profiles: 0 | Ok!");
+			else
+				self:diffuse(Color("Red"));
+			end;
+		end;
 	};
 	--[[LoadFont("Common Normal")..{
 		Text="Memory card save type: "..tostring(ReadPrefFromFile("GuestSaveType"));
@@ -66,15 +92,15 @@ local t = Def.ActorFrame{
 	};]]
 	LoadFont("Common Normal")..{
 		Text="Resolution: "..PREFSMAN:GetPreference("DisplayWidth").."x"..PREFSMAN:GetPreference("DisplayHeight").." | Aspect ratio: "..round(GetScreenAspectRatio(),2).." | "..IsWindowed();
-		InitCommand=cmd(xy,20,200;horizalign,left);
+		InitCommand=cmd(xy,20,250;horizalign,left);
 	};
 	LoadFont("Common Normal")..{
 		Text="Songs: "..SONGMAN:GetNumSongs().."+"..SONGMAN:GetNumAdditionalSongs().." | Groups/Channels: "..SONGMAN:GetNumSongGroups();
-		InitCommand=cmd(xy,20,225;horizalign,left);
+		InitCommand=cmd(xy,20,275;horizalign,left);
 	};
 	LoadFont("Common Normal")..{
 		Text="Courses/Music Trains: "..SONGMAN:GetNumCourses().."+"..SONGMAN:GetNumAdditionalCourses();
-		InitCommand=cmd(xy,20,250;horizalign,left);
+		InitCommand=cmd(xy,20,300;horizalign,left);
 	};
 	
 	LoadFont("Common Normal")..{

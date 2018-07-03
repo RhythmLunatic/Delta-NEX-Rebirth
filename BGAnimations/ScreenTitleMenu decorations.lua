@@ -53,7 +53,21 @@ local t = Def.ActorFrame {
 		Frames = Sprite.LinearFrames(10,.6);
 		InitCommand=cmd(Center;x,SCREEN_RIGHT-95;y,SCREEN_BOTTOM-102;zoom,0.5);
 	};
-
+	
+	-- Memory cards
+	
+	LoadActor(THEME:GetPathG("", "USB"))..{
+		InitCommand=cmd(horizalign,left;vertalign,bottom;xy,SCREEN_LEFT+5,SCREEN_BOTTOM;zoom,.2);
+		OnCommand=cmd(visible,ToEnumShortString(MEMCARDMAN:GetCardState(PLAYER_1)) == 'ready');
+		StorageDevicesChangedMessageCommand=cmd(playcommand,"On");
+	};
+	
+	LoadActor(THEME:GetPathG("", "USB"))..{
+		InitCommand=cmd(horizalign,right;vertalign,bottom;xy,SCREEN_RIGHT-5,SCREEN_BOTTOM;zoom,.2);
+		OnCommand=cmd(visible,ToEnumShortString(MEMCARDMAN:GetCardState(PLAYER_2)) == 'ready');
+		StorageDevicesChangedMessageCommand=cmd(playcommand,"On");
+	};
+	
 	--fin
 
 	--[[ LoadFont("Common normal") .. {
@@ -106,6 +120,5 @@ local t = Def.ActorFrame {
 		end;]]
 	};
 };
-
 
 return t;
