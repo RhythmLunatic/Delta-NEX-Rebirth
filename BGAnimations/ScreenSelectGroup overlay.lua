@@ -213,8 +213,27 @@ local t = Def.ActorFrame{
 			--SCREENMAN:SystemMessage("WTF? "..params.Name);
 		end;
 	end;
-	
 };
+
+--[[
+ScreenSelectGroup background has to be here, because if it's in its original location the diffuse wont be updated when all_channels_unlocked is set to true.
+(Probably some kind of attempt to cache the background since it's loading the same screen)]]
+if all_channels_unlocked then
+	t[#t+1] = LoadActor(THEME:GetPathG("","_VIDEOS/diffuseMusicSelect"))..{
+		InitCommand=cmd(Center;FullScreen;diffuse,Color("Green"));
+	};
+else
+	if ReadPrefFromFile("UserPrefBackgroundType") == "Prime" then
+		t[#t+1] = LoadActor(THEME:GetPathG("","_VIDEOS/diffuseMusicSelect"))..{
+			InitCommand=cmd(Center;FullScreen;diffuse,Color("Blue"));
+		};
+	else
+		t[#t+1] = LoadActor(THEME:GetPathG("","_VIDEOS/MusicSelect"))..{
+			InitCommand=cmd(Center;FullScreen);
+		};
+	end;
+end
+
 t[#t+1] = scroller:create_actors("foo", numWheelItems, item_mt, SCREEN_CENTER_X, SCREEN_CENTER_Y);
 
 --Header

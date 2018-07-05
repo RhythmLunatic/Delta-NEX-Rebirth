@@ -139,12 +139,6 @@ function PrimeWheel(self,offsetFromCenter,itemIndex,numItems)
 		return 1-ofsfc*.2
 	end;
  	self:x(nx*morlss)
-	--This doesn't work.
-	--[[if inGroupSelect == true then
-		self:y(SCREEN_CENTER_Y);
-	else
-		self:y(SCREEN_CENTER_Y+125);
-	end;]]
 	self:zoomx(zooma(offsetFromCenter))
 	self:zoomy(zoomw(offsetFromCenter))
 	self:z(		20-(	math.min(math.abs(offsetFromCenter),8)*8	)	)

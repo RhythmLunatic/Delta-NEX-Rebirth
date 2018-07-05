@@ -10,34 +10,43 @@ directly and count the commas in the string.
 --local numChoices = select(2,string.gsub(THEME:GetMetric("ScreenSelectPlayMode","ChoiceNames"), ",", ""))+1
 local numChoices = THEME:GetMetric("ScreenSelectPlayMode","ScrollerNumItemsToDraw")
 local placement = SCREEN_WIDTH/(numChoices)*index-(SCREEN_WIDTH/numChoices/2)
-return Def.ActorFrame{
 
-    --[[LoadActor(name)..{
-        InitCommand=cmd(x,placement);        
-    };]]
-    
-    LoadFont("Common Normal")..{
-        Text=name;
-        InitCommand=cmd(diffuse,Color("White");x,placement);
-        --[[OnCommand=function(self)
-        	SCREENMAN:SystemMessage(numChoices)
-    	end;]]
-        --OffCommand=cmd();
-        GainFocusCommand=cmd(stoptweening;accelerate,.2;zoom,1);
-        LoseFocusCommand=cmd(stoptweening;accelerate,.2;zoom,.5;);
-    };
-	--[[LoadActor("subt_"..name)..{
-		InitCommand=cmd(diffusealpha,0;x,SCREEN_CENTER_X;addy,180);
-		GainFocusCommand=cmd(linear,.1;diffusealpha,1);
-		LoseFocusCommand=cmd(linear,.2;diffusealpha,0);
-	
+if name == "course" or name == "standard" then
+	return Def.ActorFrame{
+		LoadActor(name)..{
+			InitCommand=cmd(x,placement;zoom,.7);    
+			GainFocusCommand=cmd(stoptweening;accelerate,.2;zoom,.7);
+			LoseFocusCommand=cmd(stoptweening;accelerate,.2;zoom,.5;);    
+		};
 	};
-	LoadActor("desc_"..name)..{
-		InitCommand=cmd(diffusealpha,0;x,SCREEN_CENTER_X;addy,260);
-		GainFocusCommand=cmd(linear,.1;diffusealpha,1);
-		LoseFocusCommand=cmd(linear,.2;diffusealpha,0);
-	
-	};]]
+else
+	return Def.ActorFrame{
 
 
-};
+		
+		LoadFont("Common Normal")..{
+			Text=name;
+			InitCommand=cmd(diffuse,Color("White");x,placement);
+			--[[OnCommand=function(self)
+				SCREENMAN:SystemMessage(numChoices)
+			end;]]
+			--OffCommand=cmd();
+			GainFocusCommand=cmd(stoptweening;accelerate,.2;zoom,1);
+			LoseFocusCommand=cmd(stoptweening;accelerate,.2;zoom,.5;);
+		};
+		--[[LoadActor("subt_"..name)..{
+			InitCommand=cmd(diffusealpha,0;x,SCREEN_CENTER_X;addy,180);
+			GainFocusCommand=cmd(linear,.1;diffusealpha,1);
+			LoseFocusCommand=cmd(linear,.2;diffusealpha,0);
+		
+		};
+		LoadActor("desc_"..name)..{
+			InitCommand=cmd(diffusealpha,0;x,SCREEN_CENTER_X;addy,260);
+			GainFocusCommand=cmd(linear,.1;diffusealpha,1);
+			LoseFocusCommand=cmd(linear,.2;diffusealpha,0);
+		
+		};]]
+
+
+	};
+end;

@@ -58,7 +58,7 @@ function SetPrefBranch()
 end
 
 --foi uma merda pra entender isso, ent„o pra n„o esquecer eu vou comentar esse lixo.
-function UserPrefGameLevel()
+--[[function UserPrefGameLevel()
 	local t = {
 		Name = "UserPrefGameLevel";
 		LayoutType = "ShowAllInRow";
@@ -114,7 +114,7 @@ function UserPrefGameLevel()
 	};
 	setmetatable( t, t );
 	return t;
-end
+end]]
 
 function BasicModeConfig()
 	local t = {
@@ -281,16 +281,6 @@ function UserPrefLite()
 	return t;
 end
 
-
-
-
-
-
-
-
-
-
-
 function UserPrefDetailedPrecision()
 	local t = {
 		-- par‚metros auto-explicativos
@@ -418,7 +408,53 @@ function UserPrefJudgmentType()
 	return t;
 end
 
+function UserPrefBackgroundType()
+	local t = {
+		-- par‚metros auto-explicativos
+		Name = "UserPrefBackgroundType";
+		LayoutType = "ShowAllInRow";
+		SelectType = "SelectOne";
+		OneChoiceForAllPlayers = true;
+		ExportOnChange = true;
+		
+		-- escolhas em strings
+		Choices = { "Delta NEX","Prime"};
+		LoadSelections = function(self, list, pn)
+			if ReadPrefFromFile("UserPrefBackgroundType") == nil then
+				list[1] = true;
+				WritePrefToFile("UserPrefBackgroundType","Delta NEX");
+			else
+			
+				if GetUserPref("UserPrefBackgroundType") == "Delta NEX" then
+					list[1] = true;
+				end
 
+				if GetUserPref("UserPrefBackgroundType") == "Prime" then
+					list[2] = true;
+				end		
+			end;
+		end;
+
+		SaveSelections = function(self, list, pn)
+			local val;
+				-- ao escolher uma opÁ„o, a string da escolha ÅEÅEdevidamente salva na preferÍncia
+				if list[1] then
+					val = "Delta NEX";
+				end
+
+				if list[2] then
+					val = "Prime";
+				end
+				
+			-- cria a merda do arquivo
+			WritePrefToFile("UserPrefBackgroundType",val);
+		end;
+	};
+
+	-- faz umas merdas que n„o entendo, pra funcionar
+	setmetatable( t, t );
+	return t;
+end
 
 
 
