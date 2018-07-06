@@ -3,3 +3,10 @@ This theme is licensed under Attribution-NonCommercial 3.0 United States (CC BY-
 In summary: You can do whatever you want as long as you don't try making money off it.
 
 https://creativecommons.org/licenses/by-nc/3.0/us/
+
+Parts of this theme are under different licenses, they are:
+Sounds - I do not own them
+Base64.lua is (c) 2006-2008 by Alex Kloss and licensed under the terms of the LGPL2
+the AssembleBasicMode function in MusicWheelUtil.lua - Port of Starter Mode function by the DDR SuperNOVA3 Team aka Midflight Digital. Please credit them when using it.
+the PrimeWheel function in MusicWheelUtil.lua - Stolen from a PIU Prime theme, I don't know what license it uses
+CWCommandWindow - Stolen from a PIU Prime theme, I don't know what license it uses

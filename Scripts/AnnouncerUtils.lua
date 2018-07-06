@@ -23,6 +23,18 @@ function ANNOUNCER_PlaySound(category, name)
 	end;
 end;
 
+function ANNOUNCER_GetSound(category, name)
+	local announcer = ANNOUNCER:GetCurrentAnnouncer();
+	if announcer ~= nil then
+		local file = "";
+		local fullpath = "Announcers/"..announcer.."/"..category.."/"..name
+		return GetSound(fullpath)
+	else
+		--SCREENMAN:SystemMessage("ANN. UTILS: No announcer enabled.");
+		return false;
+	end;
+end;
+
 --This function should probably be removed
 function PlaySound(fullpath)
 	local wav = fullpath..".wav"

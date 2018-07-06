@@ -318,7 +318,7 @@ t[#t+1] = Def.ActorFrame {
 	
 	
 	LoadActor("songback") .. {
-		InitCommand=cmd(draworder,6;addy,10;zoomy,0.675;zoomx,0.65);
+		InitCommand=cmd(draworder,6;zoomy,0.675;zoomx,0.65);
 
 	};
 };
@@ -943,7 +943,7 @@ t[#t+1] = LoadFont("venacti/_venacti 13px bold diffuse")..{
 --requires further testing
 
 
-t[#t+1] = LoadActor(THEME:GetPathS("","EX_Confirm"))..{
+--[[t[#t+1] = LoadActor(THEME:GetPathS("","EX_Confirm"))..{
 
 	CodeMessageCommand=function(self,params)
 		if params.Name == 'GameLevelUp' then
@@ -1008,7 +1008,7 @@ t[#t+1] = LoadActor(THEME:GetPathS("","EX_Confirm"))..{
 		end;
 
 	end
-};
+};]]
 
 
 
@@ -1098,7 +1098,7 @@ t[#t+1] = Def.Quad {
 	InitCommand=cmd(horizalign,right;vertalign,bottom;fadeleft,1;draworder,10;zoomto,120,SCREEN_HEIGHT;xy,SCREEN_RIGHT,SCREEN_HEIGHT;diffuse,0,0,0,1);
 }
 
---Command Window
+--Command Window has been moved to ScreenSelectMusic overlay because it has to take over input handling.
 t[#t+1] = LoadActor("Command Window")..{
 	InitCommand=cmd(draworder,100);	
 };

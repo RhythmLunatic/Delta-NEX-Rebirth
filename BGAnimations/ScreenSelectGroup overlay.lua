@@ -1,3 +1,13 @@
+--[[
+/////////////////////
+ScreenSelectGroup by Rhythm Lunatic
+Drop-in usage:
+1. Add ScreenSelectGroup overlay (this file) to your theme
+2. Copy values from metrics into your theme.
+3. If you don't need the secret group code, then don't add it to metrics. It should fall back correctly. (Secret group setting requires ThemePrefs too)
+4. Comment out or change header, footer, etc
+5. Move background code to ScreenSelectGroup background unless you need it here for some reason.
+]]
 -- Get screen handle so we can adjust the timer.
 local MenuTimer;
 
@@ -201,7 +211,7 @@ local t = Def.ActorFrame{
 			if all_channels_unlocked == true then
 				SCREENMAN:SystemMessage("You've already entered the hidden channels code!")
 			elseif ReadPrefFromFile("UserPrefHiddenChannels") ~= "Enabled" then
-				SCREENMAN:SystemMessage("The hidden channels option isn't enabled, there's no need!");
+				--SCREENMAN:SystemMessage("The hidden channels option isn't enabled, there's no need!");
 			else
 				SCREENMAN:GetTopScreen():lockinput(3);
 				all_channels_unlocked = true;
@@ -215,9 +225,9 @@ local t = Def.ActorFrame{
 	end;
 };
 
---[[
-ScreenSelectGroup background has to be here, because if it's in its original location the diffuse wont be updated when all_channels_unlocked is set to true.
-(Probably some kind of attempt to cache the background since it's loading the same screen)]]
+-- BACKGROUND
+--  ScreenSelectGroup background has to be here, because if it's in its original location the diffuse wont be updated when all_channels_unlocked is set to true.
+--  (Probably some kind of attempt to cache the background since it's loading the same screen)
 if all_channels_unlocked then
 	t[#t+1] = LoadActor(THEME:GetPathG("","_VIDEOS/diffuseMusicSelect"))..{
 		InitCommand=cmd(Center;FullScreen;diffuse,Color("Green"));
@@ -236,7 +246,7 @@ end
 
 t[#t+1] = scroller:create_actors("foo", numWheelItems, item_mt, SCREEN_CENTER_X, SCREEN_CENTER_Y);
 
---Header
+--HEADER
 t[#t+1] = Def.ActorFrame{
 
 	LoadActor(THEME:GetPathG("","header"), false);
@@ -304,12 +314,12 @@ t[#t+1] = Def.ActorFrame{
 	PreviousGroupMessageCommand=cmd(playcommand,"Update");
 	NextGroupMessageCommand=cmd(playcommand,"Update");
 	UpdateCommand=function(self)
-		self:GetChild("Description"):playcommand("UpdateText");
 		self:GetChild("AnnouncerSound"):playcommand("PlaySound");
+		self:GetChild("Description"):playcommand("UpdateText");
 	end;
-	TestCommand=function(self)
+	--[[TestCommand=function(self)
 		SCREENMAN:SystemMessage("passed");
-	end;
+	end;]]
 
 	LoadFont("frutiger/frutiger 24px")..{
 		Name="Description";
@@ -332,16 +342,6 @@ t[#t+1] = Def.ActorFrame{
 				else
 					self:settext(THEME:GetString("ScreenSelectGroup","MissingInfoWarning"));
 				end;
-				--TODO: This should be a theme setting for sound priority.
-				--Right now it's Announcer -> info folder but some people might like info folder -> announcer
-				--Or possibly even info only?
-				--[[if not ANNOUNCER_PlaySound("Song Category Names", groupName) then
-					--If ANNOUNCER_PlaySound() didn't find a sound or there isn't an announcer enabled, it will return false.
-					local snd = string.gsub(dir, "text.ini", "sound")
-					--SCREENMAN:SystemMessage(snd);
-					--PlaySound is in AnnouncerUtils for some reason
-					PlaySound(snd)
-				end;]]
 			else
 				self:settext("");
 			end;
@@ -362,17 +362,20 @@ t[#t+1] = Def.ActorFrame{
 				--TODO: This should be a theme setting for sound priority.
 				--Right now it's Announcer -> info folder but some people might like info folder -> announcer
 				--Or possibly even info only?
-				if not ANNOUNCER_PlaySound("Song Category Names", groupName) then
-					--If ANNOUNCER_PlaySound() didn't find a sound or there isn't an announcer enabled, it will return false.
-					local snd = string.gsub(dir, "text.ini", "sound")
-					--SCREENMAN:SystemMessage(snd);
-					--GetSound is in AnnouncerUtils for some reason
-					snd = GetSound(snd)
-					if snd ~= false then
-						self:stop();
-						self:load(snd);
-						self:play();
-					end;
+				self:stop();
+				local snd = ANNOUNCER_GetSound("Song Category Names", groupName);
+				if snd then
+					self:load(snd);
+					self:play();
+					return
+				end
+				local snd = string.gsub(dir, "text.ini", "sound")
+				--SCREENMAN:SystemMessage(snd);
+				--GetSound is in AnnouncerUtils for some reason		
+				snd = GetSound(snd)
+				if snd ~= false then
+					self:load(snd);
+					self:play();
 				end;
 			end;
 		end;

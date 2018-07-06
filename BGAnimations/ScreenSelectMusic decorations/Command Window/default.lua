@@ -1,6 +1,6 @@
 local t = Def.ActorFrame{
 
-    LoadActor(THEME:GetPathS("","EX_Move"))..{
+    LoadActor(THEME:GetPathS("CommandMenu","Move"))..{
         PreviousGroupMessageCommand=cmd(play);
         NextGroupMessageCommand=cmd(play);
         OptionsListOpenedMessageCommand=cmd(play);
@@ -9,12 +9,12 @@ local t = Def.ActorFrame{
         OptionsListLeftMessageCommand=cmd(play);
         OptionsListQuickChangeMessageCommand=cmd(play);
     };
-    LoadActor(THEME:GetPathS("","EX_Confirm"))..{
+    LoadActor(THEME:GetPathS("CommandMenu","Set"))..{
         OptionsListClosedMessageCommand=cmd(play);
         OptionsListStartMessageCommand=cmd(play);
         OptionsListResetMessageCommand=cmd(play);
     };
-    LoadActor(THEME:GetPathS("","EX_Select"))..{
+    LoadActor(THEME:GetPathS("CommandMenu","InOut"))..{
 		CodeMessageCommand = function(self, params)
 			if params.Name == 'OpenOpList' then
 				--SCREENMAN:SystemMessage("OptionsList opened")

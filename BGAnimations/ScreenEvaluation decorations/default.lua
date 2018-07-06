@@ -146,6 +146,7 @@ t[#t+1] = Def.ActorFrame{
 
 --It's not like this theme supports course mode anyway, so I don't think AllowW1_CoursesOnly will ever appear
 local AllowSuperb = (PREFSMAN:GetPreference("AllowW1") == 'AllowW1_Everywhere');
+--Ternary
 local spacing = AllowSuperb and 36 or 40;
 
 t[#t+1] = Def.ActorFrame{

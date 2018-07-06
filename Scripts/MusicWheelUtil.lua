@@ -19,6 +19,7 @@ function GetOrCreateChild(tab, field, kind)
 end
 
 --Thank you, DDR SN3 team!
+--This function is a port of https://github.com/Inorizushi/DDR-X3/blob/master/Scripts/Starter.lua, please credit them if you want to put it in your theme
 local outputPath = "/Themes/"..THEME:GetCurThemeName().."/Other/SongManager BasicMode.txt";
 local isolatePattern = "/([^/]+)/?$" --in English, "everything after the last forward slash unless there is a terminator"
 local combineFormat = "%s/%s"

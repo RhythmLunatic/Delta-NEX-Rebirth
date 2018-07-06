@@ -62,7 +62,7 @@ return Def.ActorFrame{
 			OnCommand=cmd(visible,GAMESTATE:IsHumanPlayer(pn));
 			PlayerJoinedMessageCommand=cmd(visible,GAMESTATE:IsHumanPlayer(pn));
 			
-			LoadActor(THEME:GetPathS("","EX_Confirm"))..{
+			LoadActor(THEME:GetPathS("CommandMenu","Set"))..{
 				CodeMessageCommand = function(self, params)
 					local sTable = {
 						Quarter = .25,

@@ -68,10 +68,10 @@ end
 local main_credits = {
 	name="Pump It Up Delta NEX Rebirth",
 	{logo= "RL", name= "Programmed by Rhythm Lunatic"},
-	"Feature ideas by Jakub Throo Prymus",
+	"Ideas & testing by Jakub Throo Prymus",
 	"New graphics by Joao Almeida",
-	"Special Thanks to LogosPump",
-	"Special Thanks to Midflight Digital (DDR SN3 TEAM)",
+	"Delta NEX Rebirth logo by LogosPump",
+	"Autogen Basic Mode by Midflight Digital (DDR SN3 Team)",
 	"Special Thanks to Andamiro & Bemani"
 };
 StepManiaCredits.AddSection(main_credits);
