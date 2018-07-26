@@ -218,7 +218,7 @@ local t = Def.ActorFrame{
 				all_channels_unlocked = true;
 				SOUND:PlayOnce(THEME:GetPathS("", "FULL_SOUND"), true);
 				SOUND:PlayOnce(THEME:GetPathS("", "FULL_VOICE"));
-				self:sleep(.5):queuecommand("GoFullMode2")
+				self:sleep(0):queuecommand("GoFullMode2")
 			end;
 		else
 			--SCREENMAN:SystemMessage("WTF? "..params.Name);
@@ -226,28 +226,42 @@ local t = Def.ActorFrame{
 	end;
 	
 	GoFullMode2Command=function(self)
-			SCREENMAN:SetNewScreen("ScreenSelectGroup");
+		--SCREENMAN:SetNewScreen("ScreenSelectGroup");
+		scroller:set_info_set(getVisibleSongGroups(), 1);
+		for key,value in pairs(info_set) do
+			if initialGroup == value then
+				scroller:scroll_by_amount(key-1)
+			end
+		end;
 	end;
-};
-
--- BACKGROUND
---  ScreenSelectGroup background has to be here, because if it's in its original location the diffuse wont be updated when all_channels_unlocked is set to true.
---  (Probably some kind of attempt to cache the background since it's loading the same screen)
-if all_channels_unlocked then
-	t[#t+1] = LoadActor(THEME:GetPathG("","_VIDEOS/diffuseMusicSelect"))..{
-		InitCommand=cmd(Center;FullScreen;diffuse,Color("Green"));
+	
+	-- BACKGROUND
+	--  ScreenSelectGroup background has to be here, because if it's in its original location the diffuse wont be updated when all_channels_unlocked is set to true.
+	--  (Probably some kind of attempt to cache the background since it's loading the same screen)
+	-- Additionally the Sprite has to be accessible from here so it can be changed when the screen goes to full mode.
+	Def.Sprite{
+		Name="BackgroundVideo";
+		InitCommand=function(self)
+			if all_channels_unlocked then
+				self:playcommand("GoFullMode2");
+			else
+				if ReadPrefFromFile("UserPrefBackgroundType") == "Prime" then
+					self:Load(THEME:GetPathG("","_VIDEOS/diffuseMusicSelect"))
+					self:diffuse(Color("Blue"));
+				else
+					self:Load(THEME:GetPathG("","_VIDEOS/MusicSelect"));
+				end;
+			end;
+			self:Center():FullScreen();
+		end;
+		--InitCommand=cmd(Load,THEME:GetPathG("","_VIDEOS/diffuseMusicSelect"));
+		GoFullModeMessageCommand=cmd(sleep,.5;queuecommand,"GoFullMode2");
+		GoFullMode2Command=function(self)
+			self:Load(THEME:GetPathG("","_VIDEOS/diffuseMusicSelect"))
+			self:diffuse(Color("Green"))
+		end;
 	};
-else
-	if ReadPrefFromFile("UserPrefBackgroundType") == "Prime" then
-		t[#t+1] = LoadActor(THEME:GetPathG("","_VIDEOS/diffuseMusicSelect"))..{
-			InitCommand=cmd(Center;FullScreen;diffuse,Color("Blue"));
-		};
-	else
-		t[#t+1] = LoadActor(THEME:GetPathG("","_VIDEOS/MusicSelect"))..{
-			InitCommand=cmd(Center;FullScreen);
-		};
-	end;
-end
+};
 
 t[#t+1] = scroller:create_actors("foo", numWheelItems, item_mt, SCREEN_CENTER_X, SCREEN_CENTER_Y);
 
