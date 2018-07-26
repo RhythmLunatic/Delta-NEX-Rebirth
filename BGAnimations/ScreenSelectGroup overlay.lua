@@ -214,14 +214,19 @@ local t = Def.ActorFrame{
 				--SCREENMAN:SystemMessage("The hidden channels option isn't enabled, there's no need!");
 			else
 				SCREENMAN:GetTopScreen():lockinput(3);
+				MESSAGEMAN:Broadcast("GoFullMode"); -- GoSecretMode still uses the GoFullMode message because I'm lazy
 				all_channels_unlocked = true;
 				SOUND:PlayOnce(THEME:GetPathS("", "FULL_SOUND"), true);
 				SOUND:PlayOnce(THEME:GetPathS("", "FULL_VOICE"));
-				SCREENMAN:SetNewScreen("ScreenSelectGroup");
+				self:sleep(.5):queuecommand("GoFullMode2")
 			end;
 		else
 			--SCREENMAN:SystemMessage("WTF? "..params.Name);
 		end;
+	end;
+	
+	GoFullMode2Command=function(self)
+			SCREENMAN:SetNewScreen("ScreenSelectGroup");
 	end;
 };
 
@@ -406,6 +411,10 @@ if GAMESTATE:GetCurrentGame():GetName() == "pump" then
 			NextGroupMessageCommand=cmd(stoptweening;glow,color("1,1,1,.8");xy,SCREEN_RIGHT+5,SCREEN_BOTTOM+5;sleep,.12;decelerate,.2;glow,color("0,0,0,0");xy,SCREEN_RIGHT,SCREEN_BOTTOM;);
 		};
 end;
+
+t[#t+1] = LoadActor("GoSecretMode")..{
+	
+};
 
 
 return t;

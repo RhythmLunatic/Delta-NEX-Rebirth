@@ -102,6 +102,23 @@ local t = Def.ActorFrame{
 		Text="Courses/Music Trains: "..SONGMAN:GetNumCourses().."+"..SONGMAN:GetNumAdditionalCourses();
 		InitCommand=cmd(xy,20,300;horizalign,left);
 	};
+	LoadFont("Common Normal")..{
+		Text="BasicModeGroup: ";
+		InitCommand=cmd(xy,20,325;horizalign,left);
+		OnCommand=function(self)
+			if ReadPrefFromFile("UserPrefBasicModeType") == "BasicModeGroup" then
+				if SONGMAN:DoesSongGroupExist("BasicModeGroup") == false then
+					self:settext(self:GetText().." Missing!");
+					self:diffuse(Color("Red"));
+				else
+					self:settext(self:GetText().." Ok! | "..#SONGMAN:GetSongsInGroup("BasicModeGroup").." songs");
+					self:diffuse(Color("Green"));
+				end;
+			else
+				self:settext(self:GetText().." Not currently used.");
+			end;
+		end;
+	};
 	
 	LoadFont("Common Normal")..{
 		--Text="Uptime: "..SecondsToHHMMSS(GetTimeSinceStart(););
