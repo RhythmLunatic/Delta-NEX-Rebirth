@@ -213,12 +213,12 @@ local t = Def.ActorFrame{
 			elseif ReadPrefFromFile("UserPrefHiddenChannels") ~= "Enabled" then
 				--SCREENMAN:SystemMessage("The hidden channels option isn't enabled, there's no need!");
 			else
-				SCREENMAN:GetTopScreen():lockinput(3);
-				MESSAGEMAN:Broadcast("GoFullMode"); -- GoSecretMode still uses the GoFullMode message because I'm lazy
+				SCREENMAN:GetTopScreen():lockinput(1);
 				all_channels_unlocked = true;
+				MESSAGEMAN:Broadcast("GoFullMode"); -- GoSecretMode still uses the GoFullMode message because I'm lazy
+				self:playcommand("GoFullMode2"); --I don't know why sleep(.5):queuecommand() makes it take too long.
 				SOUND:PlayOnce(THEME:GetPathS("", "FULL_SOUND"), true);
 				SOUND:PlayOnce(THEME:GetPathS("", "FULL_VOICE"));
-				self:sleep(0):queuecommand("GoFullMode2")
 			end;
 		else
 			--SCREENMAN:SystemMessage("WTF? "..params.Name);
@@ -227,7 +227,9 @@ local t = Def.ActorFrame{
 	
 	GoFullMode2Command=function(self)
 		--SCREENMAN:SetNewScreen("ScreenSelectGroup");
-		scroller:set_info_set(getVisibleSongGroups(), 1);
+		info_set = getVisibleSongGroups()
+		initialGroup = scroller:get_info_at_focus_pos()
+		scroller:set_info_set(info_set, 1);
 		for key,value in pairs(info_set) do
 			if initialGroup == value then
 				scroller:scroll_by_amount(key-1)
