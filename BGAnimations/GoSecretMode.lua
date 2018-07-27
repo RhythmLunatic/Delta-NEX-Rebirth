@@ -4,7 +4,7 @@ return Def.ActorFrame{
 
 	Def.Quad{
 		InitCommand=cmd(setsize,SCREEN_WIDTH,SCREEN_HEIGHT;diffuse,Color("White");diffusealpha,0);
-		GoFullModeMessageCommand=cmd(linear,1;diffusealpha,1);
+		GoFullModeMessageCommand=cmd(linear,.5;diffusealpha,1;linear,.5;diffusealpha,0);
 	};
 
 	LoadActor(THEME:GetPathG("ScreenSelectGroup","rayo red"))..{
