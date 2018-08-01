@@ -1,4 +1,9 @@
+
 return Def.ActorFrame{
+	InitCommand=function(self)
+		GAMESTATE:ApplyGameCommand("stopmusic");
+	end;
+
 	LoadFont("venacti/_venacti 26px bold diffuse")..{
 		Text="THANK YOU FOR PLAYING";
 		InitCommand=cmd(Center;zoom,2;diffusebottomedge,Color("HoloGreen"));
