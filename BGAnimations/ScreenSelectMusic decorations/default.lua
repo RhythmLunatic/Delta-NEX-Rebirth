@@ -207,7 +207,7 @@ t[#t+1] = Def.ActorFrame {
 	
 	--SONG TITLE
 	LoadFont("venacti/_venacti 13px bold diffuse")..{
-		InitCommand=cmd(--[[addx,-50;]]addy,58;zoom,.5;maxwidth,530;faderight,1;fadeleft,1;diffusealpha,0);
+		InitCommand=cmd(addx,-135;addy,58;zoom,.5;maxwidth,450;faderight,1;--[[fadeleft,1;]]diffusealpha,0;horizalign,left);
 		OnCommand=cmd(linear,.8;faderight,0;fadeleft,0;diffusealpha,1);
 		CurrentSongChangedMessageCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong();
@@ -233,7 +233,7 @@ t[#t+1] = Def.ActorFrame {
 	
 	--SONG ARTIST
 	LoadFont("venacti/_venacti 13px bold diffuse")..{
-		InitCommand=cmd(maxwidth,530;horizalign,center;--[[addx,-50;]]addy,71;zoomx,0.385;zoomy,0.38;shadowlength,1);
+		InitCommand=cmd(maxwidth,530;horizalign,left;addx,-135;addy,71;zoomx,0.385;zoomy,0.38;shadowlength,1);
 		OnCommand=cmd(diffusealpha,0;strokecolor,Color("Outline");shadowlength,1;sleep,0.3;linear,0.8;diffusealpha,1);
 		CurrentSongChangedMessageCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
@@ -258,18 +258,19 @@ t[#t+1] = Def.ActorFrame {
 		end;]]
 	};
 	
-	--BPM DISPLAY
-	--[[LoadFont("venacti/_venacti 26px bold diffuse")..{
-		InitCommand=cmd(addx,-50;addy,58;zoom,.5;maxwidth,530;);
+	LoadFont("venacti/_venacti 26px bold diffuse")..{
+		InitCommand=cmd(addx,135;addy,58;zoom,.5;maxwidth,530;diffusealpha,0;horizalign,right);
+		OnCommand=cmd(linear,.8;diffusealpha,1);
+		Text="BPM";
 		CurrentSongChangedMessageCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong();
 			if song then
-				self:settext(song:GetDisplayFullTitle());
+				self:diffusealpha(1);
 			else
-				self:settext("");
+				self:diffusealpha(0);
 			end;
 		end;
-		CurrentCourseChangedMessageCommand=function(self)
+		--[[CurrentCourseChangedMessageCommand=function(self)
 			if GAMESTATE:GetCurrentCourse() and SCREENMAN:GetTopScreen():GetName() == "ScreenSelectCourse" then
 				local course = GAMESTATE:GetCurrentCourse();
 				if course then
@@ -278,8 +279,40 @@ t[#t+1] = Def.ActorFrame {
 					self:settext("");
 				end;
 			end;
+		end;]]
+	};
+	--BPM DISPLAY
+	LoadFont("venacti/_venacti 13px bold diffuse")..{
+		InitCommand=cmd(addx,135;horizalign,right;addy,71;zoomx,0.385;zoomy,0.38;shadowlength,1);
+		CurrentSongChangedMessageCommand=function(self)
+			local song = GAMESTATE:GetCurrentSong();
+			if song then
+				if song:IsDisplayBpmSecret() then
+					self:settext("???")
+					
+				else
+					local bpm = song:GetDisplayBpms()
+					if bpm[1] ~= bpm[2] then
+						self:settext(round(bpm[1], 0).."-"..round(bpm[2],0));
+					else
+						self:settext(round(bpm[1], 0))
+					end;
+				end;
+			else
+				self:settext("");
+			end;
 		end;
-	};]]
+		--[[CurrentCourseChangedMessageCommand=function(self)
+			if GAMESTATE:GetCurrentCourse() and SCREENMAN:GetTopScreen():GetName() == "ScreenSelectCourse" then
+				local course = GAMESTATE:GetCurrentCourse();
+				if course then
+					self:settext(course:GetDisplayFullTitle());
+				else
+					self:settext("");
+				end;
+			end;
+		end;]]
+	};
 	
 	--LONG SONG WARNING
 	Def.Quad{
