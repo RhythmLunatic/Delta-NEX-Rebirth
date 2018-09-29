@@ -1,33 +1,8 @@
 local t = Def.ActorFrame{}
 
-
-
-
---bot quad
---[[t[#t+1] = Def.Quad {
-	InitCommand=cmd(diffuse,0,0,0,0.5;vertalign,bottom;x,SCREEN_CENTER_X;y,SCREEN_BOTTOM;setsize,SCREEN_WIDTH,188;);
-}]]
-
 t[#t+1] = LoadActor(THEME:GetPathG("","footer"))..{
 	InitCommand=cmd(draworder,130);
 };
-
---[[t[#t+1] = LoadActor("listbg") .. {
-	InitCommand=cmd(x,SCREEN_CENTER_X-1;y,SCREEN_CENTER_Y;zoomy,0.675;zoomx,0.65);
-
-};]]
-
-
-
---for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
---[[for pn in ivalues(PlayerNumber) do
-	t[#t+1] = Def.ActorFrame{
-		LoadActor(THEME:GetPathG("ScreenSelectMusic", "PaneDisplay"), ToEnumShortString(pn))..{
-			InitCommand=cmd(xy,100,150);
-		};
-	};
-end]]
-
 
 if GAMESTATE:GetCurrentGame():GetName() == "dance" then
 	for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
@@ -46,14 +21,6 @@ if GAMESTATE:GetCurrentGame():GetName() == "dance" then
 		};
 	end;
 end;
-
-
-
-
-
-
-
-
 
 --Player score thingy
 --Spaced 55px apart.
@@ -118,63 +85,39 @@ t[#t+1] = Def.ActorFrame {
 		ModifySongBackgroundCommand=function(self)
 			self:stoptweening();
 			if GAMESTATE:GetCurrentSong() then
-				self:LoadFromSongBackground(GAMESTATE:GetCurrentSong());
-				--self:scaletoclipped(290,160);
-				--self:cropto(200,200);
-				--self:customtexturerect(100,100,100,100);
-				--self:zoomto(290,160);
-				--self:setsize(290,160);
-				--self:cropto(290,160);
-				--self:SetWidth(290);
-				self:scaletocover(-145,-80,145,80);
-				local tex = self:GetTexture();
-				local ratio_16by9 = round(16/9, 2);
-				local ratio_image = round(tex:GetImageWidth()/tex:GetImageHeight(), 2);
-				if ratio_16by9 == ratio_image then
-					self:cropbottom(0);
-					self:croptop(0);
-					--SCREENMAN:SystemMessage(ratio_16by9.." "..ratio_image);
-				else
-					--It works and I don't know why. It's probably also very demanding on the CPU.
-					local cropRatio = math.abs((ratio_16by9 - ratio_image)/3.5)
-					self:croptop(cropRatio)
-					self:cropbottom(cropRatio)
-					--SCREENMAN:SystemMessage(ratio_16by9.." "..ratio_image.." "..cropRatio);
-				end;
-				--[[if round(tex:GetImageWidth()/tex:GetImageHeight(), 1) == 1.3 then
-					self:croptop(.13);
-					self:cropbottom(.13);
-				else
-					self:croptop(0);
-					self:cropbottom(0);
-				end;]]
-
-				self:diffusealpha(0);
-				self:linear(0.5);
-				self:diffusealpha(1);
-			end;
-		end;
-		--[[CurrentCourseChangedMessageCommand=function(self)
-			if GAMESTATE:GetCurrentCourse() and SCREENMAN:GetTopScreen():GetName() == "ScreenSelectCourse" then
-				self:stoptweening();
-				local bg = GAMESTATE:GetCurrentCourse():GetBackgroundPath();
-					if bg then
-					self:Load(bg);
+				if not GAMESTATE:GetCurrentSong():GetPreviewVidPath() then
+					self:LoadFromSongBackground(GAMESTATE:GetCurrentSong());
+					--self:scaletoclipped(290,160);
+					--self:cropto(200,200);
+					--self:customtexturerect(100,100,100,100);
+					--self:zoomto(290,160);
+					--self:setsize(290,160);
+					--self:cropto(290,160);
+					--self:SetWidth(290);
 					self:scaletocover(-145,-80,145,80);
 					local tex = self:GetTexture();
-					if round(tex:GetImageWidth()/tex:GetImageHeight(), 1) == 1.3 then
-						self:croptop(.13);
-						self:cropbottom(.13);
-					else
-						self:croptop(0);
+					local ratio_16by9 = round(16/9, 2);
+					local ratio_image = round(tex:GetImageWidth()/tex:GetImageHeight(), 2);
+					if ratio_16by9 == ratio_image then
 						self:cropbottom(0);
+						self:croptop(0);
+						--SCREENMAN:SystemMessage(ratio_16by9.." "..ratio_image);
+					else
+						--It works and I don't know why. It's probably also very demanding on the CPU.
+						local cropRatio = math.abs((ratio_16by9 - ratio_image)/3.5)
+						self:croptop(cropRatio)
+						self:cropbottom(cropRatio)
+						--SCREENMAN:SystemMessage(ratio_16by9.." "..ratio_image.." "..cropRatio);
 					end;
+
 					self:diffusealpha(0);
 					self:linear(0.5);
 					self:diffusealpha(1);
+				else
+					self:diffusealpha(0);
 				end;
 			end;
-		end;]]
+		end;
 	};
 	
 	--SONG VIDEO
@@ -183,13 +126,15 @@ t[#t+1] = Def.ActorFrame {
 
 		ModifySongBackgroundCommand=function(self)
 			if GAMESTATE:GetCurrentSong() ~= nil then
-				--self:linear(0);
-				if GAMESTATE:GetCurrentSong():HasPreviewVid() then
-					self:sleep(1);
-					self:queuecommand("LoadSongBG"); --If you use playcommand, the sleep() will be ignored!
-					self:linear(1);
-					self:diffusealpha(1);
-				end;
+				SCREENMAN:SystemMessage(GAMESTATE:GetCurrentSong():GetPreviewVidPath() or "none");
+				self:Load( GAMESTATE:GetCurrentSong():GetPreviewVidPath() );
+				self:scaletoclipped(290,160);
+				self:linear(.5):diffusealpha(1);
+				
+				--[[self:sleep(1);
+				self:queuecommand("LoadSongBG"); --If you use playcommand, the sleep() will be ignored!
+				self:linear(1);
+				self:diffusealpha(1);]]
 			end;
 		end;
 		

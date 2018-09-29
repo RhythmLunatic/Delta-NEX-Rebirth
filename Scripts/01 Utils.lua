@@ -1,4 +1,4 @@
-themeVersion = 0.95;
+themeVersion = 0.98;
 
 --Because it's useful
 function Actor:Cover()
@@ -75,6 +75,11 @@ local main_credits = {
 	"Special Thanks to Andamiro & Bemani"
 };
 StepManiaCredits.AddSection(main_credits);
+
+StepManiaCredits.AddSection({
+	name="Delta NEX",
+	"by Schranz Conflict"
+})
 
 local orig_credits = {
 	name = "Pump It Up Delta",

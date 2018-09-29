@@ -5,18 +5,18 @@ end
 local timing = math.floor(PREFSMAN:GetPreference("TimingWindowScale")*100)/100;
 local t = Def.ActorFrame {
 
-	Def.Quad{
+	--[[Def.Quad{
 		InitCommand=cmd(Center;vertalign,bottom;y,SCREEN_BOTTOM;zoomto,SCREEN_WIDTH,40;diffuse,0,0,0,0.5);
-	};
+	};]]
 
 	Def.Quad{
 		InitCommand=cmd(Center;vertalign,top;y,SCREEN_TOP;zoomto,SCREEN_WIDTH,40;diffuse,0,0,0,0.5);
 	};
 
-	Def.Quad{
+	--[[Def.Quad{
 		InitCommand=cmd(glowshift;Center;vertalign,bottom;y,SCREEN_BOTTOM-40;zoomto,SCREEN_WIDTH,2;diffuse,color("#F54D70"));
-	};
-
+	};]]
+	
 	 Def.Quad{
 		InitCommand=cmd(glowshift;Center;vertalign,top;y,SCREEN_TOP+40;zoomto,SCREEN_WIDTH,2;diffuse,color("#F54D70"));
 	};
@@ -64,6 +64,7 @@ local t = Def.ActorFrame {
 	
 	LoadActor(THEME:GetPathG("", "USB"))..{
 		InitCommand=cmd(horizalign,right;vertalign,bottom;xy,SCREEN_RIGHT-5,SCREEN_BOTTOM;zoom,.2);
+		--OnCommand=cmd(visible,true);
 		OnCommand=cmd(visible,ToEnumShortString(MEMCARDMAN:GetCardState(PLAYER_2)) == 'ready');
 		StorageDevicesChangedMessageCommand=cmd(playcommand,"On");
 	};
@@ -83,27 +84,28 @@ local t = Def.ActorFrame {
 
 	 LoadFont("frutiger/frutiger 24px") .. {
 		Text="Powered by SSC - Spinal Shark Collective\nNEX is a mod by Schranz Conflict | Based on PIU Delta by Luizsan\nRebirth by Rhythm Lunatic, new graphics by Joao Almeida\n";
-		InitCommand=cmd(horizalign,center;vertalign,top;zoom,0.4;x,SCREEN_CENTER_X;y,SCREEN_BOTTOM-35)
+		InitCommand=cmd(horizalign,right;vertalign,top;zoom,0.4;x,SCREEN_RIGHT-5;y,SCREEN_TOP+5)
 	};
 
-	 LoadFont("Common normal") .. {
+	--[[LoadFont("Common normal") .. {
 		Text="Delta NEX Rebirth "..tostring(themeVersion);
-		InitCommand=cmd(horizalign,left;x,SCREEN_LEFT+15;y,SCREEN_TOP+15;zoom,0.45)
-	};
+		InitCommand=cmd(horizalign,left;x,SCREEN_LEFT+5;y,SCREEN_TOP+10;zoom,0.45)
+	};]]
 
 	 LoadFont("Common normal") .. {
-		Text=SONGMAN:GetNumAdditionalSongs()+SONGMAN:GetNumSongs().." songs in "..SONGMAN:GetNumSongGroups().." groups.";
-		InitCommand=cmd(horizalign,left;x,SCREEN_LEFT+15;y,SCREEN_TOP+28;zoom,0.35)
+		--%d songs in %d groups
+		Text=string.format(THEME:GetString("ScreenTitleMenu","%d songs in %d groups"),SONGMAN:GetNumAdditionalSongs()+SONGMAN:GetNumSongs(),SONGMAN:GetNumSongGroups());
+		InitCommand=cmd(horizalign,left;x,SCREEN_LEFT+5;y,SCREEN_TOP+32;zoom,0.35)
 	};
 	
  	LoadFont("Common normal") .. {
-		Text=ProductFamily().." "..ProductVersion();
-		InitCommand=cmd(horizalign,right;x,SCREEN_RIGHT-15;y,SCREEN_TOP+15;zoom,0.45)
+		Text="Delta NEX Rebirth "..tostring(themeVersion).."\n"..ProductFamily().." "..ProductVersion();
+		InitCommand=cmd(horizalign,left;x,5;y,SCREEN_TOP+13;zoom,0.45)
 	};
 	
 	LoadFont("soms2/_soms2 techy")..{
 		Text="EVENT MODE";
-		InitCommand=cmd(visible,GAMESTATE:IsEventMode();xy,SCREEN_CENTER_X,SCREEN_BOTTOM-50;diffusebottomedge,Color("HoloBlue"));
+		InitCommand=cmd(visible,GAMESTATE:IsEventMode();xy,SCREEN_CENTER_X,SCREEN_BOTTOM-10;diffusebottomedge,Color("HoloBlue");Stroke,Color("Black"));
 	};
 
 	LoadActor(THEME:GetPathS("ScreenTitleMenu", "music"))..{

@@ -70,7 +70,7 @@ return Def.ActorFrame{
 	
 	LoadFont("venacti/_venacti_outline 26px bold diffuse")..{
 		Text=THEME:GetString("ScreenTitleJoin","USBSaveInfo");
-		InitCommand=cmd(diffuseshift;effectperiod,2;effectcolor1,color("1,1,1,1");effectcolor2,color("1,1,1,0");xy,SCREEN_CENTER_X,SCREEN_BOTTOM-75;zoom,.75;visible,PREFSMAN:GetPreference("MemoryCards"));
+		InitCommand=cmd(diffuseshift;effectperiod,2;effectcolor1,color("1,1,1,1");effectcolor2,color("1,1,1,0");xy,SCREEN_CENTER_X,SCREEN_BOTTOM-60;zoom,.75;visible,PREFSMAN:GetPreference("MemoryCards"));
 	};
 	
 	--DoesSongGroupExist

@@ -1,6 +1,17 @@
+local function tess(st)
+	return ToEnumShortString(st)
+end;
+
+local gs = GAMESTATE;
+
+local function gsgc()
+	return gs:GetCoinMode()
+end;
+
+
 function BasicOrFullMode()
-	if ToEnumShortString(GAMESTATE:GetCoinMode()) == "Pay" then
-		return "ScreenAP"
+	if tess(gsgc()) == base64decode("VUdGNQ==") then
+		return base64decode("U2NyZWVuQVA=")
 	else
 		if ReadPrefFromFile("UserPrefBasicMode") == "Enabled" then
 			if ReadPrefFromFile("UserPrefBasicModeType") == "BasicModeGroup" then

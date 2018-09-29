@@ -13,7 +13,7 @@ local t = Def.ActorFrame{
 		if params.Name == "Start" then
 			SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToPrevScreen");
 		else
-			SCREENMAN:SystemMessage("WTF? "..params.Name);
+			SCREENMAN:SystemMessage("Unknown button: "..params.Name);
 		end;
 	end;
 	
@@ -115,7 +115,7 @@ local t = Def.ActorFrame{
 					self:diffuse(Color("Green"));
 				end;
 			else
-				self:settext(self:GetText().." Not currently used.");
+				self:settext(self:GetText().." Automatically generated");
 			end;
 		end;
 	};

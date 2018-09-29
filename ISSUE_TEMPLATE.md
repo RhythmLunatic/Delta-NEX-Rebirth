@@ -1,1 +1,2 @@
-Please state your StepMania version and game mode (dance or pump).
+Then please state the Delta NEX Rebirth version and your StepMania build.
+Please note that the theme currently does not support Dance mode.
