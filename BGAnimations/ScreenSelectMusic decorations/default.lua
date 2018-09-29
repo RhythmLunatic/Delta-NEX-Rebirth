@@ -126,7 +126,7 @@ t[#t+1] = Def.ActorFrame {
 
 		ModifySongBackgroundCommand=function(self)
 			if GAMESTATE:GetCurrentSong() ~= nil then
-				SCREENMAN:SystemMessage(GAMESTATE:GetCurrentSong():GetPreviewVidPath() or "none");
+				--SCREENMAN:SystemMessage(GAMESTATE:GetCurrentSong():GetPreviewVidPath() or "none");
 				self:Load( GAMESTATE:GetCurrentSong():GetPreviewVidPath() );
 				self:scaletoclipped(290,160);
 				self:linear(.5):diffusealpha(1);
