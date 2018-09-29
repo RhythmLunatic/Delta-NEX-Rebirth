@@ -301,7 +301,19 @@ t[#t+1] = Def.ActorFrame {
 	};
 };
 
-
+local bannerFirst = true;
+if GetUserPref("UserPrefWheelPriority") == "Banner" then
+	--Don't need to assign, since it's already true
+	--bannerFirst = true;
+elseif GetUserPref("UserPrefWheelPriority") == "Jacket" then
+	bannerFirst = false;
+else --Auto
+	if GAMESTATE:GetCurrentGame():GetName() == "pump" then
+		bannerFirst = true;
+	else
+		bannerFirst = false; --Prioritize jackets for every other game mode
+	end;
+end;
 t[#t+1] = LoadActor("jacket_light") .. {
 	InitCommand=cmd(draworder,100;xy,SCREEN_CENTER_X,SCREEN_CENTER_Y+121;zoomx,1.14;zoomy,.81;effectclock,"bgm";blend,Blend.Add);
 
@@ -310,14 +322,24 @@ t[#t+1] = LoadActor("jacket_light") .. {
 			--local JacketOrBanner;
 			local song = GAMESTATE:GetCurrentSong();
 			self:finishtweening();
-			self:linear(.5);
+			self:decelerate(.3);
 			if song then
-				if song:HasJacket() then
-					self:zoomx(.81);
-					self:diffusealpha(1);
-				elseif song:HasBanner() then
-					self:zoomx(1.14);
-					self:diffusealpha(1);
+				if bannerFirst then
+					if song:HasBanner() then
+						self:zoomx(1.14);
+						self:diffusealpha(1);
+					elseif song:HasJacket() then
+						self:zoomx(.81);
+						self:diffusealpha(1);
+					end;
+				else
+					if song:HasJacket() then
+						self:zoomx(.81);
+						self:diffusealpha(1);
+					elseif song:HasBanner() then
+						self:zoomx(1.14);
+						self:diffusealpha(1);
+					end;
 				end;
 				--SCREENMAN:SystemMessage(
 			else

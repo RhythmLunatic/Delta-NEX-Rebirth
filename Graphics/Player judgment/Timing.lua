@@ -1,17 +1,16 @@
 local c = {};
-local player = Var "Player";
+local player,judgmentType = ...;
 local Pulse = THEME:GetMetric("Combo", "JudgmentPulseCommand");
 local current = 0;
 local scoreAdd = 0;
 local multiplier = 1;
 local meter = 0;
 local AllowSuperb = (PREFSMAN:GetPreference("AllowW1") == 'AllowW1_Everywhere');
-
 local t = Def.ActorFrame {
 
 	Def.ActorFrame {
 		Name="JudgmentFrame";
-		LoadActor(GetUserPref("UserPrefJudgmentType")) .. {
+		LoadActor(judgmentType) .. {
 			Name="Judgment";
 			InitCommand=cmd(pause;y,30;visible,false);
 			ResetCommand=cmd(finishtweening;stopeffect;visible,false);
@@ -122,14 +121,14 @@ t.JudgmentMessageCommand=function(self, param)
 	--(cmd(stoptweening;diffusealpha,1;zoom,0.875;linear,0.05;zoom,0.625;sleep,1;linear,0.2;diffusealpha,0;zoomx,1.05;zoomy,0.5))(c.Judgment);
 	
 	
-	if GetUserPref("UserPrefJudgmentType") == "NX" then
+	if judgmentType == "NX" then
 		(cmd(stoptweening;y,24;diffusealpha,1;zoomx,0.85;zoomy,0.8;linear,0.075;y,30;zoomx,0.6;zoomy,0.55;sleep,1;linear,0.2;diffusealpha,0;zoomx,1.05;zoomy,0.5))( c.Judgment, param );
-	elseif GetUserPref("UserPrefJudgmentType") == "FIESTA2" then
+	elseif judgmentType == "FIESTA 2" then
 --[[		(cmd(stoptweening;y,34;diffusealpha,1;zoomx,0.85;zoomy,0.75;linear,0.075;y,26;zoomx,1.4;zoomy,1.2;linear,0.075;y,34;diffusealpha,1;zoomx,0.85;zoomy,0.75;sleep,0.3;linear,0.175;diffusealpha,0;zoomx,1.2,zoomy,0.2))( c.Judgment, param );]]--
 		(cmd(stoptweening;y,18;diffusealpha,1;zoomx,1.35;zoomy,1;linear,0.075;y,32;zoomx,0.8;zoomy,0.8;sleep,0.3;linear,0.175;diffusealpha,0;zoomx,1.5;zoomy,0.05))( c.Judgment, param );
-	elseif GetUserPref("UserPrefJudgmentType") == "DELTANEX" then
+	elseif judgmentType == "Delta LED" then
 --[[		(cmd(stoptweening;y,16;diffusealpha,0.6;zoomx,0.65;zoomy,0.7;linear,0.075;y,0;diffusealpha,0.9;zoomx,1.3;zoomy,1.3;sleep,0.3;linear,0.175;y,30;diffusealpha,0;zoomx,1.3;zoomy,0.2))( c.Judgment, param );]]--
-		(cmd(stoptweening;y,0;diffusealpha,1;zoomx,0.9;zoomy,0.9;linear,0.075;y,16;zoomx,0.65;zoomy,0.65;sleep,0.3;linear,0.2;diffusealpha,0;zoomx,1.05;zoomy,0.5))( c.Judgment, param );
+		(cmd(stoptweening;y,0;diffusealpha,1;zoom,.5;linear,0.075;y,16;zoom,.4;sleep,0.3;linear,0.2;diffusealpha,0;zoomx,1.05;zoomy,0.5))( c.Judgment, param );
 	else --if GetUserPref("UserPrefJudgmentType") == "Normal" or GetUserPref("UserPrefJudgmentType") == "Deviation" then
 		Pulse( c.Judgment, param );
 	end

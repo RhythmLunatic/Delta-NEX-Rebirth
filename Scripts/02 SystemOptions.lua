@@ -15,12 +15,6 @@
 	end
 end]]
 
---Adds commas to your score, apparently
-function scorecap(n) -- credit http://richard.warburton.it
-	local left,num,right = string.match(n,'^([^%d]*%d)(%d*)(.-)$')
-	return left..(num:reverse():gsub('(%d%d%d)','%1.'):reverse())..right
-end
-
 
 
 
@@ -281,7 +275,8 @@ function UserPrefLite()
 	return t;
 end
 
-function UserPrefDetailedPrecision()
+--Moved to 03 PlayerOptions
+--[[function UserPrefDetailedPrecision()
 	local t = {
 		-- parâmetros auto-explicativos
 		Name = "UserPrefDetailedPrecision";
@@ -329,13 +324,13 @@ function UserPrefDetailedPrecision()
 	-- faz umas merdas que não entendo, pra funcionar
 	setmetatable( t, t );
 	return t;
-end
+end]]
 
 
 
 
-
-function UserPrefJudgmentType()
+--Moved to 03 PlayerOptions
+--[[function UserPrefJudgmentType()
 	local t = {
 		-- parâmetros auto-explicativos
 		Name = "UserPrefJudgmentType";
@@ -406,7 +401,7 @@ function UserPrefJudgmentType()
 	-- faz umas merdas que não entendo, pra funcionar
 	setmetatable( t, t );
 	return t;
-end
+end]]
 
 function UserPrefBackgroundType()
 	local t = {
@@ -456,7 +451,50 @@ function UserPrefBackgroundType()
 	return t;
 end
 
+function UserPrefWheelPriority()
+	local t = {
+		-- parâmetros auto-explicativos
+		Name = "UserPrefWheelPriority";
+		LayoutType = "ShowAllInRow";
+		SelectType = "SelectOne";
+		OneChoiceForAllPlayers = true;
+		ExportOnChange = true;
+		
+		-- escolhas em strings
+		Choices = { "Banner", "Jacket", "Auto"};
+		LoadSelections = function(self, list, pn)
+			if ReadPrefFromFile("UserPrefWheelPriority") == nil then
+				list[3] = true;
+				WritePrefToFile("UserPrefWheelPriority","Auto");
+			else
+			
+				if GetUserPref("UserPrefWheelPriority") == "Banner" then
+					list[1] = true;
+				elseif GetUserPref("UserPrefWheelPriority") == "Jacket" then
+					list[2] = true;
+				else
+					list[3] = true;
+				end;
+			end;
+		end;
 
+		SaveSelections = function(self, list, pn)
+			local val;
+			if list[1] then
+				val = "Banner";
+			elseif list[2] then
+				val = "Jacket";
+			else
+				val = "Auto";
+			end
+			WritePrefToFile("UserPrefWheelPriority",val);
+		end;
+	};
+
+	-- faz umas merdas que não entendo, pra funcionar
+	setmetatable( t, t );
+	return t;
+end
 
 
 

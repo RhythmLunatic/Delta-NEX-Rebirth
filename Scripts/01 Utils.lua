@@ -17,6 +17,11 @@ end
 function resetGame()
 	inBasicMode = nil;
 	all_channels_unlocked = nil;
+	ActiveModifiers = {
+		P1 = table.shallowcopy(PlayerDefaults),
+		P2 = table.shallowcopy(PlayerDefaults),
+		MACHINE = table.shallowcopy(PlayerDefaults),
+	}
 end;
 
 --[[function ternary(cond, T, F)
@@ -51,6 +56,11 @@ function GetGradeFromDancePoints(dancepoints)
 	end
 end;
 
+--Adds commas to your score, apparently
+function scorecap(n) -- credit http://richard.warburton.it
+	local left,num,right = string.match(n,'^([^%d]*%d)(%d*)(.-)$')
+	return left..(num:reverse():gsub('(%d%d%d)','%1.'):reverse())..right
+end
 
 function ListActorChildren(frame)
 	if frame:GetNumChildren() == 0 then
@@ -65,7 +75,7 @@ function ListActorChildren(frame)
 end
 
 --PIU D.N.R. Credits!
-local main_credits = {
+StepManiaCredits.AddSection({
 	name="Pump It Up Delta NEX Rebirth",
 	{logo= "RL", name= "Programmed by Rhythm Lunatic"},
 	"Ideas & testing by Jakub Throo Prymus",
@@ -73,21 +83,19 @@ local main_credits = {
 	"Delta NEX Rebirth logo by LogosPump",
 	"Autogen Basic Mode by Midflight Digital (DDR SN3 Team)",
 	"Special Thanks to Andamiro & Bemani"
-};
-StepManiaCredits.AddSection(main_credits);
+});
 
 StepManiaCredits.AddSection({
-	name="Delta NEX",
+	name="Pump It Up Delta NEX",
 	"by Schranz Conflict"
 })
 
-local orig_credits = {
+StepManiaCredits.AddSection({
 	name = "Pump It Up Delta",
 	"Created by Luizsan"
-}
-StepManiaCredits.AddSection(orig_credits);
+});
 
-local prog_credits = {
+StepManiaCredits.AddSection({
 	name = "Delta Programmers",
 	"AJ",
 	"Shakesoda",
@@ -95,40 +103,34 @@ local prog_credits = {
 	"TeruFSX",
 	"DaisuMaster",
 	"Saturn2888"
-}
-StepManiaCredits.AddSection(prog_credits);
+});
 
-local beta_credits = {
+StepManiaCredits.AddSection({
 	name = "Delta Beta Testers",
 	"Keoma",
 	"Aegis",
 	"[mDM] Cesar",
 	"Meck",
 	"Keb Kab"
-}
-StepManiaCredits.AddSection(beta_credits);
+});
 
-local noteskin_credits = {
+StepManiaCredits.AddSection({
 	name = "Delta Noteskin",
 	"Keoma",
 	"Aegis"
-}
-StepManiaCredits.AddSection(noteskin_credits);
+});
 
-local sounds_credits = {
+StepManiaCredits.AddSection({
 	name = "Delta & Delta NEX sounds",
     "D_Trucks",
     "Sanxion7 (flashkit.com)",
     "Andamiro",
     "Kors K as StripE"
-}
-StepManiaCredits.AddSection(sounds_credits);
+});
 
-local ideas_credits = {
+StepManiaCredits.AddSection({
 	name = "Delta Ideas",
 	"Keoma",
 	"Meck",
 	"Keb Kab"
-}		
-StepManiaCredits.AddSection(ideas_credits);
-
+});

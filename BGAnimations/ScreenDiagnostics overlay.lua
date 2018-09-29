@@ -10,7 +10,7 @@ end;
 
 local t = Def.ActorFrame{
 	CodeMessageCommand=function(self, params)
-		if params.Name == "Start" then
+		if params.Name == "Start" or params.Name == "Center" then
 			SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToPrevScreen");
 		else
 			SCREENMAN:SystemMessage("Unknown button: "..params.Name);
@@ -18,8 +18,16 @@ local t = Def.ActorFrame{
 	end;
 	
 	LoadFont("Common Normal")..{
-		Text="Press start to exit.";
+		Text="Press start or center step to exit.";
 		InitCommand=cmd(xy,SCREEN_CENTER_X,SCREEN_HEIGHT-20);
+		--[[OnCommand=function(self)
+			if not ActiveModifiers then
+				self:settext("ActiveModifiers doesn't exist!")
+			else
+				--self:settext(ActiveModifiers["MACHINE"]["JudgmentType"]);
+				self:settext(ProfileSlot[PlayerNumber:Reverse()["PlayerNumber_P2"]+1])
+			end;
+		end;]]
 	
 	};
 	
