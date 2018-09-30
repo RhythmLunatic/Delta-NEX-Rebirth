@@ -65,8 +65,8 @@ t.ComboCommand=function(self, param)
 		(cmd(stoptweening;y,3;diffusealpha,1;zoomx,0.575;zoomy,0.525;linear,0.075;y,0;zoomx,0.425;zoomy,0.385;sleep,1;linear,0.2;diffusealpha,0;zoomx,1.05;zoomy,0.5))( c.Number, param );
 	elseif judgmentType == "FIESTA 2" then
 		(cmd(stoptweening;y,8;diffusealpha,1;zoomx,0.6;zoomy,0.55;linear,0.175;y,0;zoomx,0.55;zoomy,0.5;sleep,0.3;linear,0.2;zoomx,1.5,zoomy,0.5;diffusealpha,0))( c.Number, param );
-	elseif judgmentType == "DELTA LED" then
-		(cmd(stoptweening;y,14;diffusealpha,1;zoomx,1;zoomy,1;linear,0.075;y,0;zoomx,0.8;zoomy,0.8;sleep,0.3;linear,0.2;zoomx,1.4;zoomy,0.2;diffusealpha,0))( c.Number, param );
+	elseif judgmentType == "Delta LED" then
+		(cmd(stoptweening;y,14;diffusealpha,1;zoom,.8;linear,0.075;y,0;zoom,.7;sleep,0.3;linear,0.2;zoomx,1.4;zoomy,0.2;diffusealpha,0))( c.Number, param );
 	else
 		Pulse( c.Number, param );
 	end	

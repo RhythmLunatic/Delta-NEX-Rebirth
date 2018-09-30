@@ -20,14 +20,9 @@ local t = Def.ActorFrame{
 	LoadFont("Common Normal")..{
 		Text="Press start or center step to exit.";
 		InitCommand=cmd(xy,SCREEN_CENTER_X,SCREEN_HEIGHT-20);
-		--[[OnCommand=function(self)
-			if not ActiveModifiers then
-				self:settext("ActiveModifiers doesn't exist!")
-			else
-				--self:settext(ActiveModifiers["MACHINE"]["JudgmentType"]);
-				self:settext(ProfileSlot[PlayerNumber:Reverse()["PlayerNumber_P2"]+1])
-			end;
-		end;]]
+		OnCommand=function(self)
+			--self:settext(getRandomBackgroundDebug("_random wallpapers"));
+		end;
 	
 	};
 	

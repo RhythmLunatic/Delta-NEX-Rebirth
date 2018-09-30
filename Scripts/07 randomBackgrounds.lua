@@ -10,7 +10,6 @@ function getRandomBackground(p)
     local backgroundsLength=0 --Fucking lua
 
     for k,filename in ipairs(files) do
-
         --local name = filename:sub(1, -5)
         --backgrounds[#backgrounds+1] = name
         --backgroundsLength = backgroundsLength + 1;
@@ -18,7 +17,7 @@ function getRandomBackground(p)
         -- A user might put something that isn't a suitable judgment graphic
         -- into /Graphics/_judgments/ (also sometimes hidden files like .DS_Store show up here).
         -- Do our best to filter out such files now.
-        if string.ends(filename, ".jpg") then
+        if string.ends(filename, ".jpg") or string.ends(filename, ".png") then
             backgrounds[#backgrounds+1] = filename:sub(1, -5)
             backgroundsLength = backgroundsLength+1;
         end

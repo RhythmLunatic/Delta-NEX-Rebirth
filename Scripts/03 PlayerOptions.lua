@@ -1,20 +1,3 @@
---Utility function needed for OptionRowAvailableNoteskins
---https://stackoverflow.com/a/19263313
-function string:split( inSplitPattern, outResults )
-  if not outResults then
-    outResults = { }
-  end
-  local theStart = 1
-  local theSplitStart, theSplitEnd = string.find( self, inSplitPattern, theStart )
-  while theSplitStart do
-    table.insert( outResults, string.sub( self, theStart, theSplitStart-1 ) )
-    theStart = theSplitEnd + 1
-    theSplitStart, theSplitEnd = string.find( self, inSplitPattern, theStart )
-  end
-  table.insert( outResults, string.sub( self, theStart ) )
-  return outResults
-end
-
 function table.shallowcopy(orig)
     local orig_type = type(orig)
     local copy
@@ -55,6 +38,7 @@ ActiveModifiers = {
 }
 ]]
 
+--Requires string:split from Utils
 function OptionRowAvailableNoteskins()
 	local ns = NOTESKIN:GetNoteSkinNames();
 	local disallowedNS = THEME:GetMetric("Common","NoteSkinsToHide"):split(",");

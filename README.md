@@ -58,4 +58,4 @@ A: Your StepMania is out of date. Update to 5.0.12 or higher.
 
 Q: Your theme lags when I scroll through songs.
 
-A: Can't be fixed without editing the StepMania source. It runs at full speed on Linux, though. (ProTip: Use a lowlatency kernel if you're putting this on your arcade cabinet)
+A: As of 0.98 the lag has been reduced by waiting until the songwheel is settled to load previews/backgrounds. If you are still experiencing lag you may want to run the Linux version of StepMania, as it does not lag when scrolling.

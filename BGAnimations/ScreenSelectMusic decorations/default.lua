@@ -84,40 +84,44 @@ t[#t+1] = Def.ActorFrame {
 		CurrentSongChangedMessageCommand=cmd(finishtweening;queuecommand,"ModifySongBackground");
 		ModifySongBackgroundCommand=function(self)
 			self:stoptweening();
+			self:diffusealpha(0);
 			if GAMESTATE:GetCurrentSong() then
 				if not GAMESTATE:GetCurrentSong():GetPreviewVidPath() then
-					self:LoadFromSongBackground(GAMESTATE:GetCurrentSong());
-					--self:scaletoclipped(290,160);
-					--self:cropto(200,200);
-					--self:customtexturerect(100,100,100,100);
-					--self:zoomto(290,160);
-					--self:setsize(290,160);
-					--self:cropto(290,160);
-					--self:SetWidth(290);
-					self:scaletocover(-145,-80,145,80);
-					local tex = self:GetTexture();
-					local ratio_16by9 = round(16/9, 2);
-					local ratio_image = round(tex:GetImageWidth()/tex:GetImageHeight(), 2);
-					if ratio_16by9 == ratio_image then
-						self:cropbottom(0);
-						self:croptop(0);
-						--SCREENMAN:SystemMessage(ratio_16by9.." "..ratio_image);
-					else
-						--It works and I don't know why. It's probably also very demanding on the CPU.
-						local cropRatio = math.abs((ratio_16by9 - ratio_image)/3.5)
-						self:croptop(cropRatio)
-						self:cropbottom(cropRatio)
-						--SCREENMAN:SystemMessage(ratio_16by9.." "..ratio_image.." "..cropRatio);
-					end;
-
-					self:diffusealpha(0);
-					self:linear(0.5);
-					self:diffusealpha(1);
-				else
-					self:diffusealpha(0);
+					self:sleep(.2);--Delay the loading a little to reduce lag when scrolling through the wheel
+					self:queuecommand("LoadSongBG"); --If you use playcommand, the sleep() will be ignored!
 				end;
 			end;
 		end;
+		
+		LoadSongBGCommand=function(self)
+			self:LoadFromSongBackground(GAMESTATE:GetCurrentSong());
+			--self:scaletoclipped(290,160);
+			--self:cropto(200,200);
+			--self:customtexturerect(100,100,100,100);
+			--self:zoomto(290,160);
+			--self:setsize(290,160);
+			--self:cropto(290,160);
+			--self:SetWidth(290);
+			self:scaletocover(-145,-80,145,80);
+			local tex = self:GetTexture();
+			local ratio_16by9 = round(16/9, 2);
+			local ratio_image = round(tex:GetImageWidth()/tex:GetImageHeight(), 2);
+			if ratio_16by9 == ratio_image then
+				self:cropbottom(0);
+				self:croptop(0);
+				--SCREENMAN:SystemMessage(ratio_16by9.." "..ratio_image);
+			else
+				--It works and I don't know why. It's probably also very demanding on the CPU.
+				local cropRatio = math.abs((ratio_16by9 - ratio_image)/3.5)
+				self:croptop(cropRatio)
+				self:cropbottom(cropRatio)
+				--SCREENMAN:SystemMessage(ratio_16by9.." "..ratio_image.." "..cropRatio);
+			end;
+
+			self:diffusealpha(0);
+			self:linear(0.5);
+			self:diffusealpha(1);
+		end
 	};
 	
 	--SONG VIDEO
@@ -127,14 +131,10 @@ t[#t+1] = Def.ActorFrame {
 		ModifySongBackgroundCommand=function(self)
 			if GAMESTATE:GetCurrentSong() ~= nil then
 				--SCREENMAN:SystemMessage(GAMESTATE:GetCurrentSong():GetPreviewVidPath() or "none");
-				self:Load( GAMESTATE:GetCurrentSong():GetPreviewVidPath() );
-				self:scaletoclipped(290,160);
-				self:linear(.5):diffusealpha(1);
 				
-				--[[self:sleep(1);
+				self:sleep(.3);--Delay the loading a little to make it in sync with the music. This also makes the game less laggy when switching songs. (It's still a bit early, but whatever)
 				self:queuecommand("LoadSongBG"); --If you use playcommand, the sleep() will be ignored!
-				self:linear(1);
-				self:diffusealpha(1);]]
+				self:linear(.4):diffusealpha(1);
 			end;
 		end;
 		

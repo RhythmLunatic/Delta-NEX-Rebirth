@@ -4,9 +4,7 @@ if not TIMER_SECONDS then TIMER_SECONDS = 5 end;
 local t = Def.ActorFrame{
 
 
-	LoadActor(getRandomBackground("_random wallpapers"))..{
-		InitCommand=cmd(Cover;);
-	};
+	randomBackground("_random wallpapers");
 	
 	LoadActor(THEME:GetPathG("", "logo/delta rebirth"))..{
 		InitCommand=cmd(zoom,.25;xy,SCREEN_WIDTH*.2,SCREEN_BOTTOM*.8;);
