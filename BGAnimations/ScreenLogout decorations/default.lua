@@ -16,7 +16,7 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 		end;]]
 		--I long for the day when this theme gets rewritten for 720p so I never have to deal with another zoom function ever again
 		InitCommand=function(self)
-			self:y(SCREEN_CENTER_Y):zoom(.9):rotationx(90);
+			self:y(SCREEN_CENTER_Y):zoom(.9)--[[:rotationx(90)]];
 			if pn == PLAYER_1 then
 				self:x(SCREEN_CENTER_X/2)
 			else

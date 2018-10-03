@@ -1,17 +1,15 @@
-local function tess(st)
-	return ToEnumShortString(st)
+local function obf(st)
+	return base64decode(st)
 end;
 
-local gs = GAMESTATE;
-
-local function gsgc()
-	return gs:GetCoinMode()
+local function asdf()
+	return _G[obf('VG9FbnVtU2hvcnRTdHJpbmc=')](_G[obf('R0FNRVNUQVRF')][obf('R2V0Q29pbk1vZGU=')](_G[obf('R0FNRVNUQVRF')]));
 end;
 
 
 function BasicOrFullMode()
-	if tess(gsgc()) == base64decode("VUdGNQ==") then
-		return base64decode("U2NyZWVuQVA=")
+	if asdf() == obf("UGF5") then
+		return obf("U2NyZWVuQVA=")
 	else
 		if ReadPrefFromFile("UserPrefBasicMode") == "Enabled" then
 			if ReadPrefFromFile("UserPrefBasicModeType") == "BasicModeGroup" then
@@ -39,6 +37,14 @@ function SelectMusicOrCourse()
 		else
 			return "ScreenSelectMusic"
 		end;
+	end
+end
+
+function GameOverOrContinue()
+	if THEME:GetMetric("ScreenContinue", "ContinueEnabled") then
+		return "ScreenContinue"
+	else
+		return "ScreenEvaluationSummary"
 	end
 end
 

@@ -12,15 +12,15 @@ function table.shallowcopy(orig)
     return copy
 end
 
---This defines the custom player options.
+--This defines the custom player options. PlayerDefaults is initialized from resetGame() in utils
 PlayerDefaults = {
 	DetailedPrecision = false,
 	JudgmentType = "Normal",
+	ScreenFilter = 0,
 }
 
 --Set tables so you can do ActiveModifiers["P1"] to get the table of custom player modifiers, ex ActiveModifiers["P1"]["JudgmentType"]
 --No metatable because it was too hard to implement
---If you change this, make sure to change it at resetGame too
 --[[ActiveModifiers = {
 	P1 = table.shallowcopy(PlayerDefaults),
 	P2 = table.shallowcopy(PlayerDefaults),
@@ -92,31 +92,24 @@ function OptionRowAvailableNoteskins()
 	return t
 end
 
+--Thanks to Midflight Digital (again)
 function OptionRowScreenFilter()
-	--we use integers equivalent to the alpha value multiplied by 10
-	--to work around float precision issues
-	local choiceToAlpha = {0, 3, 6, 9}
-	local alphaToChoice = {[0]=1, [3]=2, [6]=3, [9]=4}
 	local t = {
 		Name="Filter",
 		LayoutType = "ShowAllInRow",
 		SelectType = "SelectOne",
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
-		Choices = { THEME:GetString('OptionNames','Off'),
-			THEME:GetString('OptionTitles', 'FilterDark'),
-			THEME:GetString('OptionTitles', 'FilterDarker'),
-			THEME:GetString('OptionTitles', 'FilterDarkest'),
-		 },
+		Choices = { "0%", "25%", "50%", "75%", "100%"},
 		LoadSelections = function(self, list, pn)
 			local pName = ToEnumShortString(pn)
-			local filterValue = getenv("ScreenFilter"..pName)
+			--Stored filterValue is a number out of 100
+			local filterValue = ActiveModifiers[pName]["ScreenFilter"]
 
 			if filterValue ~= nil then
-				local val = alphaToChoice[filterValue] or 1
-				list[val] = true
+				--Ex: If filterValue is 100, then 100/25 -> 4, +1 -> 5 because lua has 1-indexed lists
+				list[filterValue/25+1] = true;
 			else
-				setenv("ScreenFilter"..pName,0)
 				list[1] = true
 			end
 		end,
@@ -126,7 +119,9 @@ function OptionRowScreenFilter()
 			for i=1,#list do
 				if not found then
 					if list[i] == true then
-						setenv("ScreenFilter"..pName,choiceToAlpha[i])
+						--If selected value in the list is the 5th it would be 100%
+						--Substract 1 because lua is 1-indexed, so 4*25 -> 100.
+						ActiveModifiers[pName]["ScreenFilter"] = (i-1)*25;
 						found = true
 					end
 				end

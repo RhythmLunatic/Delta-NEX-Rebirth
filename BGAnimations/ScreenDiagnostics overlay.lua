@@ -7,7 +7,6 @@ function IsWindowed()
 end;
 
 
-
 local t = Def.ActorFrame{
 	CodeMessageCommand=function(self, params)
 		if params.Name == "Start" or params.Name == "Center" then
