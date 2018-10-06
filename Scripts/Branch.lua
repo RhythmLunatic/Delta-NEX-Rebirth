@@ -12,8 +12,8 @@ function BasicOrFullMode()
 		return obf("U2NyZWVuQVA=")
 	else
 		if ReadPrefFromFile("UserPrefBasicMode") == "Enabled" then
+			inBasicMode = true
 			if ReadPrefFromFile("UserPrefBasicModeType") == "BasicModeGroup" then
-				inBasicMode = true
 				currentGroup = "BasicModeGroup"
 			else
 				SONGMAN:SetPreferredSongs("BasicMode")

@@ -1,6 +1,7 @@
 local isSelectingDifficulty = false;
 local ScreenSelectMusic;
 
+--Disabled because buggy
 local function inputs(event)
 	
 	local pn= event.PlayerNumber
@@ -33,27 +34,15 @@ local function inputs(event)
 		else
 			if button == "UpRight" or button == "UpLeft" then
 				if ScreenSelectMusic:CanOpenOptionsList(pn) then --If options list isn't currently open
-					--ScreenSelectMusic:StartTransitioningScreen("SM_GoToPrevScreen");
-					secondsLeft = ScreenSelectMusic:GetChild("Timer"):GetSeconds()
+					if isSelectingDifficulty then return end; --Don't want to open the group select if they're picking the difficulty.
 					--Set a global variable so ScreenSelectGroup will jump to the group that was selected before.
 					initialGroup = ScreenSelectMusic:GetChild('MusicWheel'):GetSelectedSection()
-					SCREENMAN:SetNewScreen("ScreenSelectGroup");
-					
-					--Yes, this is actually how the StepMania source does it. It's pretty buggy.
-					--local MusicWheel = ScreenSelectMusic:GetChild('MusicWheel');
-					--local sectionName = MusicWheel:GetSelectedSection("");
-					--Unfortunately not lua accessible...
-					--MusicWheel:SelectSection(sectionName);
-					--SCREENMAN:SystemMessage(MusicWheel:GetCurrentIndex());
-					--It's broken???
-					--MusicWheel:Move(5);
-					--MusicWheel:SetOpenSection("");
-					
-					--And this is the new function that's far less buggy.
-					--ScreenSelectMusic:CloseCurrentSection();
-					
-					--Debugging stuff
-					
+					MESSAGEMAN:Broadcast("StartSelectingGroup");
+					--SCREENMAN:SystemMessage("Group select opened.");
+					--No need to check if both players are present... Probably.
+					SCREENMAN:set_input_redirected(PLAYER_1, true);
+					SCREENMAN:set_input_redirected(PLAYER_2, true);
+					musicwheel:Move(0); --Work around a StepMania bug
 				end
 			end;
 		end;
@@ -84,29 +73,12 @@ end;
 
 local t = Def.ActorFrame{
 	OnCommand=function(self)
-		ScreenSelectMusic = SCREENMAN:GetTopScreen();
-		--Custom input code that isn't confusing at all /s
-		ScreenSelectMusic:AddInputCallback(inputs);
-		--SCREENMAN:set_input_redirected(PLAYER_1, true)
-		
-		--Set timer if we came from ScreenSelectGroup
-		if secondsLeft ~= nil then
-			ScreenSelectMusic:GetChild("Timer"):SetSeconds(secondsLeft)
-			--Remove it so we start with 99 seconds if the player is returning from song results, or they reloaded the screen.
-			secondsLeft = nil
-		end;
-		
-		--CurrentGroup comes from the group select overlay (It's a global variable hack!)
-		if currentGroup ~= nil then
-			SCREENMAN:SystemMessage(currentGroup);
-			ScreenSelectMusic:GetChild('MusicWheel'):SetOpenSection(currentGroup);
-			SCREENMAN:GetTopScreen():PostScreenMessage( 'SM_SongChanged', 0.5 );
-		end;
+
 	end;
 	
 	CodeMessageCommand=function(self, params)
 		if params.Name == "GoFullMode" then
-			ScreenSelectMusic:lockinput(1);
+			SCREENMAN:GetTopScreen():lockinput(1);
 			--SCREENMAN:SystemMessage("Full Mode triggered!");
 			GAMESTATE:ApplyGameCommand("sort,group");
 			--ScreenSelectMusic:StartTransitioningScreen("SM_GoToPrevScreen");
@@ -115,7 +87,7 @@ local t = Def.ActorFrame{
 			MESSAGEMAN:Broadcast("GoFullMode");
 			initialGroup = nil; --It can be left over from a previous session
 			inBasicMode = false;
-			secondsLeft = ScreenSelectMusic:GetChild("Timer"):GetSeconds()
+			--secondsLeft = ScreenSelectMusic:GetChild("Timer"):GetSeconds()
 			self:sleep(1):queuecommand("GoFullMode2")
 		else
 			--SCREENMAN:SystemMessage("WTF? "..params.Name);
@@ -123,38 +95,7 @@ local t = Def.ActorFrame{
 	end;
 	--Need to sleep to let the full mode animation finish, so this is in its own command.
 	GoFullMode2Command=function(self)
-		SCREENMAN:SetNewScreen("ScreenSelectGroup");
-	end;
-	
-	--Needs to sleep because without it, isSelectingDifficulty will be false while they close the difficulty select instead of after.
-	TwoPartConfirmCanceledMessageCommand=function(self)
-		local MusicWheel = SCREENMAN:GetTopScreen():GetChild('MusicWheel');
-		MusicWheel:accelerate(.2);
-		MusicWheel:addy(-300)
-		
-		self:sleep(.05);
-		self:queuecommand("DifficultySelectExited");
-	end;
-	
-	SongChosenMessageCommand=function(self)
-		local MusicWheel = SCREENMAN:GetTopScreen():GetChild('MusicWheel');
-		MusicWheel:accelerate(.2);
-		MusicWheel:addy(300);
-		
-		isSelectingDifficulty = true;
-	end;
-	
-	SongUnchosenMessageCommand=function(self)
-		local MusicWheel = SCREENMAN:GetTopScreen():GetChild('MusicWheel');
-		MusicWheel:accelerate(.2);
-		MusicWheel:addy(-300)
-		
-		self:sleep(.05);
-		self:queuecommand("DifficultySelectExited");
-	end;
-	
-	DifficultySelectExitedCommand=function(self)
-		isSelectingDifficulty = false;
+		SCREENMAN:SetNewScreen("ScreenSelectMusic");
 	end;
 
 }
@@ -205,9 +146,8 @@ end;]]
 	};]]
 
 
-t[#t+1] = LoadActor("GoFullMode")..{
-	
-};
+t[#t+1] = LoadActor("../GoFullMode");
+t[#t+1] = LoadActor("ScreenSelectGroup overlay");
 
 
 return t

@@ -1,6 +1,7 @@
 return Def.ActorFrame{
 
 	InitCommand=cmd(Center;stoptweening;);
+	GoFullModeMessageCommand=cmd(sleep,3;linear,1;diffusealpha,0);
 
 	Def.Quad{
 		InitCommand=cmd(setsize,SCREEN_WIDTH,SCREEN_HEIGHT;diffuse,Color("White");diffusealpha,0);

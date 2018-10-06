@@ -1,8 +1,8 @@
 local t = Def.ActorFrame{
 
     LoadActor(THEME:GetPathS("CommandMenu","Move"))..{
-        PreviousGroupMessageCommand=cmd(play);
-        NextGroupMessageCommand=cmd(play);
+        --PreviousGroupMessageCommand=cmd(play);
+        --NextGroupMessageCommand=cmd(play);
         OptionsListOpenedMessageCommand=cmd(play);
         OptionsListClosedMessageCommand=cmd(play);
         OptionsListRightMessageCommand=cmd(play);

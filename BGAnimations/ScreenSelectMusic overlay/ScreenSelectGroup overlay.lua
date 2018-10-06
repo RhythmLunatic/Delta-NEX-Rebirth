@@ -9,7 +9,7 @@ Drop-in usage:
 5. Move background code to ScreenSelectGroup background unless you need it here for some reason.
 ]]
 -- Get screen handle so we can adjust the timer.
-local MenuTimer;
+local ScreenSelectMusic;
 
 -- SONG GROUPS
 -- This is inside the overlay instead of GroupWheelUtil because as it turns out, SONGMAN:GetGroupNames isn't available on init
@@ -118,16 +118,20 @@ local function GoToNextScreen()
 	--Has no effect.
 	--MenuTimer:pause()
 	--SCREENMAN:SystemMessage(scroller:get_info_at_focus_pos());
-	--IT'S A HACK! (if you don't put local it makes a global variable)
-	if initialGroup ~= scroller:get_info_at_focus_pos() then
-		currentGroup = scroller:get_info_at_focus_pos();
-	end;
+	local currentGroup = scroller:get_info_at_focus_pos();
 	local curItem = scroller:get_actor_item_at_focus_pos();
 	--SCREENMAN:SystemMessage(ListActorChildren(curItem.container));
-	curItem.container:GetChild("banner"):accelerate(.3):zoom(2);
-	secondsLeft = MenuTimer:GetSeconds();
-	SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen");
+	curItem.container:GetChild("banner"):accelerate(.3):zoom(2):diffusealpha(0);
+	ScreenSelectMusic:GetChild('MusicWheel'):SetOpenSection(currentGroup);
+	SCREENMAN:GetTopScreen():PostScreenMessage( 'SM_SongChanged', 0.5 );
+	SCREENMAN:set_input_redirected(PLAYER_1, false);
+	SCREENMAN:set_input_redirected(PLAYER_2, false);
+	MESSAGEMAN:Broadcast("StartSelectingSong");
+	
 end;
+
+local isSelectingDifficulty = false;
+local password;
 
 local function inputs(event)
 	
@@ -135,64 +139,129 @@ local function inputs(event)
 	local button = event.button
 	-- If the PlayerNumber isn't set, the button isn't mapped.  Ignore it.
 	--Also we only want it to activate when they're NOT selecting the difficulty.
-	if not pn or isSelectingDifficulty then return end
-
+	if not pn then return end
 	-- If it's a release, ignore it.
 	if event.type == "InputEventType_Release" then return end
 	
-	if button == "Center" or button == "Start" then
-		GoToNextScreen()
-	elseif button == "DownLeft" or button == "Left" then
-		scroller:scroll_by_amount(-1);
-		SOUND:PlayOnce(THEME:GetPathS("MusicWheel", "change"), true);
-		MESSAGEMAN:Broadcast("PreviousGroup");
-	elseif button == "DownRight" or button == "Right" then
-		scroller:scroll_by_amount(1);
-		SOUND:PlayOnce(THEME:GetPathS("MusicWheel", "change"), true);
-		MESSAGEMAN:Broadcast("NextGroup");
-	elseif button == "Back" then
-		SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToPrevScreen");
-	else
-		--SCREENMAN:SystemMessage(button);
-	end;
-	
-	if button == "MenuDown" then
-		local groupName = scroller:get_info_at_focus_pos()
-		if initialGroup then
-			SCREENMAN:SystemMessage(groupName.." | "..initialGroup);
+	if SCREENMAN:get_input_redirected(pn) then 
+		if button == "Center" or button == "Start" then
+			GoToNextScreen()
+		elseif button == "DownLeft" or button == "Left" then
+			scroller:scroll_by_amount(-1);
+			SOUND:PlayOnce(THEME:GetPathS("MusicWheel", "change"), true);
+			MESSAGEMAN:Broadcast("PreviousGroup");
+		elseif button == "DownRight" or button == "Right" then
+			scroller:scroll_by_amount(1);
+			SOUND:PlayOnce(THEME:GetPathS("MusicWheel", "change"), true);
+			MESSAGEMAN:Broadcast("NextGroup");
+		elseif button == "Back" then
+			SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToPrevScreen");
 		else
-			SCREENMAN:SystemMessage(groupName.." | No initial group.");
+			--SCREENMAN:SystemMessage(button);
 		end;
-		--SCREENMAN:SystemMessage(groupName.." | "..SONGMAN:GetSongGroupBannerPath(groupName));
+		
+		if button == "MenuDown" then
+			local groupName = scroller:get_info_at_focus_pos()
+			if initialGroup then
+				SCREENMAN:SystemMessage(groupName.." | "..initialGroup);
+			else
+				SCREENMAN:SystemMessage(groupName.." | No initial group.");
+			end;
+			--SCREENMAN:SystemMessage(groupName.." | "..SONGMAN:GetSongGroupBannerPath(groupName));
+		end;
+		
+		if button == "MenuUp" then
+			SCREENMAN:SystemMessage(tostring(ReadPrefFromFile("UserPrefHiddenChannels") == "Enabled"));
+		end;
+		
+		if button == "UpLeft" or button == "UpRight" then
+			
+		end;
+	else
+		if button == "UpRight" or button == "UpLeft" then
+			if ScreenSelectMusic:CanOpenOptionsList(pn) then --If options list isn't currently open
+				if isSelectingDifficulty or inBasicMode then return end; --Don't want to open the group select if they're picking the difficulty.
+				MESSAGEMAN:Broadcast("StartSelectingGroup");
+				--SCREENMAN:SystemMessage("Group select opened.");
+				--No need to check if both players are present... Probably.
+				SCREENMAN:set_input_redirected(PLAYER_1, true);
+				SCREENMAN:set_input_redirected(PLAYER_2, true);
+				
+				local musicwheel = SCREENMAN:GetTopScreen():GetChild('MusicWheel');
+				musicwheel:Move(0); --Work around a StepMania bug
+			end
+		end;
 	end;
-	
-	if button == "MenuUp" then
-		SCREENMAN:SystemMessage(tostring(ReadPrefFromFile("UserPrefHiddenChannels") == "Enabled"));
-	end;
-	
 end;
 
 -- ACTORFRAMES FOR BOTH
 -- ////////////////////////
-
 local t = Def.ActorFrame{
+	InitCommand=cmd(diffusealpha,0);
+
 	OnCommand=function(self)
+		ScreenSelectMusic = SCREENMAN:GetTopScreen();
 		scroller:set_info_set(info_set, 1);
+		local curGroup = GAMESTATE:GetCurrentSong():GetGroupName();
 		for key,value in pairs(info_set) do
-			if initialGroup == value then
+			if curGroup == value then
 				scroller:scroll_by_amount(key-1)
 			end
 		end;
 		
-		
 		SCREENMAN:GetTopScreen():AddInputCallback(inputs);
-		MenuTimer = SCREENMAN:GetTopScreen():GetChild("Timer");
+		--MenuTimer = SCREENMAN:GetTopScreen():GetChild("Timer");
 		--SecondsLeft is a global variable hack, brought over from ScreenSelectMusic overlay.
-		MenuTimer:SetSeconds(secondsLeft);
+		--MenuTimer:SetSeconds(secondsLeft);
 		--SCREENMAN:SystemMessage(math.ceil(numWheelItems/2));
-		self:linear(5);
-		self:queuecommand("CheckTimer");
+		--self:linear(5);
+		--self:queuecommand("CheckTimer");
 	end;
+	StartSelectingGroupMessageCommand=function(self)
+		local curItem = scroller:get_actor_item_at_focus_pos();
+		--SCREENMAN:SystemMessage(ListActorChildren(curItem.container));
+		curItem.container:GetChild("banner"):stoptweening():zoom(1):diffusealpha(1);
+		self:stoptweening():linear(.5):diffusealpha(1);
+		SOUND:DimMusic(0,65536);
+	end;
+	StartSelectingSongMessageCommand=function(self)
+		self:stoptweening():linear(.5):diffusealpha(0);
+		SOUND:DimMusic(1,1);
+	end;
+	UpdateSongCommand=function(self)
+	end;
+	
+	--Needs to sleep because without it, isSelectingDifficulty will be false while they close the difficulty select instead of after.
+	TwoPartConfirmCanceledMessageCommand=function(self)
+		local MusicWheel = SCREENMAN:GetTopScreen():GetChild('MusicWheel');
+		MusicWheel:accelerate(.2);
+		MusicWheel:addy(-300)
+		
+		self:sleep(.05);
+		self:queuecommand("DifficultySelectExited");
+	end;
+	
+	SongChosenMessageCommand=function(self)
+		local MusicWheel = SCREENMAN:GetTopScreen():GetChild('MusicWheel');
+		MusicWheel:accelerate(.2);
+		MusicWheel:addy(300);
+		
+		isSelectingDifficulty = true;
+	end;
+	
+	SongUnchosenMessageCommand=function(self)
+		local MusicWheel = SCREENMAN:GetTopScreen():GetChild('MusicWheel');
+		MusicWheel:accelerate(.2);
+		MusicWheel:addy(-300)
+		
+		self:sleep(.05);
+		self:queuecommand("DifficultySelectExited");
+	end;
+	
+	DifficultySelectExitedCommand=function(self)
+		isSelectingDifficulty = false;
+	end;
+	
 	--I think this is the only way to check the timer
 	CheckTimerCommand=function(self)
 		--For some reason it ends the timer instantly because it's at 0 (Maybe it's unitialized?) So just stop the timer at 1 second.
@@ -204,7 +273,7 @@ local t = Def.ActorFrame{
 			self:linear(1):queuecommand("CheckTimer");
 		end;
 	end;
-	
+
 	--Handle the hidden channels code
 	CodeMessageCommand=function(self, params)
 		if params.Name == "SecretGroup" then
@@ -279,7 +348,7 @@ t[#t+1] = Def.ActorFrame{
 	
 	--TIMER
 
-	LoadActor("B0") .. {
+	--[[LoadActor("B0") .. {
 		InitCommand=cmd(draworder,101;x,SCREEN_CENTER_X+190;y,SCREEN_TOP+16;zoomy,0.55;zoomx,-0.55);
 
 	};
@@ -297,21 +366,21 @@ t[#t+1] = Def.ActorFrame{
 	LoadFont("venacti/_venacti 26px bold diffuse")..{
 		InitCommand=cmd(draworder,102;diffuse,0.6,0.6,0.6,0.6;shadowcolor,0,0,0,0.3;shadowlengthx,-0.8;shadowlength,-0.8;horizalign,left;x,SCREEN_CENTER_X+185 ;y,SCREEN_TOP+16;zoom,0.40);
 		Text="TIMER"
-	};
+	};]]
 
 	--STAGE
 
-	LoadActor("B0") .. {
+	LoadActor("../B0") .. {
 		InitCommand=cmd(draworder,101;x,SCREEN_CENTER_X-190;y,SCREEN_TOP+16;zoomy,0.55;zoomx,0.55);
 
 	};
 
-	LoadActor("B1") .. {
+	LoadActor("../B1") .. {
 		InitCommand=cmd(draworder,101;x,SCREEN_CENTER_X-160;y,SCREEN_TOP+25;zoomy,0.6;zoomx,0.6);
 
 	};
 
-	LoadActor("B2") .. {
+	LoadActor("../B2") .. {
 		InitCommand=cmd(draworder,103;x,SCREEN_CENTER_X-160;y,SCREEN_TOP+25;zoomy,0.6;zoomx,0.6);
 
 	};
@@ -428,7 +497,7 @@ if GAMESTATE:GetCurrentGame():GetName() == "pump" then
 		};
 end;
 
-t[#t+1] = LoadActor("GoSecretMode")..{
+t[#t+1] = LoadActor("../GoSecretMode")..{
 	
 };
 
