@@ -337,7 +337,7 @@ local t = Def.ActorFrame{
 t[#t+1] = scroller:create_actors("foo", numWheelItems, item_mt, SCREEN_CENTER_X, SCREEN_CENTER_Y);
 
 --HEADER
-t[#t+1] = Def.ActorFrame{
+--[[t[#t+1] = Def.ActorFrame{
 
 	LoadActor(THEME:GetPathG("","header"), false);
 	
@@ -348,7 +348,7 @@ t[#t+1] = Def.ActorFrame{
 	
 	--TIMER
 
-	--[[LoadActor("B0") .. {
+	LoadActor("B0") .. {
 		InitCommand=cmd(draworder,101;x,SCREEN_CENTER_X+190;y,SCREEN_TOP+16;zoomy,0.55;zoomx,-0.55);
 
 	};
@@ -366,7 +366,7 @@ t[#t+1] = Def.ActorFrame{
 	LoadFont("venacti/_venacti 26px bold diffuse")..{
 		InitCommand=cmd(draworder,102;diffuse,0.6,0.6,0.6,0.6;shadowcolor,0,0,0,0.3;shadowlengthx,-0.8;shadowlength,-0.8;horizalign,left;x,SCREEN_CENTER_X+185 ;y,SCREEN_TOP+16;zoom,0.40);
 		Text="TIMER"
-	};]]
+	};
 
 	--STAGE
 
@@ -397,7 +397,7 @@ t[#t+1] = Def.ActorFrame{
 			self:settextf("%02d",stageNum);
 		end;
 	}
-};
+};]]
 
 t[#t+1] = Def.ActorFrame{
 
@@ -472,9 +472,9 @@ t[#t+1] = Def.ActorFrame{
 	};
 };
 	
-t[#t+1] = LoadActor(THEME:GetPathG("","footer"), true)..{
+--[[t[#t+1] = LoadActor(THEME:GetPathG("","footer"), true)..{
 	InitCommand=cmd(draworder,130);
-};
+};]]
 
 --Wheel left/right shadow
 t[#t+1] = Def.Quad {

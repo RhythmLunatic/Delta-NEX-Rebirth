@@ -15,6 +15,10 @@ function BasicOrFullMode()
 			inBasicMode = true
 			if ReadPrefFromFile("UserPrefBasicModeType") == "BasicModeGroup" then
 				currentGroup = "BasicModeGroup"
+				local folder = SONGMAN:GetSongsInGroup(currentGroup);
+				randomSong = folder[math.random(1,#folder)]
+				GAMESTATE:SetCurrentSong(randomSong);
+				GAMESTATE:SetPreferredSong(randomSong);
 			else
 				SONGMAN:SetPreferredSongs("BasicMode")
 				GAMESTATE:ApplyGameCommand("sort,preferred");

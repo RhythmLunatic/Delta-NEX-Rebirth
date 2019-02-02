@@ -1,4 +1,4 @@
-themeVersion = 0.97;
+themeVersion = "0.97 RC1";
 
 --Because it's useful
 function Actor:Cover()

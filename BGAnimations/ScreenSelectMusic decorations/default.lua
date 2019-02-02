@@ -349,6 +349,9 @@ t[#t+1] = LoadActor("jacket_light") .. {
 		end;
 	end;
 	
+	StartSelectingGroupMessageCommand=cmd(visible,false);
+	StartSelectingSongMessageCommand=cmd(visible,true);
+	
 	CurrentStepsP1ChangedMessageCommand=cmd(playcommand,"CheckSteps");
 	CurrentStepsP2ChangedMessageCommand=cmd(playcommand,"CheckSteps");
 
@@ -884,13 +887,7 @@ t[#t+1] = LoadFont("venacti/_venacti 13px bold diffuse")..{
 		local song = GAMESTATE:GetCurrentSong()
 		if song then
 			--Assume that the user doesn't want those numbers at the beginning that StepF2 has
-			--TODO: Is there a faster way to do this?
-			num = split("-",song:GetGroupName())
-			if tonumber(num[1]) then
-				self:settext(num[2])
-			else
-				self:settext(song:GetGroupName())
-			end;
+			self:settext(string.gsub(song:GetGroupName(),"^%d%d? ?%- ?", ""))
 			self:diffusealpha(1);
 		else
 			self:settext("---")
@@ -1099,9 +1096,6 @@ t[#t+1] = Def.Quad {
 }
 
 --Command Window has been moved to ScreenSelectMusic overlay because it has to take over input handling.
-t[#t+1] = LoadActor("Command Window")..{
-	InitCommand=cmd(draworder,100);	
-};
 
 
 

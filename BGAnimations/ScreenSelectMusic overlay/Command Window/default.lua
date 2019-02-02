@@ -24,17 +24,6 @@ local t = Def.ActorFrame{
         OptionsListPopMessageCommand=cmd(play);
         OptionsListPushMessageCommand=cmd(play);
     };
-    LoadActor(THEME:GetPathS("","Common Cancel"))..{
-        SongUnchosenMessageCommand=cmd(play);
-    };
-    
-    LoadActor(THEME:GetPathS("","SSM_Select"))..{
-        SongChosenMessageCommand=cmd(play);
-        StepsChosenMessageCommand=cmd(play);
-    };
-    LoadActor(THEME:GetPathS("","SSM_Confirm"))..{
-        OffCommand=cmd(play);
-    };
 };
 
 for pn in ivalues(PlayerNumber) do

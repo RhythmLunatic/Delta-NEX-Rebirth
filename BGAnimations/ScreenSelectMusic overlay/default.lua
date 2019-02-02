@@ -23,6 +23,7 @@ local function inputs(event)
 	--Check if they're in ScreenSelectMusic. If they're in ScreenSelectMusicBasic or any other screen, then don't allow them to close the folder.
 	if ScreenSelectMusic:GetName() == "ScreenSelectMusic" then
 		if SCREENMAN:get_input_redirected(pn) then --If the player is in the command window
+			--MESSAGEMAN:SystemMessage(button);
 			if button == "DownRight" then
 				MESSAGEMAN:Broadcast("CWChangeIndexMessageCommand", {Player=pn,Direction=1})
 			elseif button == "DownLeft" then
@@ -97,6 +98,18 @@ local t = Def.ActorFrame{
 	GoFullMode2Command=function(self)
 		SCREENMAN:SetNewScreen("ScreenSelectMusic");
 	end;
+	
+	LoadActor(THEME:GetPathS("","Common Cancel"))..{
+        SongUnchosenMessageCommand=cmd(play);
+    };
+    
+    LoadActor(THEME:GetPathS("","SSM_Select"))..{
+        SongChosenMessageCommand=cmd(play);
+        StepsChosenMessageCommand=cmd(play);
+    };
+    LoadActor(THEME:GetPathS("","SSM_Confirm"))..{
+        OffCommand=cmd(play);
+    };
 
 }
 
@@ -121,17 +134,22 @@ t[#t+1] = Def.ActorFrame{
 	};
 };
 
---[[for pn in ivalues(PlayerNumber) do
-	t[#t+1] = LoadActor(THEME:GetPathG("ScreenSelectMusic","CWCommandWindow"), pn)..{
+t[#t+1] = LoadActor("Command Window")..{
+	InitCommand=cmd(draworder,100);	
+};
+
+for pn in ivalues(PlayerNumber) do
+	--[[t[#t+1] = LoadActor(THEME:GetPathG("ScreenSelectMusic","CWCommandWindow"), pn)..{
 		CodeMessageCommand = function(self, params)
 			if params.Name == 'OpenOpList' then
 				--SCREENMAN:SystemMessage("OptionsList opened")
 				--SCREENMAN:GetTopScreen():OpenOptionsList(params.PlayerNumber)
+				--SCREENMAN:set_input_redirected(PLAYER_1,true);
 				MESSAGEMAN:Broadcast("CommandWindowOpened", {Player=pn})
 			end
 		end;
-	};
-end;]]
+	};]]
+end;
 --[[t[#t+1] = LoadActor(THEME:GetPathG("ScreenSelectMusic","CWCommandWindow"), PLAYER_1)..{
 		CodeMessageCommand = function(self, params)
 			if params.Name == 'OpenOpList' then

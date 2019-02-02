@@ -121,6 +121,19 @@ local t = Def.ActorFrame {
 			GAMESTATE:ApplyGameCommand("stopmusic");
 		end;]]
 	};
+	--DoesSongGroupExist
+	Def.ActorFrame{
+		InitCommand=cmd(visible,(SONGMAN:DoesSongGroupExist("BasicModeGroup") == false and ReadPrefFromFile("UserPrefBasicModeType") == "BasicModeGroup"));
+		Def.Quad{
+			InitCommand=cmd(setsize,SCREEN_WIDTH,100;diffuse,Color("Black");Center);
+		};
+		
+		LoadFont("soms2/_soms2 techy")..{
+			Text=THEME:GetString("ScreenTitleJoin","BasicModeWarning");
+			InitCommand=cmd(Center;wrapwidthpixels,SCREEN_WIDTH-10);
+		};
+	
+	};
 };
 
 return t;

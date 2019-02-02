@@ -5,7 +5,8 @@ local function increasePlayerSpeed(pn, amount)
 	--SCREENMAN:SystemMessage(playerState);
 	local playerState = GAMESTATE:GetPlayerState(pn);
 	--This returns an instance of playerOptions, you need to set it back to the original
-	local playerOptions = playerState:GetPlayerOptions("ModsLevel_Preferred")
+	--local playerOptions = playerState:GetPlayerOptions("ModsLevel_Preferred")
+	local playerOptions = playerState:GetCurrentPlayerOptions()
 	--SCREENMAN:SystemMessage(PlayerState:GetPlayerOptionsString("ModsLevel_Current"));
 	--One of these will be valid, depending on the player's currently set speed mod.
 	local cmod = playerOptions:CMod();
