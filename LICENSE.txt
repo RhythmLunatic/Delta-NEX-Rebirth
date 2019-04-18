@@ -2,6 +2,10 @@ This theme is licensed under Attribution-NonCommercial 3.0 United States (CC BY-
 
 In summary: You can do whatever you want as long as you don't try making money off it.
 
+Q: But I want to make money anyway!!
+
+A: Some code (All the important stuff is, anyway) is relicensed and shared under the Rave It Out: Season 2 theme. That license is public domain and you are free to use code from that.
+
 https://creativecommons.org/licenses/by-nc/3.0/us/
 
 Parts of this theme are under different licenses, they are:
