@@ -57,6 +57,7 @@ function OptionRowAvailableNoteskins()
 		OneChoiceForAllPlayers = false,
 		ExportOnChange = false,
 		Choices = ns,
+		NumNoteskins = #ns,
 		LoadSelections = function(self, list, pn)
 			--This returns an instance of playerOptions, you need to set it back to the original
 			local playerOptions = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred")

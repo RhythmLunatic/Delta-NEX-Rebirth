@@ -99,13 +99,14 @@ local t = Def.ActorFrame {
 	};
 	
  	LoadFont("Common normal") .. {
-		Text="Delta NEX Rebirth "..tostring(themeVersion).."\n"..ProductFamily().." "..ProductVersion();
+		Text="Delta 2 "..tostring(themeVersion).."\n"..ProductFamily().." "..ProductVersion();
 		InitCommand=cmd(horizalign,left;x,5;y,SCREEN_TOP+13;zoom,0.45)
 	};
 	
 	LoadFont("soms2/_soms2 techy")..{
+		Condition=GAMESTATE:IsEventMode();
 		Text="EVENT MODE";
-		InitCommand=cmd(visible,GAMESTATE:IsEventMode();xy,SCREEN_CENTER_X,SCREEN_BOTTOM-10;diffusebottomedge,Color("HoloBlue");Stroke,Color("Black"));
+		InitCommand=cmd(xy,SCREEN_CENTER_X,SCREEN_BOTTOM-10;diffusebottomedge,Color("HoloBlue");Stroke,Color("Black"));
 	};
 
 	LoadActor(THEME:GetPathS("ScreenTitleMenu", "music"))..{

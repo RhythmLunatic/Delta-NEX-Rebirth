@@ -234,8 +234,8 @@ local t = Def.ActorFrame{
 	--Needs to sleep because without it, isSelectingDifficulty will be false while they close the difficulty select instead of after.
 	TwoPartConfirmCanceledMessageCommand=function(self)
 		local MusicWheel = SCREENMAN:GetTopScreen():GetChild('MusicWheel');
-		MusicWheel:accelerate(.2);
-		MusicWheel:addy(-300)
+		--MusicWheel:accelerate(.2);
+		--MusicWheel:addy(-300)
 		
 		self:sleep(.05);
 		self:queuecommand("DifficultySelectExited");
@@ -243,16 +243,16 @@ local t = Def.ActorFrame{
 	
 	SongChosenMessageCommand=function(self)
 		local MusicWheel = SCREENMAN:GetTopScreen():GetChild('MusicWheel');
-		MusicWheel:accelerate(.2);
-		MusicWheel:addy(300);
+		--MusicWheel:accelerate(.2);
+		--MusicWheel:addy(300);
 		
 		isSelectingDifficulty = true;
 	end;
 	
 	SongUnchosenMessageCommand=function(self)
 		local MusicWheel = SCREENMAN:GetTopScreen():GetChild('MusicWheel');
-		MusicWheel:accelerate(.2);
-		MusicWheel:addy(-300)
+		--MusicWheel:accelerate(.2);
+		--MusicWheel:addy(-300)
 		
 		self:sleep(.05);
 		self:queuecommand("DifficultySelectExited");

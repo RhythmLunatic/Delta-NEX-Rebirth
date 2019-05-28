@@ -59,7 +59,7 @@ end;
 
 
 t[#t+1] = Def.ActorFrame {
-	InitCommand=cmd(draworder,4;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-100);
+	InitCommand=cmd(draworder,4;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y);
 	OnCommand=cmd(visible,SCREENMAN:GetTopScreen():GetName() ~= "ScreenSelectCourse");
 	--[[CurrentSongChangedMessageCommand=function(self)
 		local song = GAMESTATE:GetCurrentSong();
@@ -71,16 +71,16 @@ t[#t+1] = Def.ActorFrame {
 			self:diffusealpha(0);
 		end
 	end;]]
-	Def.Quad {
+	--[[Def.Quad {
 		InitCommand=cmd(diffuse,color("0,0,0,1");scaletoclipped,260+1,160;diffusealpha,0.7);
 	};
 	
 	Def.Quad {
-		InitCommand=cmd(visible,true;diffuse,color("0,0,0,1");setsize,290,160;diffusealpha,1);
-	};
+		InitCommand=cmd(diffuse,color("0,0,0,1");setsize,290,160;diffusealpha,1);
+	};]]
 	
 	--SONG BACKGROUND
-	Def.Sprite {
+	--[[Def.Sprite {
 		CurrentSongChangedMessageCommand=cmd(finishtweening;queuecommand,"ModifySongBackground");
 		ModifySongBackgroundCommand=function(self)
 			self:stoptweening();
@@ -122,7 +122,7 @@ t[#t+1] = Def.ActorFrame {
 			self:linear(0.5);
 			self:diffusealpha(1);
 		end
-	};
+	};]]
 	
 	--SONG VIDEO
 	Def.Sprite {
@@ -134,20 +134,25 @@ t[#t+1] = Def.ActorFrame {
 				
 				self:sleep(.3);--Delay the loading a little to make it in sync with the music. This also makes the game less laggy when switching songs. (It's still a bit early, but whatever)
 				self:queuecommand("LoadSongBG"); --If you use playcommand, the sleep() will be ignored!
-				self:linear(.4):diffusealpha(1);
 			end;
 		end;
 		
 		--It's in a separate command because that's the only way to delay Load();
 		LoadSongBGCommand=function(self)
-			self:Load( GAMESTATE:GetCurrentSong():GetPreviewVidPath() );
-			self:scaletoclipped(290,160);
+			local path = GAMESTATE:GetCurrentSong():GetPreviewVidPath()
+			if path then
+				self:Load( path );
+				self:scaletoclipped(290,160);
+				self:linear(.4):diffusealpha(1);
+			else
+				self:diffusealpha(0);
+			end;
 		end;
 	};
 	
 	--SONG TITLE SHADOW
 	Def.Quad{
-		InitCommand=cmd(setsize,284,35;vertalign,bottom;diffuse,color("0,0,0,.8");addy,80;fadetop,.2);
+		InitCommand=cmd(setsize,290,35;vertalign,bottom;diffuse,color("0,0,0,.8");addy,80;fadetop,.2);
 	};
 	
 	--SONG TITLE
@@ -261,7 +266,7 @@ t[#t+1] = Def.ActorFrame {
 	
 	--LONG SONG WARNING
 	Def.Quad{
-		InitCommand=cmd(setsize,284,28;vertalign,top;fadebottom,.2;addy,-80;);
+		InitCommand=cmd(setsize,290,28;vertalign,top;fadebottom,.2;addy,-82;);
 		CurrentSongChangedMessageCommand=function(self)
 			--diffuse,Color("Red");
 			local song = GAMESTATE:GetCurrentSong();
@@ -278,7 +283,7 @@ t[#t+1] = Def.ActorFrame {
 	
 	};
 	LoadFont("venacti/_venacti 13px bold diffuse")..{
-		InitCommand=cmd(maxwidth,525;vertalign,top;addy,-75;zoom,.5;shadowlength,1;shadowcolor,color("#000000BB"));
+		InitCommand=cmd(maxwidth,525;vertalign,top;addy,-77;zoom,.5;shadowlength,1;shadowcolor,color("#000000BB"));
 		--Text="FULL SONG: This song requires 2 stages.";
 		CurrentSongChangedMessageCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
@@ -295,10 +300,10 @@ t[#t+1] = Def.ActorFrame {
 	};
 	
 	
-	LoadActor("songback") .. {
+	--[[LoadActor("songback") .. {
 		InitCommand=cmd(draworder,6;zoomy,0.675;zoomx,0.65);
 
-	};
+	};]]
 };
 
 local bannerFirst = true;
@@ -315,9 +320,9 @@ else --Auto
 	end;
 end;
 t[#t+1] = LoadActor("jacket_light") .. {
-	InitCommand=cmd(draworder,100;xy,SCREEN_CENTER_X,SCREEN_CENTER_Y+121;zoomx,1.14;zoomy,.81;effectclock,"bgm";blend,Blend.Add);
+	InitCommand=cmd(draworder,100;xy,SCREEN_CENTER_X,SCREEN_CENTER_Y;zoomx,1.45;zoomy,.81;effectclock,"bgm";blend,Blend.Add);
 
-	CurrentSongChangedMessageCommand=function(self)
+	--[[CurrentSongChangedMessageCommand=function(self)
 		if GAMESTATE:GetPlayMode() ~= "PlayMode_Nonstop" then
 			--local JacketOrBanner;
 			local song = GAMESTATE:GetCurrentSong();
@@ -347,7 +352,7 @@ t[#t+1] = LoadActor("jacket_light") .. {
 			end;
 			self:playcommand("CheckSteps");
 		end;
-	end;
+	end;]]
 	
 	StartSelectingGroupMessageCommand=cmd(visible,false);
 	StartSelectingSongMessageCommand=cmd(visible,true);

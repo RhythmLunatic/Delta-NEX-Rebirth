@@ -2,7 +2,7 @@ local bannerFirst = true;
 if GetUserPref("UserPrefWheelPriority") == "Banner" then
 	--Don't need to assign, since it's already true
 	--bannerFirst = true;
-elseif GetUserPref("UserPrefWheelPriority") == "Jacket" then
+elseif GetUserPref("UserPrefWheelPriority") == "Background" then
 	bannerFirst = false;
 else --Auto
 	if GAMESTATE:GetCurrentGame():GetName() == "pump" then
@@ -14,7 +14,7 @@ end;
 
 --local total = 0
 return Def.ActorFrame {
-	OnCommand=cmd(diffusealpha,1;zoom,.9);
+	OnCommand=cmd(diffusealpha,1;zoom,.97);
 	PlayerJoinedMessageCommand=cmd(playcommand,"On");
 
 	-- banners
@@ -28,22 +28,20 @@ return Def.ActorFrame {
 			if song then
 				if bannerFirst then
 					path = song:GetBannerPath();
-					self:scaletoclipped(250,177);
 					if not path then
-						path = song:GetJacketPath();
-						self:scaletoclipped(180,180);
+						path = song:GetBackgroundPath();
 					end;
 				else
-					path = song:GetJacketPath();
-					self:scaletoclipped(180,180);
+					path = song:GetBackgroundPath();
 					if not path then
 						path = song:GetBannerPath();
-						self:scaletoclipped(250,177);
 					end;
 				end;
+				
 			end;
 			if not path then path = THEME:GetPathG("Common","fallback banner") end
 			self:Load(path);
+			self:scaletoclipped(290,160);
 		end;
 	};
 };

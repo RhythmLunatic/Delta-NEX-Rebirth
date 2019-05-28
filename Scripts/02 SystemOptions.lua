@@ -333,7 +333,7 @@ function UserPrefWheelPriority()
 		ExportOnChange = true;
 		
 		-- escolhas em strings
-		Choices = { "Banner", "Jacket", "Auto"};
+		Choices = { "Banner", "Background", "Auto"};
 		LoadSelections = function(self, list, pn)
 			if ReadPrefFromFile("UserPrefWheelPriority") == nil then
 				list[3] = true;
@@ -342,7 +342,7 @@ function UserPrefWheelPriority()
 			
 				if GetUserPref("UserPrefWheelPriority") == "Banner" then
 					list[1] = true;
-				elseif GetUserPref("UserPrefWheelPriority") == "Jacket" then
+				elseif GetUserPref("UserPrefWheelPriority") == "Background" then
 					list[2] = true;
 				else
 					list[3] = true;
@@ -355,7 +355,7 @@ function UserPrefWheelPriority()
 			if list[1] then
 				val = "Banner";
 			elseif list[2] then
-				val = "Jacket";
+				val = "Background";
 			else
 				val = "Auto";
 			end

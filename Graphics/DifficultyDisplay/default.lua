@@ -13,7 +13,7 @@ local delay = 2
 
 
 local baseX = basicMode and -spacing*1.5 or -(spacing*5.5)
-local baseY = 80;
+local baseY = 190;
 
 local stepsArray;
 

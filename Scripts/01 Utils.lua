@@ -93,7 +93,7 @@ end
 
 --PIU D.N.R. Credits!
 StepManiaCredits.AddSection({
-	name="Pump It Up Delta NEX Rebirth",
+	name="Pump It Up Delta 2",
 	{logo= "RL", name= "Programmed by Rhythm Lunatic"},
 	"Ideas & testing by Jakub Throo Prymus",
 	"New graphics by Joao Almeida",
