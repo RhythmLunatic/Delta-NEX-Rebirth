@@ -59,8 +59,9 @@ end;
 
 
 t[#t+1] = Def.ActorFrame {
-	InitCommand=cmd(draworder,4;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y);
-	OnCommand=cmd(visible,SCREENMAN:GetTopScreen():GetName() ~= "ScreenSelectCourse");
+	InitCommand=cmd(draworder,4;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-50);
+	--OnCommand=cmd(visible,SCREENMAN:GetTopScreen():GetName() ~= "ScreenSelectCourse");
+	OnCommand=cmd(fov,60;vanishpoint,SCREEN_CENTER_X,SCREEN_CENTER_Y+90;);
 	--[[CurrentSongChangedMessageCommand=function(self)
 		local song = GAMESTATE:GetCurrentSong();
 		if song then
@@ -134,6 +135,7 @@ t[#t+1] = Def.ActorFrame {
 				
 				self:sleep(.3);--Delay the loading a little to make it in sync with the music. This also makes the game less laggy when switching songs. (It's still a bit early, but whatever)
 				self:queuecommand("LoadSongBG"); --If you use playcommand, the sleep() will be ignored!
+				--self:diffuse(Color("White"));
 			end;
 		end;
 		
@@ -141,8 +143,9 @@ t[#t+1] = Def.ActorFrame {
 		LoadSongBGCommand=function(self)
 			local path = GAMESTATE:GetCurrentSong():GetPreviewVidPath()
 			if path then
+				--self:Load(THEME:GetPathG("ScrollBar","middle"));
 				self:Load( path );
-				self:scaletoclipped(290,160);
+				self:scaletoclipped(288,162);
 				self:linear(.4):diffusealpha(1);
 			else
 				self:diffusealpha(0);
@@ -152,7 +155,7 @@ t[#t+1] = Def.ActorFrame {
 	
 	--SONG TITLE SHADOW
 	Def.Quad{
-		InitCommand=cmd(setsize,290,35;vertalign,bottom;diffuse,color("0,0,0,.8");addy,80;fadetop,.2);
+		InitCommand=cmd(setsize,290,35;vertalign,bottom;diffuse,color("0,0,0,.8");addy,81;fadetop,.2);
 	};
 	
 	--SONG TITLE
@@ -304,6 +307,66 @@ t[#t+1] = Def.ActorFrame {
 		InitCommand=cmd(draworder,6;zoomy,0.675;zoomx,0.65);
 
 	};]]
+	LoadActor("jacket_light") .. {
+		InitCommand=cmd(draworder,100;zoomx,1.45;zoomy,.81;effectclock,"bgm";blend,Blend.Add);
+		
+		StartSelectingGroupMessageCommand=cmd(visible,false);
+		StartSelectingSongMessageCommand=cmd(visible,true);
+		
+		CurrentStepsP1ChangedMessageCommand=cmd(playcommand,"CheckSteps");
+		CurrentStepsP2ChangedMessageCommand=cmd(playcommand,"CheckSteps");
+
+		SongChosenMessageCommand=function(self)
+			self:visible(false);
+		end;
+		SongUnchosenMessageCommand=function(self)
+			self:visible(true);
+		end;
+		TwoPartConfirmCanceledMessageCommand=function(self)
+			self:visible(true);
+		end;
+		
+		CheckStepsCommand=function(self,params)
+
+			local stepsP1 = GAMESTATE:GetCurrentSteps(PLAYER_1);
+			local stepsP2 = GAMESTATE:GetCurrentSteps(PLAYER_2);
+			local threshold = THEME:GetMetric("SongManager","ExtraColorMeter");
+
+				if not stepsP1 then
+					meterP1 = 0
+				else
+					meterP1 = stepsP1:GetMeter()
+				end
+
+				if not stepsP2 then
+					meterP2 = 0
+				else
+					meterP2 = stepsP2:GetMeter()
+				end
+
+
+				if meterP1>=threshold or meterP2>=threshold then
+					self:playcommand("Extra");
+				else
+					self:playcommand("Normal");
+				end;
+
+		end;
+
+		NormalCommand=cmd(blend,Blend.Add;diffuseshift;effectcolor1,color("#88CCFFFF");effectcolor2,color("#88CCFF33"));
+		ExtraCommand=cmd(blend,Blend.Add;diffuseshift;effectcolor1,color("#FFCC00FF");effectcolor2,color("#FFCC0033"));
+
+	};
+	
+	LoadActor("leftpress") .. {
+		InitCommand=cmd(draworder,100;x,-200;diffusealpha,0;zoom,0.675;blend,Blend.Add);
+		PreviousSongMessageCommand=cmd(stoptweening;diffusealpha,1;sleep,0.15;linear,0.3;diffusealpha,0);
+	};
+
+	LoadActor("leftpress") .. {
+		InitCommand=cmd(draworder,100;x,200;rotationy,180;diffusealpha,0;zoom,0.675;blend,Blend.Add);
+		NextSongMessageCommand=cmd(stoptweening;diffusealpha,1;sleep,0.15;linear,0.3;diffusealpha,0);
+	};
 };
 
 local bannerFirst = true;
@@ -319,88 +382,6 @@ else --Auto
 		bannerFirst = false; --Prioritize jackets for every other game mode
 	end;
 end;
-t[#t+1] = LoadActor("jacket_light") .. {
-	InitCommand=cmd(draworder,100;xy,SCREEN_CENTER_X,SCREEN_CENTER_Y;zoomx,1.45;zoomy,.81;effectclock,"bgm";blend,Blend.Add);
-
-	--[[CurrentSongChangedMessageCommand=function(self)
-		if GAMESTATE:GetPlayMode() ~= "PlayMode_Nonstop" then
-			--local JacketOrBanner;
-			local song = GAMESTATE:GetCurrentSong();
-			self:finishtweening();
-			self:decelerate(.3);
-			if song then
-				if bannerFirst then
-					if song:HasBanner() then
-						self:zoomx(1.14);
-						self:diffusealpha(1);
-					elseif song:HasJacket() then
-						self:zoomx(.81);
-						self:diffusealpha(1);
-					end;
-				else
-					if song:HasJacket() then
-						self:zoomx(.81);
-						self:diffusealpha(1);
-					elseif song:HasBanner() then
-						self:zoomx(1.14);
-						self:diffusealpha(1);
-					end;
-				end;
-				--SCREENMAN:SystemMessage(
-			else
-				self:diffusealpha(0);
-			end;
-			self:playcommand("CheckSteps");
-		end;
-	end;]]
-	
-	StartSelectingGroupMessageCommand=cmd(visible,false);
-	StartSelectingSongMessageCommand=cmd(visible,true);
-	
-	CurrentStepsP1ChangedMessageCommand=cmd(playcommand,"CheckSteps");
-	CurrentStepsP2ChangedMessageCommand=cmd(playcommand,"CheckSteps");
-
-	SongChosenMessageCommand=function(self)
-		self:visible(false);
-	end;
-	SongUnchosenMessageCommand=function(self)
-		self:visible(true);
-	end;
-	TwoPartConfirmCanceledMessageCommand=function(self)
-		self:visible(true);
-	end;
-	
-	CheckStepsCommand=function(self,params)
-
-		local stepsP1 = GAMESTATE:GetCurrentSteps(PLAYER_1);
-		local stepsP2 = GAMESTATE:GetCurrentSteps(PLAYER_2);
-		local threshold = THEME:GetMetric("SongManager","ExtraColorMeter");
-
-			if not stepsP1 then
-				meterP1 = 0
-			else
-				meterP1 = stepsP1:GetMeter()
-			end
-
-			if not stepsP2 then
-				meterP2 = 0
-			else
-				meterP2 = stepsP2:GetMeter()
-			end
-
-
-			if meterP1>=threshold or meterP2>=threshold then
-				self:playcommand("Extra");
-			else
-				self:playcommand("Normal");
-			end;
-
-	end;
-
-	NormalCommand=cmd(blend,Blend.Add;diffuseshift;effectcolor1,color("#88CCFFFF");effectcolor2,color("#88CCFF33"));
-	ExtraCommand=cmd(blend,Blend.Add;diffuseshift;effectcolor1,color("#FFCC00FF");effectcolor2,color("#FFCC0033"));
-
-}
 
 -- BANNER MASK DANCE
 
@@ -691,23 +672,12 @@ end;
 
 };]]
 
-
-t[#t+1] = LoadActor("leftpress") .. {
-	InitCommand=cmd(draworder,100;x,SCREEN_CENTER_X;vertalign,top;diffusealpha,0;zoom,0.675;blend,Blend.Add);
-	PreviousSongMessageCommand=cmd(stoptweening;diffusealpha,1;sleep,0.15;linear,0.3;diffusealpha,0);
-}
-
-t[#t+1] = LoadActor("rightpress") .. {
-	InitCommand=cmd(draworder,100;x,SCREEN_CENTER_X;vertalign,top;diffusealpha,0;zoom,0.675;blend,Blend.Add);
-	NextSongMessageCommand=cmd(stoptweening;diffusealpha,1;sleep,0.15;linear,0.3;diffusealpha,0);
-}
-
 --DIFFICULTY BAR
 
 t[#t+1] = Def.ActorFrame{
 
 	LoadActor(THEME:GetPathG("","DifficultyDisplay"))..{
-		InitCommand=cmd(xy,SCREEN_CENTER_X,165);
+		InitCommand=cmd(xy,SCREEN_CENTER_X,110);
 		--[[SelectingGroupMessageCommand=cmd(visible,false);
 		SelectingSongMessageCommand=cmd(visible,true);]]
 	};

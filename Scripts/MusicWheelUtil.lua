@@ -114,21 +114,13 @@ end]]
 --local inGroupSelect = true;
 
 --Stolen from some PIU Prime theme
+--TODO: The wheel doesn't size elements correctly, it needs to be fixed so the middle object has a zoom of 1.
 function PrimeWheel(self,offsetFromCenter,itemIndex,numItems)
-	--[[if offsetFromCenter == 0 and init < 250 then
-		init = init+5
-	end]]
 	local nx = math.abs(offsetFromCenter)*250;
 	if math.abs(offsetFromCenter) > 1 then
 		nx = ( ( math.abs( offsetFromCenter ) -1 ) *(69-(math.abs(offsetFromCenter)*-8)) )+250
 	end
 	local morlss = offsetFromCenter ~= 0 and (offsetFromCenter/math.abs(offsetFromCenter)) or 1
-	local yfun = math.min(math.abs(offsetFromCenter),1)
-	--Y value is set in ScreenSelectMusic overlay.
-	--local y = 0
-	if yfun >= 2 then
-		ypos = (yfun-2)*3
-	end
 	function zoomw(offsetFromCenter)
 		local ofsfc = math.abs(offsetFromCenter)
 		if ofsfc >=1 then ofsfc=1 end
@@ -148,53 +140,56 @@ function PrimeWheel(self,offsetFromCenter,itemIndex,numItems)
 	self:rotationz( 0 );
 end;
 
---[[function X3Wheel(self,offsetFromCenter,itemIndex,numItems) \
-	local function GetZoom(offsetFromCenter) \
-		if math.abs(offsetFromCenter) >= 1 then \
-			return 0.8; \
-		else \
-			return (10.0-math.abs(offsetFromCenter)*2)/10; \
-		end; \
-	end; \
-	local function GetDistence(offsetFromCenter) \
-		if offsetFromCenter >= 1 then \
-			return offsetFromCenter*90+84; \
-		elseif offsetFromCenter <= -1 then \
-			return offsetFromCenter*90-84; \
-		else \
-			return 90*offsetFromCenter + 84*offsetFromCenter \
-		end; \
-	end; \
-	local function GetRotationY(offsetFromCenter) \
-		if offsetFromCenter > 0.9 then \
-			return 64+(offsetFromCenter-0.9)*9.8; \
-		elseif offsetFromCenter < -0.9 then \
-			return -64+(offsetFromCenter+0.9)*9.8; \
-		else \
-			return offsetFromCenter*64/0.9; \
-		end; \
-	end; \
-	local function GetRotationZ(offsetFromCenter) \
-		if offsetFromCenter < 0 then \
-			return -offsetFromCenter*0.5; \
-		else \
-			return 0; \
-		end; \
-	end; \
-	local function GetRotationX(offsetFromCenter) \
-		if math.abs(offsetFromCenter) < 0.1 then \
-			return 0; \
-		else \
-			return 4; \
-		end; \
-	end; \
-	self:linear(5.8); \
-	self:x( GetDistence(offsetFromCenter) ); \
-	self:y(2); \
-	self:z(1-math.abs(offsetFromCenter)); \
-	self:draworder( math.abs(offsetFromCenter)*10 ); \
-	self:zoom( GetZoom(offsetFromCenter) ); \
-	self:rotationx( 0 );\
-	self:rotationy( GetRotationY(offsetFromCenter) ); \
-	self:rotationz( 0 ); \
-end;]]
+function SimpleWheel(self,offsetFromCenter,itemIndex,numItems)
+	self:x(offsetFromCenter*300);
+end;
+
+function X3Wheel(self,offsetFromCenter,itemIndex,numItems)
+	local function GetZoom(offsetFromCenter)
+		if math.abs(offsetFromCenter) >= 1 then
+			return 0.8;
+		else
+			return (10.0-math.abs(offsetFromCenter)*2)/10;
+		end;
+	end;
+	local function GetDistence(offsetFromCenter)
+		if offsetFromCenter >= 1 then
+			return offsetFromCenter*90+84;
+		elseif offsetFromCenter <= -1 then
+			return offsetFromCenter*90-84;
+		else
+			return 90*offsetFromCenter + 84*offsetFromCenter
+		end;
+	end;
+	local function GetRotationY(offsetFromCenter)
+		if offsetFromCenter > 0.9 then
+			return 64+(offsetFromCenter-0.9)*9.8;
+		elseif offsetFromCenter < -0.9 then
+			return -64+(offsetFromCenter+0.9)*9.8;
+		else
+			return offsetFromCenter*64/0.9;
+		end;
+	end;
+	local function GetRotationZ(offsetFromCenter)
+		if offsetFromCenter < 0 then
+			return -offsetFromCenter*0.5;
+		else
+			return 0;
+		end;
+	end;
+	local function GetRotationX(offsetFromCenter)
+		if math.abs(offsetFromCenter) < 0.1 then
+			return 0;
+		else
+			return 4;
+		end;
+	end;
+	self:linear(5.8);
+	self:x( GetDistence(offsetFromCenter) );
+	self:z(1-math.abs(offsetFromCenter));
+	self:draworder( math.abs(offsetFromCenter)*10 );
+	self:zoom( GetZoom(offsetFromCenter) );
+	self:rotationx( 0 );
+	self:rotationy( GetRotationY(offsetFromCenter) );
+	self:rotationz( 0 );
+end;

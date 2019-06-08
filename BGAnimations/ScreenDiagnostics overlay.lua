@@ -6,11 +6,12 @@ function IsWindowed()
 	end;
 end;
 
-
 local t = Def.ActorFrame{
 	CodeMessageCommand=function(self, params)
 		if params.Name == "Start" or params.Name == "Center" then
 			SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToPrevScreen");
+		elseif params.Name == "Secret" then
+			SCREENMAN:SetNewScreen("ScreenGreetz");
 		else
 			SCREENMAN:SystemMessage("Unknown button: "..params.Name);
 		end;

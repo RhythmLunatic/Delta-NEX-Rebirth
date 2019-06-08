@@ -14,7 +14,7 @@ end;
 
 --local total = 0
 return Def.ActorFrame {
-	OnCommand=cmd(diffusealpha,1;zoom,.97);
+	OnCommand=cmd(diffusealpha,1;zoom,1);
 	PlayerJoinedMessageCommand=cmd(playcommand,"On");
 
 	-- banners
@@ -41,7 +41,8 @@ return Def.ActorFrame {
 			end;
 			if not path then path = THEME:GetPathG("Common","fallback banner") end
 			self:Load(path);
-			self:scaletoclipped(290,160);
+			self:scaletoclipped(288,162);
+			--self:scaletoclipped(300,300);
 		end;
 	};
 };

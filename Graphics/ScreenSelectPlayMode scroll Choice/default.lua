@@ -11,7 +11,7 @@ directly and count the commas in the string.
 local numChoices = THEME:GetMetric("ScreenSelectPlayMode","ScrollerNumItemsToDraw")
 local placement = SCREEN_WIDTH/(numChoices)*index-(SCREEN_WIDTH/numChoices/2)
 
-if name == "course" or name == "standard" then
+if name == "course" or name == "standard" or name == "mission" then
 	return Def.ActorFrame{
 		LoadActor(name)..{
 			InitCommand=cmd(x,placement;zoom,.7);    
