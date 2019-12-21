@@ -1,8 +1,10 @@
 06-PRO2/(1) PE324 - Elder God Shrine
 08-1ST~3RD/(2) 204 - Final Audition
 08-1ST~3RD/(3) 102 - Hypnosis
+08-Season 2/Blue (Da Ba Dee)
 09-S.E.~EXTRA/(4) 401 - Oh! Rosa
 09-S.E.~EXTRA/(4) 405 - Mr. Larpus
+09-Season 2 FINAL/Blue (Da Ba Dee)
 10-REBIRTH~PREX 3/(2) 711 - Winter
 11-EXCEED~ZERO/(1) C01 - Beat of the War 2
 12-NX~NX2/(1) E27 - Dance all Night
@@ -14,6 +16,12 @@
 17-PRIME/1437 - Bar Bar Bar
 18-PRIME 2/(1) 1551 - Boombayah
 50-Custom Music/[Step1] Ma Chouchoute
+70-Composite/J - Happy Synthesizer
+70-Composite/K - Haru Haru
+70-Composite/K - Napal Baji
+70-Composite/K - Stop Girl
+70-Composite/W - Infinite Power
+70-Composite/W - Old Skool (Nitro)
 BasicModeGroup/(AA) 1000B06 - Deja Vu
 BasicModeGroup/(AA) 1009 - To The Sky
 BasicModeGroup/(AA) 1108 - Magic

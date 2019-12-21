@@ -172,3 +172,83 @@ function OptionRowJudgmentType()
 	setmetatable(t, t)
 	return t
 end
+
+function adjustPlayerMMod(pn, amount)
+	--SCREENMAN:SystemMessage(playerState);
+	local playerState = GAMESTATE:GetPlayerState(pn);
+	--This returns an instance of playerOptions, you need to set it back to the original
+	local playerOptions = playerState:GetPlayerOptions("ModsLevel_Preferred")
+	--SCREENMAN:SystemMessage(PlayerState:GetPlayerOptionsString("ModsLevel_Current"));
+	assert(playerOptions:MMod(),"NO MMOD SET!!!!")
+	if amount+playerOptions:MMod() < 100 then
+		playerOptions:MMod(800);
+	elseif amount+playerOptions:MMod() > 1000 then
+		playerOptions:MMod(100);
+	else
+		playerOptions:MMod(playerOptions:MMod()+amount);
+	end;
+	GAMESTATE:GetPlayerState(pn):SetPlayerOptions('ModsLevel_Preferred', playerState:GetPlayerOptionsString("ModsLevel_Preferred"));
+	--SCREENMAN:SystemMessage(GAMESTATE:GetPlayerState(pn):GetPlayerOptionsString("ModsLevel_Preferred"));
+	return playerOptions:MMod();
+end
+
+--MMod only
+function AutoVelocity()
+	local t = {
+		Name = "UserPrefSpeedMods";
+		LayoutType = "ShowAllInRow";
+		SelectType = "SelectMultiple";
+		GoToFirstOnStart= false;
+		OneChoiceForAllPlayers = false;
+		ExportOnChange = false;
+		Choices = { "ON", "AV -100", "AV -10","AV +10", "AV +100"};
+		LoadSelections = function(self, list, pn)
+			if GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):MMod() then
+				list[1] = true
+				--SCREENMAN:SystemMessage("MMod!")
+			end;
+		end;
+		--We're not saving anything!
+		SaveSelections = function(self, list, pn)
+		
+		end;
+		--Abuse the heck out of this one since we're checking what button they pressed and not what's selected or deselected
+		NotifyOfSelection = function(self,pn,choice)
+			--SCREENMAN:SystemMessage("choice "..choice)
+			local speed;
+			if choice == 1 then
+				--If MMod isn't on, turn it on
+				if not GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):MMod() then
+					
+					local playerState = GAMESTATE:GetPlayerState(pn);
+					--This returns an instance of playerOptions, you need to set it back to the original
+					local playerOptions = playerState:GetPlayerOptions("ModsLevel_Preferred")
+					playerOptions:MMod(200)
+					GAMESTATE:GetPlayerState(pn):SetPlayerOptions('ModsLevel_Preferred', playerState:GetPlayerOptionsString("ModsLevel_Preferred"));
+					
+					--SCREENMAN:SystemMessage("New MMod: "..GAMESTATE:GetPlayerState(pn):GetCurrentPlayerOptions():MMod())
+				else --If MMod is on, turn it off.
+					GAMESTATE:ApplyGameCommand("mod,2x",pn);
+				end;
+			elseif GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):MMod() then
+				if choice == 2 then
+					speed = adjustPlayerMMod(pn, -100);
+				elseif choice == 3 then
+					speed = adjustPlayerMMod(pn, -10);
+				elseif choice == 4 then
+					speed = adjustPlayerMMod(pn, 10);
+				elseif choice == 5 then
+					speed = adjustPlayerMMod(pn, 100);
+				end;
+			end;
+			--MESSAGEMAN:Broadcast("MModChanged", {Player=pn,Speed=speed});
+			MESSAGEMAN:Broadcast("SpeedModChanged",{Player=pn});
+			--Always return true because we don't want anything to get highlighted.
+			return true;
+			
+			--self.Choices = {"asdON", "AasdadV -100", "AV222 -10","A21313V +10", "AV +1asdad00"};
+		end;
+	};
+	setmetatable( t, t );
+	return t;
+end

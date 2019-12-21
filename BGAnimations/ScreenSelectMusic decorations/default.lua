@@ -688,7 +688,7 @@ t[#t+1] = Def.ActorFrame{
 
 t[#t+1] = Def.ActorFrame{
 
-	InitCommand=cmd(xy,SCREEN_CENTER_X,SCREEN_HEIGHT*.8);
+	InitCommand=cmd(xy,SCREEN_CENTER_X,SCREEN_HEIGHT*.85);
 
 	LoadActor("rdy_add")..{
 		InitCommand=cmd(y,-20;diffusealpha,0;zoom,0.8;draworder,100;blend,Blend.Multiply;);
